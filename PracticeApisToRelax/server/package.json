@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "passport": "^0.6.0",
+    "sequel": "^0.3.10",
+    "sequelize": "^6.33.0"
+  },
+  "name": "server",
+  "version": "1.0.0",
+  "description": "trying to practice/learn oauth ",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

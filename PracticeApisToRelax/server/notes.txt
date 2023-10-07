@@ -1,0 +1,15 @@
+redirect to another page/route on our application - call whatever you want 
+(/auth/provider) - facebook or google 
+
+we handle the route on our application  /auth/google in our case
+- user wants to sign in with google 
+callback function to google (we're going over there now ) - gather info about user 
+then look up in our own database. 
+
+THEN we create the cookie - send to browser - we can use this cookie to communicate between back/front 
+
+Using passport for four parts:
+1 - auth/google handler 
+2 - receiving user details from provider 
+3 - creating cookie 
+4 - decoding cookie 
