@@ -27,6 +27,40 @@ Ehsan:
    - Use case diagram
  Working On: 
    - Updating use case diagram
-   = Doing some tutorials on MongoDB and on React
+   - Doing some tutorials on MongoDB and on React
  Challenges: 
-   = Commenting - database design 
+   - Commenting - database design 
+
+===================
+Date: 2023/10/09
+
+Nick:
+ Finished: 
+  - AWS Suite tutorials/intro, more react tutorials, basic component list to work off
+ Working On: 
+  - Start working on front-end, list of components
+ Challenges: 
+  - Understanding the scope of what is needed for each component
+
+
+Alex:
+ Finished: 
+  - figured out how to use .env variables in sequelize config
+  - implemented oauth login/registration with google - random username
+ Working On:
+  - jwt tokens - oauth 
+  - one more react tutorial 
+  - start creating post API
+ Challenges:
+  - integreating JWT tokens with OAuth 
+
+ 
+Ehsan:
+ Finished: 
+   - React, Sequileze tutorials 
+ Working On: 
+   - more react tutorials
+   - createing Models
+   - admin section
+ Challenges: 
+   - associations regarding models
