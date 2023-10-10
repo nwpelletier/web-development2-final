@@ -60,7 +60,43 @@ Ehsan:
    - React, Sequileze tutorials 
  Working On: 
    - more react tutorials
-   - createing Models
+   - creating Models
    - admin section
  Challenges: 
    - associations regarding models
+
+===================
+Date: 2023/10/10
+
+Nick:
+ Finished: 
+  - Navbar + sub-components
+  - Subcruddit list populates using React hook
+ Working On: 
+  - Post component
+  - Login + Registration components
+ Challenges: 
+  - N/A
+
+
+Alex:
+ Finished: 
+  - Gave up on OAuth - maybe later
+  - Started creating post/comment routes/controller 
+ Working On:
+  - Posts/comments routes/controller
+  - login / registration 
+  - add notifications 
+ Challenges:
+  - figuring out OAuth lol 
+
+ 
+Ehsan:
+ Finished: 
+   - models, tutorial of react, "type" in table columns naming changed
+ Working On: 
+   - react tutorial
+   - associations of the models
+   - user panel (crud+view)
+ Challenges: 
+   - NA
