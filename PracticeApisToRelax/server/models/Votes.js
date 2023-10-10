@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
 
-    
-    Votes.associate = (models) => {
-      Votes.belongsTo(models.Users);
-      Votes.belongsTo(models.Posts);
-  }
+
+  //   Votes.associate = (models) => {
+  //     Votes.belongsTo(models.Users);
+  //     Votes.belongsTo(models.Posts);
+  // }
 
   
     return Votes;

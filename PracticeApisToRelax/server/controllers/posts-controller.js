@@ -10,14 +10,14 @@ module.exports = {
                 return;
             }
             post.layer = 0; 
-            const user = await Users.findAll({
-                where: {
-                    id: post.UserId
-                }
-            })
-            if (user.length < 1){
-                return res.status(400).json({message : "Create post from valid user account", user: false})
-            }
+            // const user = await Users.findAll({
+            //     where: {
+            //         id: post.UserId
+            //     }
+            // })
+            // if (user.length < 1){
+            //     return res.status(400).json({message : "Create post from valid user account", user: false})
+            // }
             // const subcruddit = await Subcruddits.findAll({
             //     where: {
             //         subcrudditName: post.subcrudditName
@@ -56,7 +56,12 @@ module.exports = {
 }
 
 function validatePost(post, req, res) {
-    if (post.UserId == undefined || post.SubcrudditId == undefined || post.title == undefined || post.postType == undefined || post.content == undefined) {
+    if (!post.UserId || !post.SubcrudditId || !post.title || !post.postType || !post.content)  {
+        console.log("user id" + post.UserId);
+        console.log("subc id" + post.SubcrudditId)
+        console.log("title" + post.title)
+        console.log("post type" + post.postType)
+        console.log("content" + post.content)
         res.status(400).send({
             message: "You must send user id, subcruddit id, a post title, a post type, and post content ."
         });

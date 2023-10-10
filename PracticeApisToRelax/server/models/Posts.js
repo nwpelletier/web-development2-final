@@ -21,7 +21,8 @@ parentId: {
 },
 postId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null
 },
 title: {
     type: DataTypes.STRING(360),
@@ -73,16 +74,16 @@ isStickied: {
 }
   });
 
-  Posts.associate = (models) => {
+//   Posts.associate = (models) => {
 
-    Posts.hasMany(models.Votes, {
-      foreignKey: 'PostId'
-    })
-    Posts.belongsTo(models.Users);
-    Posts.belongsTo(models.Subcruddits);
+//     Posts.hasMany(models.Votes, {
+//       foreignKey: 'PostId'
+//     })
+//     Posts.belongsTo(models.Users);
+//     Posts.belongsTo(models.Subcruddits);
     
 
-}
+// }
 
   return Posts;
 };
