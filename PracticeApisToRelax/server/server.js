@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config()
 const session = require('express-session');
+const db = require('./models');
 
 
 const bodyParser = require('body-parser');
@@ -13,8 +14,6 @@ const postRoutes = require("./routes/post-routes")
 
 
 app.use(express.json());
-
-
 app.use(cors({
     origin: ["http://localhost:3000"], 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -37,7 +36,7 @@ app.use(session({
 // routers 
 app.use("/api/posts", postRoutes)
 
-const db = require('./models');
+// const db = require('./models');
 
 
 db.sequelize.sync().then(() => {

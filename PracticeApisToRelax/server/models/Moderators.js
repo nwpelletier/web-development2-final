@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },  
     SubcrudditId : {
-      type: DataTypes.STRING(100),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     UserId: {
@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   });
+  Moderators.associate = (models) => {
+    Moderators.belongsTo(models.Users);
+    Moderators.belongsTo(models.Subcruddits);
+}
 
   return Moderators;
 };

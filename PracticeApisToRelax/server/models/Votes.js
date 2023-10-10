@@ -18,8 +18,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       }
     });
-  
-    Users.associate = (models) => {};
+
+    
+    Votes.associate = (models) => {
+      Votes.belongsTo(models.Users);
+      Votes.belongsTo(models.Posts);
+  }
+
   
     return Votes;
   };
