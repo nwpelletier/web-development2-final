@@ -5,10 +5,18 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      PostId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       liked: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-      },
+      }
     });
   
     Users.associate = (models) => {};

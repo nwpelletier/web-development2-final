@@ -109,11 +109,25 @@ function validatePost(post, req, res) {
 
 }
 
+function validateComment(comment, postId, req, res) {
+    if (!postId || !comment.UserId || !comment.SubcrudditId || !comment.type || !comment.content) {
+        res.status(400).send({
+            message: "You must send user id, subcruddit id, a post type, and post content ."
+        });
+        return false;
+    }
+    if (post.type !== "text"){
+        res.status(400).send({
+            message: "The only valid type for commenting is a text."
+        });
+        return false;
+    }
+}
+
 //  id: {
 //     type: DataTypes.INTEGER,
 //     autoIncrement: true,
 //     primaryKey: true
-
 // },
 // UserId: {
 //     type: DataTypes.INTEGER,
