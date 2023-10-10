@@ -44,14 +44,143 @@ module.exports = {
 
     createComment: async (req, res) => {
         const comment = req.body
-        const postId = req.params
+        const postId = req.params.id
+        let layer = 0;
+        let parentPostId = 0;
+        let subcrudditId = 0;
+        if (!validateComment(comment, postId, req, res)){
+            return;
+        }
         try {
+            const originalPost = await Posts.findOne({
+                where: {
+                    id: postId
+                }
+            })
+            if(!originalPost) {
+                res.status(400).send({
+                    message: "You must reply to a valid post."
+            })
+            }
+                        // const user = await Users.findAll({
+            //     where: {
+            //         id: post.UserId
+            //     }
+            // })
+            // if (user.length < 1){
+            //     return res.status(400).json({message : "Create post from valid user account", user: false})
+            // }
+
+            if (originalPost.layer !== 0){
+                const parentPost = await Posts.findOne({
+                    where: {
+                        id: originalPost.postId
+                    }
+                })
+                parentPost.children_count++;
+                parentPostId = parentPost.id;
+                await parentPost.save();
+            } else {
+                parentPostId = postId;
+            }
+            originalPost.children_count++;
+            layer = originalPost.layer + 1;
+            subcrudditId = originalPost.SubcrudditId;
+            await originalPost.save();
+            comment.postId = parentPostId;
+            comment.layer = layer;
+            comment.parentId = postId;
+            comment.SubcrudditId = subcrudditId;
+
+            const newComment = await Posts.create(comment);
+            if (comment) {
+                return res.status(201).json(newComment) 
+            }
+            return res.status(400).json({message: "something went wrong"})
 
         } catch(error) {
             console.log(error);
             res.status(500).json({message: "Internal Server Error"})  
         }
+    },
+    findActivePosts: async(req, res) => {
+        const order = req.params.order
+        let activePosts = [];
+        if (order === "new"){
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    layer: 0
+                }, 
+                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+            })
+        } else if (order === "hot"){
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    layer: 0
+                }, 
+                order: [['isStickied', 'DESC'], ['points', 'DESC']],
+            })
+        } else {
+            res.status(400).send({
+                message: order + " is not a valid request parameter."
+            });
+            return false;
+        }
+        res.status(200).send(activePosts);
+    },
+    findActiveComments : async(req, res) => {
+        const postId = req.params.id;
+       const order = req.params.order;
+       
+
+       const originalPost = await Posts.findOne({
+        where: {
+            id: postId
+        }
+
+    })
+    if (!originalPost) {
+        return res.status(400).send({
+            message: order + " is not a valid request parameter."
+        });
+        
     }
+
+    const layer = originalPost.layer + 1;
+
+
+       if (order === "new"){
+        parentComments = await Posts.findAll({
+            where: {
+                postId: postId,
+                layer: layer
+            },
+            order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+        })
+    } else if (order === "hot"){
+        parentComments = await Posts.findAll({
+            where: {
+                postId: postId,
+                layer: layer
+            },
+            order: [['isStickied', 'DESC'], ['points', 'DESC']]
+        })
+    } else {
+        res.status(400).send({
+            message: order + " is not a valid request parameter."
+        });
+        return false;
+    }
+    res.status(200).send(activePosts);
+
+
+
+
+    }
+
+
 
 }
 
@@ -68,7 +197,7 @@ function validatePost(post, req, res) {
         return false;
     }
     if (post.parentId|| post.postId){
-                res.status(400).send({
+            res.status(400).send({
             message: "Please do not provide a parent ID or a post ID."
         });
         return false;
@@ -115,18 +244,26 @@ function validatePost(post, req, res) {
 }
 
 function validateComment(comment, postId, req, res) {
-    if (!postId || !comment.UserId || !comment.SubcrudditId || !comment.postType || !comment.content) {
+    if (!postId || !comment.UserId || !comment.postType || !comment.content) {
         res.status(400).send({
             message: "You must send user id, subcruddit id, a post type, and post content ."
         });
         return false;
     }
-    if (post.postType !== "comment"){
+    if (comment.postType !== "comment"){
         res.status(400).send({
             message: "The only valid type for commenting is a text."
         });
         return false;
     }
+    if (!validator.isLength(post.content, {min: 2, max:5000})) {
+        res.status(400).send({
+            message: "Comment must be between 2 and 5000 characters long."
+        });
+        return false;
+    }
+
+    return true;
 }
 
 //  id: {

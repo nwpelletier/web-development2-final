@@ -9,6 +9,8 @@ const controller = require("../controllers/posts-controller");
 // router.get("/all/:id([0-9]+)", authenticate, controller.viewAll)
 // router.get("/:id([0-9]+)", authenticate, controller.findById)
 router.post("/post", controller.createPost)
+router.post("/comment/:id([0-9]+)", controller.createComment)
+router.get("/posts/:order", controller.findActivePosts)
 
 
 module.exports = router; 
