@@ -11,19 +11,38 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING(256),
+      allowNull: true,
+      defaultValue: null
+    },
+    password: {
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM('admin', 'user', 'moderator'),
+      type: DataTypes.ENUM('admin', 'user'),
       allowNull: false,
+      defaultValue: 'user'
     },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true
     },
   });
 
-  Users.associate = (models) => {};
+//   Users.associate = (models) => {
+//     Users.hasMany(models.Votes, {
+//         foreignKey: 'UserId'
+//     })
+//     Users.hasMany(models.Moderators, {
+//       foreignKey: 'UserId'
+//     })
+//     Users.hasMany(models.Posts, {
+//       foreignKey: 'UserId'
+//   })
 
-  return Users;
+// }
+return Users;
+
+  
 };
