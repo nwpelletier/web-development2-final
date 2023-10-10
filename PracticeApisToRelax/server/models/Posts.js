@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-  const Posts = sequelize.define("Posts", {
+const Posts = sequelize.define("Posts", {
  id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -28,7 +28,7 @@ title: {
     allowNull: true,
     defaultValue: null
 }, 
-type: {
+postType: {
     type: DataTypes.ENUM("image", "text", "comment"),
     allowNull: false,
 }, 

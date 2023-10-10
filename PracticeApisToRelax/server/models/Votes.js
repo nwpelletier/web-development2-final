@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Users = sequelize.define("Users", {
+    const Votes = sequelize.define("Votes", {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -21,6 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   
     Users.associate = (models) => {};
   
-    return Users;
+    return Votes;
   };
   

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    subcrudditName: {
       type: DataTypes.STRING(64),
       allowNull: false,
     },
@@ -20,10 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     banner: {
       type: DataTypes.STRING(124),
       allowNull: true,
+      defaultValue: null
     },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true
     },
   });
 
