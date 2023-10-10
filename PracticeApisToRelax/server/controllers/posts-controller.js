@@ -41,7 +41,6 @@ module.exports = {
             res.status(500).json({message: "Internal Server Error"})  
         }
     },
-
     createComment: async (req, res) => {
         const comment = req.body
         const postId = req.params.id
@@ -69,7 +68,7 @@ module.exports = {
             // })
             // if (user.length < 1){
             //     return res.status(400).json({message : "Create post from valid user account", user: false})
-            // }
+            // } 
 
             if (originalPost.layer !== 0){
                 const parentPost = await Posts.findOne({
@@ -103,7 +102,7 @@ module.exports = {
             res.status(500).json({message: "Internal Server Error"})  
         }
     },
-    findActivePosts: async(req, res) => {
+    findAllActivePosts: async(req, res) => {
         const order = req.params.order
         let activePosts = [];
         if (order === "new"){
@@ -131,56 +130,146 @@ module.exports = {
         res.status(200).send(activePosts);
     },
     findActiveComments : async(req, res) => {
+        try {
+            const postId = req.params.id;
+            const order = req.params.order;
+            
+            const originalPost = await Posts.findOne({
+             where: {
+                 id: postId
+             }
+         })
+         if (!originalPost) {
+             return res.status(400).send({
+                 message: order + " is not a valid request parameter ."
+             });
+             
+         }
+     
+            let parentComments=[];
+     
+     
+            if (order === "new"){
+             parentComments = await Posts.findAll({
+                 where: {
+                     parentId: postId,
+                     isActive: true
+                    
+                 },
+                 order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+             })
+              } else if (order === "hot"){
+             parentComments = await Posts.findAll({
+                 where: {
+                     parentId: postId,
+                     isActive: true
+                    
+                 },
+                 order: [['isStickied', 'DESC'], ['points', 'DESC']]
+             })
+              } else {
+             res.status(400).send({
+                 message: order + " is not a valid request parameter."
+             });
+             return false;
+         }
+         res.status(200).send(parentComments);
+     
+        } catch (error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"})  
+        }
+    }, 
+    findActivePost: async(req, res) => {
         const postId = req.params.id;
-       const order = req.params.order;
-       
+        try {
+            const originalPost = await Posts.findOne({
+                where: {
+                    id: postId,
+                    isActive: true,
+                    parentId: null
+                }
+            })
 
-       const originalPost = await Posts.findOne({
-        where: {
-            id: postId
+            if (!originalPost){
+                return res.status(400).send({
+                    message:  "Please select a valid post."
+                });
+            }
+            return res.status(200).send(originalPost);
+
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"})    
+        }
+    },
+    findAllActivePostsSubcruddit: async(req, res) => {
+        const order = req.params.order
+        const subcrudditId = req.params.id
+        let activePosts;
+        if (order === "new"){
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    layer: 0,
+                    SubcrudditId: subcrudditId
+                }, 
+                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+            })
+        } else if (order === "hot"){
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    layer: 0,
+                    SubcrudditId: subcrudditId
+                }, 
+                order: [['isStickied', 'DESC'], ['points', 'DESC']],
+            })
+        } else {
+            return res.status(400).send({
+                message: order + " is not a valid request parameter."
+            });
+            
         }
 
-    })
-    if (!originalPost) {
-        return res.status(400).send({
-            message: order + " is not a valid request parameter."
-        });
-        
+        res.status(200).send(activePosts);
+    },
+    findAllActivePostsUser: async(req, res) => {
+        const userId = req.params.id
+        try {
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    layer: 0,
+                    UserId: userId
+                }, 
+                order: [['createdAt', 'DESC']],
+            })
+            res.status(200).send(activePosts);
+
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }
+    },
+    findAllActiveCommentsUser: async (req, res) => {
+        const userId = req.params.id
+        try {
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    postType: "comment",
+                    UserId: userId
+                }, 
+                order: [['createdAt', 'DESC']],
+            })
+            res.status(200).send(activePosts);
+
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }
     }
-
-    const layer = originalPost.layer + 1;
-
-
-       if (order === "new"){
-        parentComments = await Posts.findAll({
-            where: {
-                postId: postId,
-                layer: layer
-            },
-            order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
-        })
-    } else if (order === "hot"){
-        parentComments = await Posts.findAll({
-            where: {
-                postId: postId,
-                layer: layer
-            },
-            order: [['isStickied', 'DESC'], ['points', 'DESC']]
-        })
-    } else {
-        res.status(400).send({
-            message: order + " is not a valid request parameter."
-        });
-        return false;
-    }
-    res.status(200).send(activePosts);
-
-
-
-
-    }
-
-
 
 }
 
