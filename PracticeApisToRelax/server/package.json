@@ -28,6 +28,5 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {}
+  "license": "ISC"
 }

@@ -2,11 +2,11 @@
 require('dotenv').config({ path: "../.env" });
 module.exports ={
   "development": {
-    username: "disadmin",
-    password: 'BA£[5p0ir48@',
-    database: 'cruditdb',
-    host: 'localhost',
-    dialect: mysql
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB,
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT
   },
   "test": {
     "username": "root",
