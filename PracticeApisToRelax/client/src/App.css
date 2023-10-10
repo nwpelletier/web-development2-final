@@ -1,3 +1,12 @@
+/* 
+
+(ctrl-f these for easy navigation)
+NAVBAR
+MODAL 
+
+*/
+
+
 /* NAVBAR */
 .sub-cruddit-list {
   font-size:11px;
@@ -56,4 +65,20 @@
 
 .login-box #link:hover {
   cursor:pointer;
+}
+
+/* MODAL */
+.modal-body {
+  min-height:40vh;
+  max-height:40vh;
+}
+
+.modal-content {
+  height: 100%;
+}
+
+.modal-right {
+  background: linear-gradient(to right bottom, #ffffff, #449adb);
+  box-shadow: inset 0px 0px 80px 10px #0687b6;
+  min-height:100%;
 }
