@@ -4,18 +4,17 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config()
 const session = require('express-session');
-const passport = require('passport');
-require("./auth/passport")
-require("./auth/passportGoogleSSO")
+
+
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const loginWithGoogleApi = require("./routes/loginWithGoogle-routes")
+
 const postRoutes = require("./routes/post-routes")
 
 
 app.use(express.json());
-app.use(passport.initialize())
-//app.use(passport.session())
+
+
 app.use(cors({
     origin: ["http://localhost:3000"], 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
@@ -34,13 +33,9 @@ app.use(session({
 }))
 
 
-// app.use('/api/', loginWithGoogleApi);
-app.use("/api/posts", postRoutes)
-
-
 
 // routers 
-
+app.use("/api/posts", postRoutes)
 
 const db = require('./models');
 
@@ -52,8 +47,6 @@ db.sequelize.sync().then(() => {
 })
 
 
-    // app.listen(process.env.DEV_PORT, () => {
-    //     console.log("server running on port 8080");
-    // })
+
 
 
