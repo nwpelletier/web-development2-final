@@ -82,22 +82,24 @@ module.exports = {
                 })
                 parentPost.children_count++;
                 parentPostId = parentPost.id;
-                parentPost.save()
-                .then(()=> {
-                }).catch((error)=> {
+                try {
+                    await parentPost.save()
+                } catch (error) {
                     return res.status(500).json({message : "Could not update parent comment children", error: error})
-                })
+                }
+                
             } else {
                 parentPostId = postId;
             }
             originalPost.children_count++;
             layer = originalPost.layer + 1;
             subcrudditId = originalPost.SubcrudditId;
-            originalPost.save()
-            .then(()=> {
-            }).catch((error)=> {
+            try {
+                await originalPost.save()
+            } catch (error){
                 return res.status(500).json({message : "Could not update parent comment children", error: error})
-            })
+            }
+
             comment.postId = parentPostId;
             comment.layer = layer;
             comment.parentId = postId;
