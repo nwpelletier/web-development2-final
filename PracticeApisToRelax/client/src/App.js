@@ -3,9 +3,10 @@ import React, { useEffect, useState, createContext } from 'react';
 import Navbar from './components/Navbar/Navbar';
 
 // The /pages/login will be imported into the modal
-// import Login from './pages/login';
+import Login from './pages/login';
 import './App.css';
 import Register from './pages/register';
+import UserPage from './pages/UserPage'
 
 
 
@@ -19,9 +20,10 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-            {/* <Route path="/" exact Component={Login} /> */}
-            {/* <Route path="/login" exact Component={Login} /> */}
-            {/* <Route path="/register" exact Component={Register} /> */}
+            <Route path="/" exact Component={Login} />
+            <Route path="/login" exact Component={Login} />
+            <Route path="/register" exact Component={Register} />
+            <Route path="/userPage" exact Component={UserPage} />
           </Routes>
         </Router>
       </div>
