@@ -269,6 +269,18 @@ module.exports = {
             console.log(error);
             res.status(500).json({message: "Internal Server Error"}) 
         }
+    }, 
+    editComment: async (req, res) => {
+        //TODO
+    },
+    editPost: async (req, res) => {
+        //TODO 
+    },
+    deleteComment: async (req, res) => {
+        //TODO
+    },
+    deletePost: async (req, res) => {
+        //TODO
     }
 
 }

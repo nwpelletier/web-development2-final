@@ -8,8 +8,9 @@ const session = require('express-session');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+// imported routes
 const postRoutes = require("./routes/post-routes")
+const userRoutes = require("./routes/user-routes")
 
 
 app.use(express.json());
@@ -34,6 +35,7 @@ app.use(session({
 
 // routers 
 app.use("/api/posts", postRoutes)
+app.use("/api/users", userRoutes)
 
 const db = require('./models');
 
