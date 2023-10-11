@@ -27,7 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
-    },
+    }
+  }, {
+    
+    // Bypasses including createdAt updatedAt
+    timestamps: false, 
   });
 
 //   Users.associate = (models) => {

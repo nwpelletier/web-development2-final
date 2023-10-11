@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useEffect, useState, useContext } from 'react';
-// import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, withFormik } from 'formik';
 import * as Yup from 'yup';
+const BASE_URL = "http://localhost:8080";
 
 
 // Register form & ability to setModalContent
@@ -10,6 +11,7 @@ function Register({ setModalContent }) {
   // const navigate = useNavigate();
 
   const initialRegister = {
+    username: "",
     password: "",
     passwordConfirm: "",
     email: ""
@@ -40,18 +42,39 @@ function Register({ setModalContent }) {
     })
   }
 
-  const onEmailBlur = (data) => {
-  };
+  // const onEmailBlur = (data) => {
+  // };
 
-  const register = (data) => {
+  const register = (userData) => {
+    return axios.post(`${BASE_URL}/api/users/register`, userData);
   }
   return (
     <div>
       <>
-        <Formik initialValues={initialRegister} onSubmit={register} validationSchema={registerSchema} >
+        <Formik
+          initialValues={initialRegister}
+          onSubmit={register}
+          validationSchema={registerSchema} >
           <Form>
+
+            <label htmlFor="usernameInput">Username: </label>
+            <ErrorMessage
+              name='username'
+              component="div"
+              className='text-danger' />
+            <></>
+            <Field
+              className="form-group form-control mx-5"
+              id="usernameInput"
+              name="username"
+            // onBlurCapture={onEmailBlur}
+            />
+
             <label htmlFor="emailInput">Email: </label>
-            <ErrorMessage name='email' component="div" className='text-danger' />
+            <ErrorMessage
+              name='email'
+              component="div"
+              className='text-danger' />
             <></>
             <Field
               className="form-group form-control mx-5"
@@ -59,16 +82,24 @@ function Register({ setModalContent }) {
               name="email"
             // onBlurCapture={onEmailBlur}
             />
+
             <label htmlFor="passwordInput">Password: </label>
-            <ErrorMessage name='password' component="div" className='text-danger' />
+            <ErrorMessage
+              name='password'
+              component="div"
+              className='text-danger' />
             <Field
               className="form-group form-control mx-5"
               id="passwordInput"
               name="password"
               type="password"
             />
+
             <label htmlFor="confirmPasswordInput">Confirm Password: </label>
-            <ErrorMessage name='passwordConfirm' component="div" className='text-danger' />
+            <ErrorMessage
+              name='passwordConfirm'
+              component="div"
+              className='text-danger' />
             <Field
               className="form-group form-control mx-5"
               id="confirmPasswordInput"
@@ -76,13 +107,13 @@ function Register({ setModalContent }) {
               type="password"
 
             />
-            <button className='btn btn-warning m-5' type='submit'>Create item</button>
-            {/* <button className='btn btn-info m-5' onClick={() => {navigate("/login")}} >I have an account</button> */}
-            {/* <button className='btn btn-warning m-5' type='submit'>Sign in with Google</button> */}
+            <button
+              className='btn btn-warning m-5'
+              type='submit'>Sign Up</button>
             <button
               className='btn btn-primary m-5'
               type='button'
-              onClick={() => setModalContent('login')}k
+              onClick={() => setModalContent('login')} k
             >
               Log In
             </button>
