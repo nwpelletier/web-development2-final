@@ -9,12 +9,12 @@ import * as Yup from 'yup';
 // Login form & ability to setModalContent
 function Login({ setModalContent }) {
   const initialLogin = {
-    password: "",
-    email: ""
+    username: "",
+    password: ""
   }
 
   const loginSchema = Yup.object({
-    email: Yup.string().required(),
+    username: Yup.string().required(),
     password: Yup.string().required()
   })
 
@@ -33,25 +33,36 @@ function Login({ setModalContent }) {
 
   return (
     <>
-      <Formik initialValues={initialLogin} onSubmit={login} validationSchema={loginSchema} >
+      <Formik
+        initialValues={initialLogin}
+        onSubmit={login}
+        validationSchema={loginSchema} >
         <Form>
-          <label htmlFor="emailInput">Email: </label>
-          <ErrorMessage name='email' component="div" className='text-danger'/>
-          <Field 
+          <label htmlFor="usernameInput">Username: </label>
+          <ErrorMessage
+            name='username'
+            component="div"
+            className='text-danger' />
+          <Field
             className="form-group form-control mx-1"
-            id="emailInput" 
-            name="email" 
+            id="usernameInput"
+            name="username"
           />
 
           <label htmlFor="passwordInput">Password: </label>
-          <ErrorMessage name='password' component="div" className='text-danger'/>
-          <Field 
+          <ErrorMessage
+            name='password'
+            component="div"
+            className='text-danger' />
+          <Field
             className="form-group form-control mx-1"
-            id="passwordInput" 
+            id="passwordInput"
             name="password"
             type="password"
           />
-          <button className='btn btn-warning m-5' type='submit'>Log In</button>
+          <button
+            className='btn btn-warning m-5'
+            type='submit'>Log In</button>
           <button
             className='btn btn-primary m-5'
             type='button'
