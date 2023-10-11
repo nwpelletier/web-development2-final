@@ -4,7 +4,6 @@ function RightNav() {
   return (
     <div>
       <div className="right-nav-container">
-        
       </div>
     </div>
   )

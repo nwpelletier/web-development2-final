@@ -5,7 +5,7 @@ import DemoPost from '../Post/DemoPost'
 function Main() {
   return (
     <div>
-      <Post/><DemoPost/><Post/><Post/><Post/><Post/><Post/><Post/>
+      <DemoPost/><DemoPost/><DemoPost/><DemoPost/><DemoPost/><DemoPost/><DemoPost/><DemoPost/>
     </div>
   )
 }

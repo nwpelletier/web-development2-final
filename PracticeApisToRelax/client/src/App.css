@@ -12,9 +12,9 @@ RIGHTNAV
 
 /* NAVBAR */
 .sub-cruddit-list {
-  font-size:11px;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  background-color:#e7e7e7;
+  font-size: 11px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #e7e7e7;
   display: flex;
   justify-content: left;
   list-style: none;
@@ -35,45 +35,45 @@ RIGHTNAV
 }
 
 .orange-box {
-  width:3%;
-  background-color:#ff6314;
+  width: 3%;
+  background-color: #ff6314;
 }
 
 .lower-half {
-  background-color:rgb(199, 223, 244);
-  position:relative;
+  background-color: rgb(199, 223, 244);
+  position: relative;
   height: 50px;
-  width:100%;
-  border-top:1px solid rgb(92, 106, 122);
-  border-bottom:1px solid rgb(92, 106, 122);
+  width: 100%;
+  border-top: 1px solid rgb(92, 106, 122);
+  border-bottom: 1px solid rgb(92, 106, 122);
 }
 
 .login-box {
-  letter-spacing:0.1em;
-  font-size:11px;
+  letter-spacing: 0.1em;
+  font-size: 11px;
   position: absolute;
   bottom: 0px;
   right: 0px;
   background-color: rgb(232, 239, 245);
-  border-top-left-radius:5px;
+  border-top-left-radius: 5px;
   color: rgb(67, 73, 77);
   z-index: 1;
-  padding-right:20px;
-  padding-left:20px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .login-box #link {
-  color:rgb(23, 51, 84);
+  color: rgb(23, 51, 84);
 }
 
 .login-box #link:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 /* MODAL */
 .modal-body {
-  min-height:40vh;
-  max-height:40vh;
+  min-height: 40vh;
+  max-height: 40vh;
 }
 
 .modal-content {
@@ -83,7 +83,7 @@ RIGHTNAV
 .modal-right {
   background: linear-gradient(to right bottom, #ffffff, #449adb);
   box-shadow: inset 0px 0px 80px 10px #0687b6;
-  min-height:100%;
+  min-height: 100%;
 }
 
 /* POST */
@@ -91,37 +91,96 @@ RIGHTNAV
 .post-container {
   margin-left: 1%;
   margin-bottom: 1%;
-  height:80px;
+  height: 80px;
   border: 1px solid rgb(183, 195, 209);
+  /* background-color: rgba(152, 225, 233, 0.192); */
+}
+
+.vote-and-type-container {
+  /* background-color: crimson; */
+  width: 130px;
+  position: relative;
 }
 
 .vote-container {
-  text-align: center;
-  background-color:rgb(187, 227, 250);
-  height:100%;
-  width:80px;
+  position: absolute;
+  top:8%;
+  /* background-color: rgb(148, 181, 241); */
+  height: 60px;
+  width: 60px;
+  border-radius: 13px;
+}
+
+.post-type-container {
+  position: absolute;
+  right:5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rgb(219, 230, 236); */
+  margin-top:10px;
+  height: 60px;
+  width: 60px;
+  border-radius: 40px;
+  /* border: 1px solid blue; */
+}
+
+.upvote,
+.downvote,
+.vote-count {
+  position: absolute;
+}
+
+.upvote {
+  top: 0;
+  left: 30%;
+}
+
+.downvote {
+  top: 60%;
+  left: 30%;
 }
 
 .vote-count {
-  margin-top:0px;
-  margin-bottom:0px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
 }
 
+/* TESTING - REMOVE! */
 .upvote:hover {
   filter: invert(46%) sepia(20%) saturate(4388%) hue-rotate(350deg) brightness(99%) contrast(104%);
 }
 
+/* TESTING - REMOVE! */
 .downvote:hover {
   filter: invert(35%) sepia(24%) saturate(1117%) hue-rotate(199deg) brightness(103%) contrast(96%);
+}
+
+.post-content-container {
+  /* background-color: rgba(27, 89, 113, 0.443); */
+  margin-left: 10px;
 }
 
 /* MAIN */
 
 /* RIGHTNAV */
-.right-nav-container {
-  z-index:1;
-  background-color:aliceblue;
-  height: 80vh;
-  box-shadow:-0.3em 0em 3px hwb(0 73% 27%);
+.right-nav-pin {
+  position: relative;
 }
 
+.right-nav-container {
+  z-index: 1;
+  background-color: aliceblue;
+  height: 80vh;
+  width: 313px;
+  /* Set a fixed width */
+  position: absolute;
+  /* Position it fixed to the right side */
+  right: 0;
+  /* Stick it to the right side of the screen */
+  top: 0;
+  /* Align it to the top of the screen */
+  box-shadow: -0.3em 0em 3px hwb(0 73% 27%);
+}

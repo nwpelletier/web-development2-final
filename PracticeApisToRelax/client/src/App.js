@@ -21,12 +21,12 @@ function App() {
       </div>
       <div className="App">
 
-        <div className="row mt-3 gx-0">
-          <div className="col-10">
+        <div className="row">
+          <div className="col-11">
             <Main />
           </div>
-          <div className="col-2">
-            <RightNav />
+          <div className="col-1 right-nav-pin">
+            <RightNav/>
           </div>
         </div>
 
