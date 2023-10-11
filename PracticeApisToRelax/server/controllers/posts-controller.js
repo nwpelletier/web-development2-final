@@ -367,7 +367,41 @@ module.exports = {
         
     },
     editPost: async (req, res) => {
-        //TODO 
+        try {
+            const postId = req.params.id
+            const editedPost = req.body
+          //   userId = req.UserId
+             const userId = editedPost.UserId
+             if (!validator.isLength(editedPost.content, {min: 2, max:50000})){
+                 res.status(400).json({message: "Posts must be between 2 and 50, 000 characters"}) 
+             }
+             if (editedPost.postType === "image"){
+                console.log('hello')
+             }
+             const post = await Posts.findOne({
+                 where: {
+                     id: postId,
+                     layer: 0,
+                     isActive: true
+                 }
+             })
+             if (!post) {
+                 res.status(400).json({message: "Please select a valid post"}) 
+             }
+             if (post.UserId !== userId) {
+                 res.status(400).json({message: "You are not authorized to edit a post that isn't yours."}) 
+     
+             }
+             post.content = comment.content;
+             post.save()
+             .then(()=> {
+                 res.status(200).send({message: "Successfully edited comment", comment: post}) 
+             }).catch((error)=> {
+                 res.status(500).send({message: "Internal Server Error", error: error}) 
+             })
+         } catch (error) {
+             res.status(500).send({message: "Internal Server Error", error: error}) 
+         } 
     },
     //TODO change when impl auth - comments
     deletePost: async (req, res) => {
@@ -486,18 +520,18 @@ module.exports = {
             if(!thePost) {
                 return res.status(404).send({message: "Could not find post"});
             }
-            if (req.role === 'user' ){
-                const mod = await Moderators.findOne({
-                    where: {
-                        UserId: req.UserId,
-                        SubcrudditId: thePost.SubcrudditId
-                    }
-                })
-                if (!mod) {
-                    return res.status(401).send({message: "You do not have permission to delete this post"});
-                }
+            // if (req.role === 'user' ){
+            //     const mod = await Moderators.findOne({
+            //         where: {
+            //             UserId: req.UserId,
+            //             SubcrudditId: thePost.SubcrudditId
+            //         }
+            //     })
+            //     if (!mod) {
+            //         return res.status(401).send({message: "You do not have permission to sticky this post"});
+            //     }
 
-            }
+            // }
             const isStickied = thePost.isStickied;
             thePost.isStickied = !isStickied;
             thePost.save().then(()=> {

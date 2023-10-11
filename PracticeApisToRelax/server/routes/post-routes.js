@@ -18,6 +18,7 @@ router.delete("/:id", controller.deletePost)
 router.patch("/lock/:id", controller.toggleLock)
 router.patch("/sticky/:id", controller.toggleSticky)
 router.put("/comments/:id", controller.editComment)
+router.put("/post/:id", controller.editPost)
 
 
 
