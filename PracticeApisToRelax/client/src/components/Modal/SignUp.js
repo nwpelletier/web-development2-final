@@ -10,6 +10,7 @@ const BASE_URL = "http://localhost:8080";
 function Register({ setModalContent }) {
   // const navigate = useNavigate();
 
+  let navigate = useNavigate();
   const initialRegister = {
     username: "",
     password: "",
@@ -46,7 +47,13 @@ function Register({ setModalContent }) {
   // };
 
   const register = (userData) => {
-    return axios.post(`${BASE_URL}/api/users/register`, userData);
+    return axios.post(`${BASE_URL}/api/users/register`, userData)
+    .then((response) => {
+      navigate("/home");
+    })
+    .catch((error) => {
+      console.error("Error creating user:", error);
+    })
   }
   return (
     <div>
@@ -113,7 +120,7 @@ function Register({ setModalContent }) {
             <button
               className='btn btn-primary m-5'
               type='button'
-              onClick={() => setModalContent('login')} k
+              onClick={() => setModalContent('login')}
             >
               Log In
             </button>
