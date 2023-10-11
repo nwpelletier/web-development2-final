@@ -16,7 +16,9 @@ module.exports = {
            if (!validateNewUser(user, req, res)) {
             return;
            }
+           
            if (user.email) {
+            
             const emailExists = await Users.findAll({
                 where: {
                     email: user.email
@@ -24,7 +26,6 @@ module.exports = {
             })
             
             if (emailExists.length > 0){
-               
                 return res.status(400).json({message : "That email is already in use", user: true})
             }
            }
@@ -38,7 +39,7 @@ module.exports = {
                
                 return res.status(400).json({message : "That username is already in use", user: true})
             }
-    
+            
             bcrypt.hash(user.password, saltRounds, async (err, hash) => {
                 if (err){
                     console.log(err);
@@ -304,7 +305,7 @@ function validateNewUser(user, req, res){
         });
         return false;
     }
- 
+    
     return true;
 
 }

@@ -1,23 +1,25 @@
 const {Posts} = require("../models");
 const {Users} = require("../models");
+const {Moderators} = require("../models");
 const validator = require('validator');
-
+//TODO ONCE MORE ASSOCIATIONS ARE INCLUDED
 module.exports = {
     createPost: async (req, res) => {
         const post = req.body
+        // post.UserId = req.UserId
         try {
             if (!validatePost(post, req, res)) {
                 return;
             }
             post.layer = 0; 
-            // const user = await Users.findAll({
-            //     where: {
-            //         id: post.UserId
-            //     }
-            // })
-            // if (user.length < 1){
-            //     return res.status(400).json({message : "Create post from valid user account", user: false})
-            // }
+            const user = await Users.findAll({
+                where: {
+                    id: post.UserId
+                }
+            })
+            if (user.length < 1){
+                return res.status(400).json({message : "Create post from valid user account", user: false})
+            }
             // const subcruddit = await Subcruddits.findAll({
             //     where: {
             //         subcrudditName: post.subcrudditName
@@ -41,8 +43,10 @@ module.exports = {
             res.status(500).json({message: "Internal Server Error"})  
         }
     },
+    //TODO add transactions
     createComment: async (req, res) => {
         const comment = req.body
+       // comment.UserId = req.UserId;
         const postId = req.params.id
         let layer = 0;
         let parentPostId = 0;
@@ -61,14 +65,14 @@ module.exports = {
                     message: "You must reply to a valid post."
             })
             }
-                        // const user = await Users.findAll({
-            //     where: {
-            //         id: post.UserId
-            //     }
-            // })
-            // if (user.length < 1){
-            //     return res.status(400).json({message : "Create post from valid user account", user: false})
-            // } 
+            const user = await Users.findAll({
+                where: {
+                    id: comment.UserId
+                }
+            })
+            if (user.length < 1){
+                return res.status(400).json({message : "Create post from valid user account", user: false})
+            } 
 
             if (originalPost.layer !== 0){
                 const parentPost = await Posts.findOne({
@@ -78,21 +82,29 @@ module.exports = {
                 })
                 parentPost.children_count++;
                 parentPostId = parentPost.id;
-                await parentPost.save();
+                parentPost.save()
+                .then(()=> {
+                }).catch((error)=> {
+                    return res.status(500).json({message : "Could not update parent comment children", error: error})
+                })
             } else {
                 parentPostId = postId;
             }
             originalPost.children_count++;
             layer = originalPost.layer + 1;
             subcrudditId = originalPost.SubcrudditId;
-            await originalPost.save();
+            originalPost.save()
+            .then(()=> {
+            }).catch((error)=> {
+                return res.status(500).json({message : "Could not update parent comment children", error: error})
+            })
             comment.postId = parentPostId;
             comment.layer = layer;
             comment.parentId = postId;
             comment.SubcrudditId = subcrudditId;
 
             const newComment = await Posts.create(comment);
-            if (comment) {
+            if (newComment) {
                 return res.status(201).json(newComment) 
             }
             return res.status(400).json({message: "something went wrong"})
@@ -105,13 +117,18 @@ module.exports = {
     findAllActivePosts: async(req, res) => {
         const order = req.params.order
         let activePosts = [];
+        try {
         if (order === "new"){
             activePosts = await Posts.findAll({
                 where: {
                     isActive: true,
                     layer: 0
                 }, 
-                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
         } else if (order === "hot"){
             activePosts = await Posts.findAll({
@@ -120,6 +137,10 @@ module.exports = {
                     layer: 0
                 }, 
                 order: [['isStickied', 'DESC'], ['points', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
         } else {
             res.status(400).send({
@@ -128,8 +149,12 @@ module.exports = {
             return false;
         }
         res.status(200).send(activePosts);
+        } catch (error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"})    
+        }
     },
-    findActiveComments : async(req, res) => {
+    findComments : async(req, res) => {
         try {
             const postId = req.params.id;
             const order = req.params.order;
@@ -140,8 +165,8 @@ module.exports = {
              }
          })
          if (!originalPost) {
-             return res.status(400).send({
-                 message: order + " is not a valid request parameter ."
+             return res.status(500).send({
+                 message: "Error loading comments."
              });
              
          }
@@ -152,20 +177,24 @@ module.exports = {
             if (order === "new"){
              parentComments = await Posts.findAll({
                  where: {
-                     parentId: postId,
-                     isActive: true
-                    
+                     parentId: postId
                  },
-                 order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+                 order: [['isStickied', 'DESC'], ['createdAt', 'DESC']],
+                 include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
              })
               } else if (order === "hot"){
              parentComments = await Posts.findAll({
                  where: {
-                     parentId: postId,
-                     isActive: true
-                    
+                     parentId: postId,                    
                  },
-                 order: [['isStickied', 'DESC'], ['points', 'DESC']]
+                 order: [['isStickied', 'DESC'], ['points', 'DESC']],
+                 include: [{
+                    model: Users,
+                    attributes: ['username, id'] 
+                  }] 
              })
               } else {
              res.status(400).send({
@@ -173,7 +202,16 @@ module.exports = {
              });
              return false;
          }
-         res.status(200).send(parentComments);
+         
+         for (let comment of parentComments) {
+            if (!comment.isActive){
+                comment.content = "";
+                comment.User.username ="deleted comment"
+            }
+         }
+
+
+        res.status(200).send(parentComments);
      
         } catch (error){
             console.log(error);
@@ -188,7 +226,11 @@ module.exports = {
                     id: postId,
                     isActive: true,
                     parentId: null
-                }
+                },
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
 
             if (!originalPost){
@@ -214,7 +256,11 @@ module.exports = {
                     layer: 0,
                     SubcrudditId: subcrudditId
                 }, 
-                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']]
+                order: [['isStickied', 'DESC'], ['createdAt', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
         } else if (order === "hot"){
             activePosts = await Posts.findAll({
@@ -224,6 +270,10 @@ module.exports = {
                     SubcrudditId: subcrudditId
                 }, 
                 order: [['isStickied', 'DESC'], ['points', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
         } else {
             return res.status(400).send({
@@ -244,6 +294,10 @@ module.exports = {
                     UserId: userId
                 }, 
                 order: [['createdAt', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
             res.status(200).send(activePosts);
 
@@ -262,6 +316,10 @@ module.exports = {
                     UserId: userId
                 }, 
                 order: [['createdAt', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
             })
             res.status(200).send(activePosts);
 
@@ -270,18 +328,188 @@ module.exports = {
             res.status(500).json({message: "Internal Server Error"}) 
         }
     }, 
+    //TODO change when impl auth - comments 
     editComment: async (req, res) => {
-        //TODO
+        try {
+       const postId = req.params.id
+       const comment = req.body
+     //   userId = req.UserId
+        const userId = comment.UserId
+        if (!validator.isLength(comment.content, {min: 2, max:5000})){
+            res.status(400).json({message: "Comments must be between 2 and 5000 characters"}) 
+        }
+        const post = await Posts.findOne({
+            where: {
+                id: postId,
+                postType: "comment",
+                isActive: true
+            }
+        })
+        if (!post) {
+            res.status(400).json({message: "Please select a valid post"}) 
+        }
+        if (post.UserId !== userId) {
+            res.status(400).json({message: "You are not authorized to edit a comment that isn't yours."}) 
+
+        }
+        post.content = comment.content;
+        post.save()
+        .then(()=> {
+            res.status(200).send({message: "Successfully edited comment", comment: post}) 
+        }).catch((error)=> {
+            res.status(500).send({message: "Internal Server Error", error: error}) 
+        })
+    } catch (error) {
+        res.status(500).send({message: "Internal Server Error", error: error}) 
+    }
+        
     },
     editPost: async (req, res) => {
         //TODO 
     },
-    deleteComment: async (req, res) => {
-        //TODO
-    },
+    //TODO change when impl auth - comments
     deletePost: async (req, res) => {
-        //TODO
+        const postId = req.params.id;
+    //    const requestId = req.UserId; 
+        try {
+            const thePost = await Posts.findOne({
+                where: {
+                    id : postId,
+                    isActive: true
+                }
+            })
+            if(!thePost) {
+                return res.status(404).send({message: "Could not find post"});
+            }
+            // if (req.role !== 'admin' && req.UserId !== thePost.UserId){
+            //     const mod = await Moderators.findOne({
+            //         where: {
+            //             UserId: req.UserId,
+            //             SubcrudditId: thePost.SubcrudditId
+            //         }
+            //     })
+            //     if (!mod) {
+            //         return res.status(401).send({message: "You do not have permission to delete this post"});
+            //     }
+
+            // }
+            thePost.isActive = false;
+            thePost.save()
+            .then(()=> {
+                return res.status(200).send({id: thePost.id, isActive: thePost.isActive});
+            }).catch((error)=> {
+                return res.status(500).send({message: "Could not delete post", error: error});
+            })
+
+
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }
+
+    }, 
+    findAllByUser: async (req, res) => {
+        const userId = req.params.id
+        try {
+            activePosts = await Posts.findAll({
+                where: {
+                    isActive: true,
+                    UserId: userId
+                }, 
+                order: [['createdAt', 'DESC']],
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
+            })
+            res.status(200).send(activePosts);
+
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }
+    },
+    //TODO change when impl auth - comments
+    toggleLock: async (req, res) => {
+        const postId = req.params.id;
+        const requestId = req.UserId; 
+        try {
+            const thePost = await Posts.findOne({
+                where: {
+                    id : postId,
+                    isActive: true,
+                    layer: 0
+                }
+            })
+            if(!thePost) {
+                return res.status(404).send({message: "Could not find post"});
+            }
+            // if (req.role === 'user' ){
+            //     const mod = await Moderators.findOne({
+            //         where: {
+            //             UserId: req.UserId,
+            //             SubcrudditId: thePost.SubcrudditId
+            //         }
+            //     })
+            //     if (!mod) {
+            //         return res.status(401).send({message: "You do not have permission to delete this post"});
+            //     }
+
+            // }
+           
+            thePost.isLocked = !thePost.isLocked;
+            thePost.save()
+            .then(()=> {
+                return res.status(200).send({id: thePost.id, isLocked: thePost.isLocked});
+            }).catch((error)=> {
+                return res.status(500).send({message: "Could not lock post", error: error});
+            })
+
+            
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }    
+    },
+    toggleSticky: async (req, res) => {
+        const postId = req.params.id;
+        const requestId = req.UserId; 
+        try {
+            const thePost = await Posts.findOne({
+                where: {
+                    id : postId,
+                    isActive: true,
+                }
+            })
+            if(!thePost) {
+                return res.status(404).send({message: "Could not find post"});
+            }
+            if (req.role === 'user' ){
+                const mod = await Moderators.findOne({
+                    where: {
+                        UserId: req.UserId,
+                        SubcrudditId: thePost.SubcrudditId
+                    }
+                })
+                if (!mod) {
+                    return res.status(401).send({message: "You do not have permission to delete this post"});
+                }
+
+            }
+            const isStickied = thePost.isStickied;
+            thePost.isStickied = !isStickied;
+            thePost.save().then(()=> {
+                return res.status(200).send({id: thePost.id, isStickied: thePost.isStickied});
+            }).catch((error) => {
+                return res.status(500).send({message: "Could not change post sticky", error: error});
+            })
+         
+        } catch(error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"}) 
+        }  
     }
+
 
 }
 
@@ -357,7 +585,7 @@ function validateComment(comment, postId, req, res) {
         });
         return false;
     }
-    if (!validator.isLength(post.content, {min: 2, max:5000})) {
+    if (!validator.isLength(comment.content, {min: 2, max:5000})) {
         res.status(400).send({
             message: "Comment must be between 2 and 5000 characters long."
         });

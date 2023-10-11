@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
                 } else {
                     console.log("this worked - server")
                     req.UserId = decoded.id;
+                    req.role = decoded.role;
                     next();
                 }
             })

@@ -74,16 +74,16 @@ isStickied: {
 }
   });
 
-//   Posts.associate = (models) => {
+  Posts.associate = (models) => {
 
 //     Posts.hasMany(models.Votes, {
 //       foreignKey: 'PostId'
 //     })
-//     Posts.belongsTo(models.Users);
+    Posts.belongsTo(models.Users);
 //     Posts.belongsTo(models.Subcruddits);
     
 
-// }
+}
 
   return Posts;
 };

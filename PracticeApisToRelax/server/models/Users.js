@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
+    },
+    isLocked: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     
@@ -34,18 +39,18 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false, 
   });
 
-//   Users.associate = (models) => {
+  Users.associate = (models) => {
 //     Users.hasMany(models.Votes, {
 //         foreignKey: 'UserId'
 //     })
 //     Users.hasMany(models.Moderators, {
 //       foreignKey: 'UserId'
 //     })
-//     Users.hasMany(models.Posts, {
-//       foreignKey: 'UserId'
-//   })
+    Users.hasMany(models.Posts, {
+      foreignKey: 'UserId'
+ })
 
-// }
+}
 return Users;
 
   
