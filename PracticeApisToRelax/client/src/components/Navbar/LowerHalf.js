@@ -1,30 +1,43 @@
-import React from 'react'
+// 2023/10/10 Calling it "lower half" because that's all it is now - might rename to something that makes more sense
+
+import React, { useState } from 'react';
+import Modal from '../Modal/Modal';
 
 function LowerHalf() {
+  const [modalContent, setModalContent] = useState('');
+
+  // Content will either be 'login' or 'signup' for this modal
+  const openModal = (content) => {
+    setModalContent(content);
+  };
+
   return (
     <div className="lower-half">
       <div className="login-box">
-        Want to join? <span id="link" data-bs-toggle="modal" data-bs-target="#testModal">Log in</span> or <span id="link">sign up</span> in seconds. |
+        Want to join?{' '}
+        <span
+          id="link"
+          onClick={() => openModal('login')}
+          data-bs-toggle="modal"
+          data-bs-target="#defaultModal"
+        >
+          Log in
+        </span>{' '}
+        or{' '}
+        <span
+          id="link"
+          onClick={() => openModal('signup')}
+          data-bs-toggle="modal"
+          data-bs-target="#defaultModal"
+        >
+          sign up
+        </span>{' '}
+        in seconds. |
       </div>
-      <div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="testModalLabel">Login</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Login to your account now! NOW!
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Create modal, pass content, and the ability to setModalContent */}
+      <Modal content={modalContent} setModalContent={setModalContent}/>
     </div>
-  )
+  );
 }
 
-export default LowerHalf
+export default LowerHalf;
