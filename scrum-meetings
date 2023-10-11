@@ -100,3 +100,41 @@ Ehsan:
    - user panel (crud+view)
  Challenges: 
    - NA
+
+===================
+Date: 2023/10/11
+
+Nick:
+ Finished: 
+  - Formatting for login/register pane
+  - Main window layout for posts
+  - Post formatting (half-done)
+ Working On: 
+  - Axios for login/register, and create/display posts
+ Challenges: 
+  - Formatting
+
+
+Alex:
+ Finished: 
+  - All user APIs 
+  - Most (all but 4) Post APIs 
+ Working On:
+  - Finish Posts 
+  - Create user route doc 
+  - Votes - back end 
+  - front end tutorial - image cropping
+  - tutorials for JWT (authorization levels)
+ Challenges:
+  - None
+
+ 
+Ehsan:
+ Finished: 
+   - react toturials
+   - user page layouts
+ Working On: 
+   - user page data population(bring data from database to view)
+   - moderator routes and controller
+ Challenges: 
+   - None
