@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Navbar from "../components/Navbar/Navbar";
+import UserNav from "../components/UserComponents/UserNavbar";
+import UserCommentsTab from '../components/UserComponents/UserCommentsTab';
 
 function UserPage() {
-
-  const data = [
-    "overview",
-    "comments",
-    "submitted",
-    "upvoted",
-    "downvoted",
-  ];
+  
 
   return (
-    <div className="sub-cruddit-list">
-      <div className="orange-box"></div>
-      <div className="subcruddit-links">    
-      </div>
-    </div>
+    <>
+      <Navbar />
+
+      <UserNav />
+
+      
+      
+    </>
   );
 }
 
