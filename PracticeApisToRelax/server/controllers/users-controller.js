@@ -75,12 +75,13 @@ module.exports = {
                         if (response){
                             
                             const id = userFound[0].id;
-                            const token = jwt.sign({id}, process.env.JWT_SECRET, {
+                            const role = userFound[0].role;
+                            const token = jwt.sign({id, role}, process.env.JWT_SECRET, {
                                 expiresIn: 1200, 
                             })
                             req.session.user = userFound[0];
                             console.log(req.session.user);
-                            return res.status(200).json({auth: true, token: token, username: userFound[0].username, id: userFound[0].id});
+                            return res.status(200).json({auth: true, token: token, username: userFound[0].username, id: userFound[0].id, role: userFound[0].role});
                         } else {
                             return res.status(400).json({auth: false, message: "Incorrect username and password combination"})
                         }
@@ -158,8 +159,8 @@ module.exports = {
     },
     deleteUser: async(req, res)=> {
         const userId = req.params.id;
+        // TODO: uncomment when auth is implemented
         try {
-            
             userToDelete = await Users.findOne({
                 where: {
                     id: userId,
@@ -171,6 +172,11 @@ module.exports = {
                     message: "Could not find user."
                 });
             }
+            // if (req.role === 'user' && req.UserId !== userToDelete.id) {
+            //     return res.status(400).send({
+            //         message: "You do not have permission to delete this userr."
+            //     });
+            // }
             userToDelete.isActive = false;
             await userToDelete.save()
 
@@ -188,8 +194,10 @@ module.exports = {
 
     },
     addEmail: async(req, res) => {
+        //TODO: uncomment below code once authentication is active
         const userId = req.params.id;
         const user = req.body;
+     //   const validUserId = req.UserId
         try {
             userFound = await Users.findOne({
                 where: {
@@ -202,6 +210,11 @@ module.exports = {
                     message: "Could not find user."
                 });
             }
+            // if (validUserId !== userId){
+            //     return res.status(400).send({
+            //         message: "You do not have permission to change this account."
+            //     });
+            // }
             if ((!validator.isEmail(user.email))){
                 return res.status(400).send({
                     message: "Must provide valid email address."

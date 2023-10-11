@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
                     res.json({auth: false, message: "failed to authenticate", error: err})
                 } else {
                     console.log("this worked - server")
-                    req.userId = decoded.id;
+                    req.UserId = decoded.id;
                     next();
                 }
             })
