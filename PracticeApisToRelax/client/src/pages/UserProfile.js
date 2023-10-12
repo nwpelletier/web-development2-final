@@ -17,7 +17,7 @@ function UserProfileComponent() {
 
   const userId = 4;
   const handleSubmit = (values) => {
-    // Make an API call to update the email
+    
     axios
       .patch(`http://localhost:8080/api/users/email/${userId}`, {
         email: values.email,
@@ -25,11 +25,11 @@ function UserProfileComponent() {
       .then((response) => {
         console.log("Email updated:", values.email);
         navigate("/userpage");
-        // Handle success (e.g., show a success message)
+        
       })
       .catch((error) => {
         console.error("Error updating email:", error);
-        // Handle error (e.g., show an error message)
+        
       });
   };
 
@@ -41,8 +41,8 @@ function UserProfileComponent() {
           <div className="col-md-6">
             <div className="border p-4">
               {" "}
-              {/* Added border and padding */}
-              <h1 className="mb-4">Update Email</h1> {/* Added margin bottom */}
+              
+              <h1 className="mb-4">Update Email</h1> 
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
