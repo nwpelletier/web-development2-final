@@ -10,10 +10,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Main from "./components/Main/Main";
 import RightNav from "./components/RightNav/RightNav";
 
-// The /pages/login will be imported into the modal
-import Login from "./pages/login";
 import "./App.css";
-import Register from "./pages/register";
 import UserPage from "./pages/UserPage";
 import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
