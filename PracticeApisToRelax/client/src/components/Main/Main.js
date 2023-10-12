@@ -23,7 +23,7 @@ function Main() {
     <div>
       {posts.map(posts => (
         <Post
-          key={posts.id}
+          id={posts.id}
           points={posts.points}
           title={posts.title}
           postType={posts.postType}

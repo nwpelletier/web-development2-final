@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 
-function Post({ points, title, postType, UserId, SubcrudditId, createdAt }) {
-  console.log("Request received with the following data:");
-  console.log("points:", points);
-  console.log("title:", title);
-  console.log("postType:", postType);
-  console.log("userId:", UserId);
-  console.log("subcrudditId:", SubcrudditId);
-  console.log("createdAt:", createdAt);
+function Post({ id, points, title, postType, UserId, SubcrudditId, createdAt }) {
+  const [voteStatus, setVoteStatus] = useState('none');
+  const [localPoints, setLocalPoints] = useState(points);
 
+    //  I think "localPoints" could make sense for instant feedback
+    //  On an upvote/downvote, without having to refresh the posts every time
+    //  The database patch will be made, so refreshing the whole page
+    //  Will still show updated; but localPoints could be what
+    //  affects the orange uparrow, blue downarrow + immediate points change
 
+  const handleVote = (liked) => {
+
+    // This case: it has already been upvoted, and you click upvote again
+    if (voteStatus === liked) {
+      axios.delete(`/api/votes/${id}`)
+        .then(() => {
+          setLocalPoints(localPoints - (liked === 'upvote' ? 1 : -1));
+          setVoteStatus('none');
+        })
+        .catch(error => {
+          console.error('Error in handleVote:', error);
+        });
+    } else {
+
+      // Here is where I'm having issues with the endpoint for "posting a new vote"
+      // When is the vote entry actually made?  Should a "new" vote not go to
+      // /api/votes  ?
+      axios.post(`/api/votes/${id}`, { liked })
+        .then(response => {
+          setLocalPoints(localPoints + (liked === 'upvote' ? 1 : -1));
+          setVoteStatus(liked);
+        })
+        .catch(error => {
+          console.error('Error in handleVote:', error);
+        });
+    }
+  };
 
   return (
     <div>
@@ -19,20 +47,22 @@ function Post({ points, title, postType, UserId, SubcrudditId, createdAt }) {
         <div className="vote-and-type-container row">
           <div className="vote-container">
             <img
-              className="upvote"
+              className={`upvote ${voteStatus === 'upvote' ? 'voted' : ''}`}
               src={arrowUpImage}
               alt="upvote"
               width="40%"
-              height="40%">
-            </img>
-            <h6 className="vote-count">{points}</h6>
+              height="40%"
+              // onClick={() => handleVote(true)}
+            />
+            <h6 className="vote-count">{localPoints}</h6>
             <img
-              className="downvote"
+              className={`downvote ${voteStatus === 'downvote' ? 'voted' : ''}`}
               src={arrowDownImage}
-              alt="upvote"
+              alt="downvote"
               width="40%"
-              height="40%">
-            </img>
+              height="40%"
+              // onClick={() => handleVote(false)}
+            />
           </div>
           <div className="post-type-container">
             <p>{postType}</p>
@@ -47,11 +77,10 @@ function Post({ points, title, postType, UserId, SubcrudditId, createdAt }) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span>report</span>
           </div>
-
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Post
+export default Post;
