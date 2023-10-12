@@ -131,6 +131,36 @@ Alex:
  
 Ehsan:
  Finished: 
+   - react ===================
+Date: 2023/10/11
+
+Nick:
+ Finished: 
+  - Formatting for login/register pane
+  - Main window layout for posts
+  - Post formatting (half-done)
+ Working On: 
+  - Axios for login/register, and create/display posts
+ Challenges: 
+  - Formatting
+
+
+Alex:
+ Finished: 
+  - All user APIs 
+  - Most (all but 4) Post APIs 
+ Working On:
+  - Finish Posts 
+  - Create user route doc 
+  - Votes - back end 
+  - front end tutorial - image cropping
+  - tutorials for JWT (authorization levels)
+ Challenges:
+  - None
+
+ 
+Ehsan:
+ Finished: 
    - react toturials
    - user page layouts
  Working On: 
@@ -138,3 +168,54 @@ Ehsan:
    - moderator routes and controller
  Challenges: 
    - None
+
+   - user page layouts
+ Working On: 
+   - user page data population(bring data from database to view)
+   - moderator routes and controller
+ Challenges: 
+   - None
+
+===================
+Date: 2023/10/11
+
+Nick:
+ Finished: 
+  - Front-end posts axios call; they appear on main page
+  - Posts formatting
+  = Login Register axios calls
+ Working On: 
+  - Upvote/Downvote 
+  - Login/Register modal formatting
+  - Sorting posts by new/hot
+ Challenges: 
+  - Naming conventions, mainly passing props
+  - Mapping out child components (ex: iterating over posts)
+
+
+Alex:
+ Finished: 
+  - finished post endpoints (incl user auth) 
+  - user endpoints 
+  - post/delete vote
+ Working On:
+  - front end - create subcruddit 
+  - front end - create post (same component) 
+  - add get requ for vote
+  - create transactions in back end 
+  - image cropping 
+ Challenges:
+  - understanding transactions 
+
+ 
+Ehsan:
+ Finished: 
+   - moderator back-end endpoints as per Doc.
+   - userprofile page created
+   - user email update in front end
+ Working On: 
+   - update user password update/change 
+   - finishing userpage links 
+ Challenges: 
+   - understanding reddit(I am new in reddit)
+
