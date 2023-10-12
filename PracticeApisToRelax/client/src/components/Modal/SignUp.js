@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:8080";
 
 
 // Register form & ability to setModalContent
-function Register({ setModalContent }) {
+function Register({ setModalContent, closeModal }) {
   // const navigate = useNavigate();
 
   let navigate = useNavigate();
@@ -49,7 +49,8 @@ function Register({ setModalContent }) {
   const register = (userData) => {
     return axios.post(`${BASE_URL}/api/users/register`, userData)
     .then((response) => {
-      navigate("/home");
+      navigate("/");
+      closeModal();
     })
     .catch((error) => {
       console.error("Error creating user:", error);

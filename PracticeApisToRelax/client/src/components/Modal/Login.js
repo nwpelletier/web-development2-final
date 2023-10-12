@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
 
 // Login form & ability to setModalContent
-function Login({ setModalContent }) {
+function Login({ setModalContent, closeModal }) {
 
   axios.defaults.withCredentials = true;
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -27,6 +27,7 @@ function Login({ setModalContent }) {
     username: Yup.string().required(),
     password: Yup.string().required()
   })
+  
 
   const login = (data) => {
     axios.post(`http://localhost:8080/api/users/login`, data)
@@ -37,6 +38,7 @@ function Login({ setModalContent }) {
           setUsername(response.data.username)
           setUserRole(response.data.role)
           localStorage.setItem('token', response.data.token);
+          closeModal();
         }
       })
       .catch((error) => {
