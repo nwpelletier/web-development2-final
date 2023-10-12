@@ -12,6 +12,7 @@ import RightNav from "./components/RightNav/RightNav";
 
 import "./App.css";
 import UserPage from "./pages/UserPage";
+import UserProfile from "./pages/UserProfile";
 import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
 
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/userpage" element={<UserPage />}></Route>
+          <Route path="/userprofile" element={<UserProfile />}></Route>
           <Route path="/subcruddits/create" element={<AddSubcruddit/>}></Route>
         </Routes>
       </Router>

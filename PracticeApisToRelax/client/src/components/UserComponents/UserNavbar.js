@@ -6,7 +6,7 @@ import UserUpvoted from "./UserUpvoted";
 import UserDownvoted from "./UserDownvoted"; 
 function UserNav() {
   const [showComments, setShowComments] = useState(false);
-  const [showOverview, setShowOverview] = useState(false);
+  const [showOverview, setShowOverview] = useState(true);
   const [showSubmitted, setShowSubmitted] = useState(false);
   const [showUpvoted, setShowUpvoted] = useState(false);
   const [showDownvoted, setShowDownvoted] = useState(false);
