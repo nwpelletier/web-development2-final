@@ -15,6 +15,7 @@ import Login from "./pages/login";
 import "./App.css";
 import Register from "./pages/register";
 import UserPage from "./pages/UserPage";
+import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/userpage" element={<UserPage />}></Route>
+          <Route path="/subcruddits/create" element={<AddSubcruddit/>}></Route>
         </Routes>
       </Router>
 
