@@ -12,7 +12,6 @@ function Main() {
     axios.get('http://localhost:8080/api/posts/posts/new')
       .then(response => {
         setPosts(response.data);
-        console.log(response.data);
       })
       .catch(error => {
         console.error('Error fetching posts:', error);
@@ -23,6 +22,7 @@ function Main() {
     <div>
       {posts.map(posts => (
         <Post
+          key={posts.id}
           id={posts.id}
           points={posts.points}
           title={posts.title}

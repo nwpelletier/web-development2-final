@@ -18,10 +18,15 @@ function SubCrudditList() {
       <div className="subcruddit-links">
         {subcruddits.map((subcruddit, index) => (
           <React.Fragment key={index}>
-            <a href={`/c/${subcruddit}`}>{subcruddit.toUpperCase()}</a>
+            {subcruddit === 'home' ? (
+              <a href={`/`}>HOME</a>
+            ) : (
+              <a href={`/c/${subcruddit}`}>{subcruddit.toUpperCase()}</a>
+            )}
             {index < subcruddits.length - 1 && ' - '}
           </React.Fragment>
         ))}
+
       </div>
     </div>
   );
