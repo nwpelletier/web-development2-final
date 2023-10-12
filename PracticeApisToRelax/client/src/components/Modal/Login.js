@@ -1,13 +1,23 @@
-// 2023/10/10 -- copy-pasted from Alex's initial login/registration forms, adapted into Modals (removed a few buttons)
 // I'll keep the login/registration "pages" just for reference as long as we need them - the logic I haven't changed, just the UI
+// Nick 2023/10/12... Using some console logs for debugging - will sweep through to remove!
+
 
 import React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios'; // Import axios and other necessary dependencies
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
 
 // Login form & ability to setModalContent
 function Login({ setModalContent }) {
+
+  axios.defaults.withCredentials = true;
+  const [isAuth, setIsAuth] = useContext(AuthContext);
+  const [username, setUsername] = useContext(UsernameContext);
+  const [userRole, setUserRole] = useContext(UserRoleContext);
+
+
   const initialLogin = {
     username: "",
     password: ""
@@ -21,9 +31,12 @@ function Login({ setModalContent }) {
   const login = (data) => {
     axios.post(`http://localhost:8080/api/users/login`, data)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.data.auth === true) {
-          console.log(true)
+          setIsAuth(response.data.auth);
+          setUsername(response.data.username)
+          setUserRole(response.data.role)
+          localStorage.setItem('token', response.data.token);
         }
       })
       .catch((error) => {
