@@ -27,7 +27,7 @@ function Login({ setModalContent, closeModal }) {
     username: Yup.string().required(),
     password: Yup.string().required()
   })
-  
+
 
   const login = (data) => {
     axios.post(`http://localhost:8080/api/users/login`, data)
@@ -38,7 +38,11 @@ function Login({ setModalContent, closeModal }) {
           setUsername(response.data.username)
           setUserRole(response.data.role)
           localStorage.setItem('token', response.data.token);
+          localStorage.setItem('username', response.data.username);
+          localStorage.setItem('userRole', response.data.role);
           closeModal();
+        } else {
+          console.log("Login failed: Not authenticated.")
         }
       })
       .catch((error) => {

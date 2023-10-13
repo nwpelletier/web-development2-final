@@ -22,19 +22,21 @@ export const UserRoleContext = React.createContext();
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState(false);
-  const [username, setUsername] = useState(null);
-  const [userRole, setUserRole] = useState(null);
-  
+  const [isAuth, setIsAuth] = useState(!!localStorage.getItem("token"));
+  const [username, setUsername] = useState(localStorage.getItem("username") || null);
+  const [userRole, setUserRole] = useState(localStorage.getItem("userRole") || null);
+
+
   return (
     <div>
       <AuthContext.Provider value={[isAuth, setIsAuth]}>
         <UsernameContext.Provider value={[username, setUsername]}>
           <UserRoleContext.Provider value={[userRole, setUserRole]}>
-            {/* temp display for debugging */}
-            <div>{username}</div>
+            {/* Ignore - will delete this stuff, was for testing */}
+            {/* <div>{username}</div>
             <div>{userRole}</div>
             <div>{isAuth.toString()}</div>
+            <a href={`/userpage`}>USERPAGE</a> */}
             <Router>
               <Routes>
                 <Route path="/" element={<Home />}></Route>
