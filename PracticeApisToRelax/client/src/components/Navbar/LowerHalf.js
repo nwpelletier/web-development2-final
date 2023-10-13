@@ -6,10 +6,8 @@ function LowerHalf() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check for the presence of a JWT token in local storage
     const token = localStorage.getItem('token');
     if (token) {
-      // Token found, consider the user authenticated
       setIsAuthenticated(true);
     }
   }, []);

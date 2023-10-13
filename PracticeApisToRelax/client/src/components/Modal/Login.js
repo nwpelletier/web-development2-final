@@ -7,10 +7,13 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios'; // Import axios and other necessary dependencies
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+// import { useNavigate } from "react-router-dom";
 import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
 
 // Login form & ability to setModalContent
 function Login({ setModalContent, closeModal }) {
+
+  // let navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -32,7 +35,6 @@ function Login({ setModalContent, closeModal }) {
   const login = (data) => {
     axios.post(`http://localhost:8080/api/users/login`, data)
       .then((response) => {
-        // console.log(response)
         if (response.data.auth === true) {
           setIsAuth(response.data.auth);
           setUsername(response.data.username)
@@ -41,6 +43,7 @@ function Login({ setModalContent, closeModal }) {
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('userRole', response.data.role);
           closeModal();
+          window.location.reload();
         } else {
           console.log("Login failed: Not authenticated.")
         }

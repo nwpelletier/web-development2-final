@@ -54,6 +54,8 @@ RIGHTNAV
   position: absolute;
   bottom: 0px;
   right: 0px;
+  width: 302px;
+  height:19px;
   background-color: rgb(232, 239, 245);
   border-top-left-radius: 5px;
   color: rgb(67, 73, 77);
