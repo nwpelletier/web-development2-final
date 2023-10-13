@@ -44,6 +44,7 @@ module.exports = {
         }
     },
     //TODO add transactions
+    // TODO ensure deleted users display as "deleted-user"
     createComment: async (req, res) => {
         const comment = req.body
        // comment.UserId = req.UserId;

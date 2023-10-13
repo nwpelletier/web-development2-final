@@ -5,6 +5,7 @@ const validator = require('validator');
 module.exports = {
     // TODO: add transactions
     // TODO: modify commented when auth is included
+    // TODO: get upvotes/downvotes by user 
     addVote: async (req, res) => {
         const vote = req.body;
         const postId = req.params.id;
