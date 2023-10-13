@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Field, ErrorMessage } from 'formik';
 
 function CategoryFields(props) {
-    const { title, warning, formName, formStyle, formId, formType, rows } = props;
+    const { title, warning, formName, formStyle, formId, formType, rows, lineHeight } = props;
 
     return (
         <div>
@@ -23,7 +23,7 @@ function CategoryFields(props) {
                             as={formType === "textarea" ? "textarea" : undefined}
                             type={formType !== "textarea" ? formType : undefined}
                             rows={rows}
-                            // style={{ lineHeight: formObj.lineHeight }}
+                            style={{ lineHeight: lineHeight }}
                         />
                     </>
                 </div>

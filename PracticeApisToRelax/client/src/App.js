@@ -15,6 +15,7 @@ import UserPage from "./pages/UserPage";
 import UserProfile from "./pages/UserProfile";
 import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
+import TextPost from "./pages/TextPost";
 
 export const AuthContext = React.createContext();
 export const UsernameContext = React.createContext();
@@ -42,7 +43,7 @@ function App() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
-                <Route path="/subcruddits/create" element={<AddSubcruddit />}></Route>
+                <Route path="/post" element={<TextPost />}></Route>
               </Routes>
             </Router>
           </UserRoleContext.Provider>
