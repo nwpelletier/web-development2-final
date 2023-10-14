@@ -9,18 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(64),
       allowNull: false,
     },
-    subType: {
-      type: DataTypes.ENUM("public", "private"),
-      allowNull: false,
-    },
     wiki: {
       type: DataTypes.STRING(10000),
       allowNull: false,
-    },
-    banner: {
-      type: DataTypes.STRING(124),
-      allowNull: true,
-      defaultValue: null
     },
     isActive: {
       type: DataTypes.BOOLEAN,

@@ -17,8 +17,8 @@ export const formSchema = Yup.object({
     subcrudditName: Yup
     .string()
     .required()
-    .max(5, "Name must be over 10 characters long.")
-    .min(64, "Name must be less than 64 characters long.")
+    .max(5, "Name must be over 5 characters long.")
+    .min(20, "Name must be less than 64 characters long.")
     ,
     wiki: Yup
     .string()

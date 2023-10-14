@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 // on submit
 // redirect route
 // modal 
+// btn text 
 
 
 // OBJECT 
@@ -21,6 +22,7 @@ import * as Yup from 'yup';
 // title
 //warning 
 // form-style
+
 
 
 function AddSubcruddit() {
