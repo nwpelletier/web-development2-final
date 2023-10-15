@@ -52,25 +52,30 @@ module.exports = {
         }
     }, 
     findSubcruddit: async (req, res) => {
-    subcrudditId = req.params.id;
+    subName = req.params.subcruddit;
     try {
-        const subcruddit = await Subcruddits.findByPk(subcrudditId)
+        const subcruddit = await Subcruddits.findOne({
+            where: {
+                subcrudditName: subName
+            }
+        })
         if (!subcruddit) {
             return res.status(400).send({message: "That subcruddit does not exist"})
         }
-        const moderators = await Moderators.findAll({
-            where: {
-                SubcrudditId: subcrudditId
-            },  include: [{
-                model: Users,
-                attributes: ['username', 'id'] 
-              }] 
-        })
-        if (moderators.length === 0) {
-            return res.status(400).send({message: "That subcruddit does not have moderation"})
-        }
+        // const moderators = await Moderators.findAll({
+        //     where: {
+        //         SubcrudditId: subcrudditId
+        //     },  include: [{
+        //         model: Users,
+        //         attributes: ['username', 'id'] 
+        //       }] 
+        // })
+        // if (moderators.length === 0) {
+        //     return res.status(400).send({message: "That subcruddit does not have moderation"})
+        // }
 
-        return res.status(200).send({subcruddit: subcruddit, moderators: moderators});
+        // return res.status(200).send({subcruddit: subcruddit, moderators: moderators});
+        return res.status(200).send({subcruddit: subcruddit});
     } catch (error) {
         return res.status(500).send({message: "Internal server error"})
     }
