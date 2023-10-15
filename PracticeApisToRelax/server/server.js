@@ -13,6 +13,7 @@ const postRoutes = require("./routes/post-routes")
 const userRoutes = require("./routes/user-routes")
 const voteRoutes = require("./routes/vote-routes")
 const moderatorRoutes = require("./routes/ModeratorRoutes")
+const subcrudditRoutes = require("./routes/subcruddit-routes")
 
 
 app.use(express.json());
@@ -40,6 +41,7 @@ app.use("/api/posts", postRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/votes", voteRoutes)
 app.use("/api/moderators", moderatorRoutes)
+app.use("/api/subcruddits", subcrudditRoutes)
 
 
 const db = require('./models');
