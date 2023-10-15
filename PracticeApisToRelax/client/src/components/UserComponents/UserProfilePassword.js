@@ -9,7 +9,7 @@ function UserProfilePassword() {
           <div className="col-md-6">
             <div className="border p-4">
               {" "}
-              <h1 className="mb-4">Update Email</h1>
+              <h1 className="mb-4">Update Password</h1>
               <Formik>
                 <Form>
                   <div className="mb-3">
@@ -68,7 +68,7 @@ function UserProfilePassword() {
 
                   <div className="text-center">
                     <button type="submit" className="btn btn-primary">
-                      Update Email
+                      Update Password
                     </button>
                   </div>
                 </Form>

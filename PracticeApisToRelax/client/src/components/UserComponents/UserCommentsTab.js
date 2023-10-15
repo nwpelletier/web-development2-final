@@ -18,16 +18,6 @@ function UserCommentsTab() {
     }
   },[]);
 
-  // Sample comments data to test
-  const userComments = [
-    {
-      text: "This is the first comment.",
-    },
-    {
-      text: "Another comment by the user.",
-    },
-      ];
-
   return (
     <div className="container mt-3">
       <ul className="list-group">
