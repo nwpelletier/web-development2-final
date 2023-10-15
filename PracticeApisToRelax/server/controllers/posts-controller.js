@@ -142,7 +142,7 @@ module.exports = {
                 order: [['isStickied', 'DESC'], ['points', 'DESC']],
                 include: [{
                     model: Users,
-                    attributes: ['username', 'id'] 
+                    attributes: ['username', 'id']  
                   }] 
             })
         } else {
@@ -151,6 +151,8 @@ module.exports = {
             });
             return false;
         }
+
+
         res.status(200).send(activePosts);
         } catch (error){
             console.log(error);
@@ -196,7 +198,7 @@ module.exports = {
                  order: [['isStickied', 'DESC'], ['points', 'DESC']],
                  include: [{
                     model: Users,
-                    attributes: ['username, id'] 
+                    attributes: ['username', 'id'] 
                   }] 
              })
               } else {
