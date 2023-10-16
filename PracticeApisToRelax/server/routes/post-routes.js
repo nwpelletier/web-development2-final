@@ -13,9 +13,13 @@ router.get("/comments/:order/:id([0-9]+)", controller.findComments);
 router.get("/:id([0-9]+)", controller.findActivePost)
 router.get("/posts/:subcruddit/:order", controller.findAllActivePostsSubcruddit)
 
+
+// USER PAGE ROUTES 
 router.get("/:id/posts", controller.findAllActivePostsUser)
 router.get("/:id/comments", controller.findAllActiveCommentsUser)
 router.get("/user/:id", controller.findAllByUser)
+
+
 router.delete("/:id", controller.deletePost)
 router.patch("/lock/:id", controller.toggleLock)
 router.patch("/sticky/:id", controller.toggleSticky)

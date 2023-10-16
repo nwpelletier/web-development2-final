@@ -36,9 +36,22 @@ module.exports = {
             });
     
             if (voteExists) {
-                console.log("hello?");
                 if (voteExists.liked === vote.liked) {
-                    return res.status(400).json({ message: "Cannot vote the same way more than once" });
+                    if (vote.liked) {
+                        points = -1
+                    } else {
+                        points = 1;
+                    }
+                    post.points += points;
+                    await post.save()
+                    await Votes.destroy({
+                        where: {
+                            UserId: userId,
+                            PostId: postId
+                        }
+                    })
+                    return res.status(200).json({ message: "Successfully deleted vote"});
+
                 }
     
                 if (vote.liked) {
@@ -134,6 +147,31 @@ module.exports = {
             console.log(error);
            return res.status(500).json({message: "Internal Server Error"}) 
         }
+    }, 
+
+    getVote: async (req, res) => {
+        const post = req.params.id;
+        const userId = req.body.UserId;
+        try {
+            const vote = await Votes.findOne({
+                where: {
+                    PostId: post,
+                    UserId: userId
+                }
+            })
+            if (!vote) {
+                return res.status(200).send(null);
+            } 
+
+            return res.status(200).send(vote.liked)
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({message: "Internal server error"})
+        }
+
     }
+
+
 
 }

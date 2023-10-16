@@ -14,7 +14,7 @@ export const formInitValues = {
 
 }
 
-export const post = (data) => {
+export const postForm = (data) => {
     console.log(data)
 }
   

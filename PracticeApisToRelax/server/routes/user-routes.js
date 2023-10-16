@@ -12,6 +12,7 @@ router.patch("/make-admin/:id", controller.makeAdmin);
 router.delete("/:id", controller.deleteUser)
 router.patch("/email/:id", controller.addEmail)
 router.patch("/reinstate/:id", controller.reinstateUser)
+router.get("/karma/:id", controller.findKarma)
 
 
 

@@ -1,6 +1,7 @@
 const {Posts} = require("../models");
 const {Users} = require("../models");
 const {Moderators} = require("../models");
+const {Votes} = require("../models");
 const {Subcruddits} = require("../models");
 const validator = require('validator');
 
@@ -22,16 +23,23 @@ module.exports = {
             if (user.length < 1){
                 return res.status(400).json({message : "Create post from valid user account", user: false})
             }
-            // const subcruddit = await Subcruddits.findAll({
-            //     where: {
-            //         subcrudditName: post.subcrudditName
-            //     }
-            // })
-            // if (subcruddit.length < 1){
-            //     return res.status(400).json({message : "Create post to valid subcruddit", user: false})
-            // }
-            // post.SubcrudditId = subcruddit.id;
+            const subcruddit = await Subcruddits.findAll({
+                where: {
+                    subcrudditName: post.subcrudditName
+                }
+            })
+            if (subcruddit.length < 1){
+                return res.status(400).json({message : "Create post to valid subcruddit", user: false})
+            }
+            post.SubcrudditId = subcruddit.id;
+            post.points = 1;
             newPost = await Posts.create(post);
+            const vote = {
+                UserId: newPost.UserId,
+                PostId: newPost.id,
+                liked: true
+            }
+            await Votes.create(vote)
             if (newPost.id) {
                 return res.status(201).json(newPost)
             } else {
@@ -106,8 +114,15 @@ module.exports = {
             comment.parentId = postId;
             comment.SubcrudditId = subcrudditId;
             comment.postType = "comment";
+            comment.points = 1;
 
             const newComment = await Posts.create(comment);
+            const vote = {
+                UserId: newComment.UserId,
+                PostId: newComment.id,
+                liked: true
+            }
+            await Votes.create(vote)
             if (newComment) {
                 return res.status(201).json(newComment) 
             }
@@ -435,9 +450,44 @@ module.exports = {
                 include: [{
                     model: Users,
                     attributes: ['username', 'id'] 
+                  }, {
+                    model: Subcruddits,
+                    attributes: ['subcrudditName'] 
                   }] 
             })
-            res.status(200).send(activePosts);
+
+            for (let post of activePosts){
+                        const originalPost = await Posts.findByPk(post.postId, {
+                            include: [{
+                                model: Users,
+                                attributes: ['username']  
+                              }]
+                        })
+                        const originalObj = {
+                            id: originalPost.id, 
+                            title: originalPost.title,
+                            username: originalPost.User.username
+
+                        }
+                        post.postId = originalObj   
+            }
+
+            const returnObj = activePosts.map((post) => ({
+                id: post.id,
+                postId: post.postId,
+                parentId: post.parentId,
+                UserId: post.UserId,
+                SubcrudditId: post.SubcrudditId, 
+                content: post.content,
+                children_count: post.children_count,
+                points: post.points,
+                isStickied: post.isStickied,
+                createdAt: post.createdAt,
+                subcrudditName: post.Subcruddit.subcrudditName,
+    
+
+            }));
+            res.status(200).send(returnObj);
 
         } catch(error){
             console.log(error);
@@ -705,14 +755,10 @@ module.exports = {
 }
 
 function validatePost(post, req, res) {
-    if (!post.UserId || !post.SubcrudditId || !post.title || !post.postType || !post.content)  {
-        console.log("user id" + post.UserId);
-        console.log("subc id" + post.SubcrudditId)
-        console.log("title" + post.title)
-        console.log("post type" + post.postType)
-        console.log("content" + post.content)
+    if (!post.UserId || !post.title || !post.postType || !post.content)  {
+
         res.status(400).send({
-            message: "You must send user id, subcruddit id, a post title, a post type, and post content ."
+            message: "You must send user id, a post title, a post type, and post content ."
         });
         return false;
     }
