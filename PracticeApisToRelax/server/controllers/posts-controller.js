@@ -415,6 +415,7 @@ module.exports = {
                 postId: post.postId,
                 parentId: post.parentId,
                 UserId: post.UserId,
+                UserName: user.username,
                 SubcrudditId: post.SubcrudditId, 
                 title: post.title,
                 postType: post.postType,
