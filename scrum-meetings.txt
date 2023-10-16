@@ -219,3 +219,42 @@ Ehsan:
  Challenges: 
    - understanding reddit(I am new in reddit)
 
+===================
+Date: 2023/10/16
+
+Nick:
+ Finished: 
+  - Subcruddit routes
+  - Front-end endpoints /c/:subcrudditName
+  - Top nav displays all subcruddits in database
+  - Logic to populate Subcruddit pages with their posts
+  - Minor styling on post components
+ Working On: 
+  - Authentication
+  - Sorting (hot/new)
+  - Right nav contents
+  - Upvote system
+ Challenges: 
+  - Populating posts per subcrudditName
+  - Spelling/syntax mistakes..
+
+
+Alex:
+ Finished: 
+  - Components to create posts (all types; text, imgae, subcruddit creation)
+  - Finished tutorial for drag and drop images
+ Working On:
+  - Finishing up back end and adding auth
+ Challenges:
+  - Had to give up on cropping images
+
+ 
+Ehsan:
+ Finished: 
+  - Finishing userpage links
+  - Update user password update/change
+ Working On: 
+  - User page and user profile
+ Challenges: 
+  - Understanding reddit (I am new in reddit)
+
