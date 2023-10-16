@@ -40,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Users.associate = (models) => {
-//     Users.hasMany(models.Votes, {
-//         foreignKey: 'UserId'
-//     })
-//     Users.hasMany(models.Moderators, {
-//       foreignKey: 'UserId'
-//     })
+    Users.hasMany(models.Votes, {
+        foreignKey: 'UserId'
+    })
+    Users.hasMany(models.Moderators, {
+      foreignKey: 'UserId'
+    })
     Users.hasMany(models.Posts, {
       foreignKey: 'UserId'
  })

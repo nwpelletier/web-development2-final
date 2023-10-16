@@ -41,12 +41,7 @@ caption: {
     type: DataTypes.STRING(200),
     allowNull: true,
     defaultValue: null
-}, 
-mimeType : {
-    type: DataTypes.STRING(200),
-    allowNull: true,
-    defaultValue: null
-}, 
+},  
 children_count: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -76,11 +71,11 @@ isStickied: {
 
   Posts.associate = (models) => {
 
-//     Posts.hasMany(models.Votes, {
-//       foreignKey: 'PostId'
-//     })
+    Posts.hasMany(models.Votes, {
+      foreignKey: 'PostId'
+    })
     Posts.belongsTo(models.Users);
-//     Posts.belongsTo(models.Subcruddits);
+    Posts.belongsTo(models.Subcruddits);
     
 
 }

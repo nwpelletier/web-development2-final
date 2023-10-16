@@ -6,26 +6,30 @@ const validator = require('validator');
 
 module.exports = {
     createNew: async (req, res) => {
-        req.body = newSubcruddit;
-        userId = newSubcruddit.userId;
+        newSubcruddit = req.body;
+        userId = newSubcruddit.UserId;
         if (!newSubcruddit.subcrudditName) {
             return res.status(400).send({message: "You must provide a subcruddit name"});
         }
-        if (!validator.isLength(newSubcruddit.subcrudditName, {min: 5, max:20})) {
-            return res.status(400).send({message: "Subcruddit name must be between 5 and 20 characters long."});
+        if (!validator.isLength(newSubcruddit.subcrudditName, {min: 4, max:20})) {
+            return res.status(400).send({message: "Subcruddit name must be between 4 and 20 characters long."});
+        }
+        if (!validator.isAlphanumeric(newSubcruddit.subcrudditName)) {
+            return res.status(400).send({message: "Subcruddit name must contain only letters and numbers."});
         }
         if (newSubcruddit.wiki && !validator.isLength(newSubcruddit.wiki, {min: 10, max:10000})) {
             return res.status(400).send({message: "If you choose to create a wiki, it must be between 10 and 10,000 characters long."});
         }
-        const subcrudditExists = Subcruddits.findOne({
+        const subcrudditExists = await Subcruddits.findOne({
             where: {
                 subcrudditName: newSubcruddit.subcrudditName
             }
         })
         if (subcrudditExists) {
+            console.log(subcrudditExists)
             return res.status(400).send({message: "That name is already taken"})
         }
-        const userExists = Users.findByPk(userId, {
+        const userExists = await Users.findByPk(userId, {
             where: {
                 isActive: true
             }
@@ -36,18 +40,20 @@ module.exports = {
         try {
             createdSub = await Subcruddits.create(newSubcruddit)
         } catch (error) {
+            console.log(error)
             return res.status(500).send({message: "Internal server error"})
         }
 
         const newMod = {
             SubcrudditId : createdSub.id,
-            UserId: userId
+            UserId: newSubcruddit.UserId
         }
 
         try {
             const newModConfirm = await Moderators.create(newMod);
             return res.status(201).send({moderator: newModConfirm, subcruddit: createdSub})
         } catch (error) {
+            console.log(error)
             return res.status(500).send({message: "Internal server error"})
         }
     }, 
@@ -62,21 +68,34 @@ module.exports = {
         if (!subcruddit) {
             return res.status(400).send({message: "That subcruddit does not exist"})
         }
-        // const moderators = await Moderators.findAll({
-        //     where: {
-        //         SubcrudditId: subcrudditId
-        //     },  include: [{
-        //         model: Users,
-        //         attributes: ['username', 'id'] 
-        //       }] 
-        // })
-        // if (moderators.length === 0) {
-        //     return res.status(400).send({message: "That subcruddit does not have moderation"})
-        // }
+        const moderators = await Moderators.findAll({
+            where: {
+                SubcrudditId: subcruddit.id
+            },  include: [{
+                model: Users,
+                attributes: ['username', 'id'] 
+              }] 
+        })
+        if (moderators.length === 0) {
+            return res.status(400).send({message: "That subcruddit does not have moderation"})
+        }
+        const moderatorObj = moderators.map((moderator) => ({
+            UserId: moderator.UserId, 
+            username: moderator.User.username
+        }));
 
-        // return res.status(200).send({subcruddit: subcruddit, moderators: moderators});
-        return res.status(200).send({subcruddit: subcruddit});
+
+        const responseObj = {
+            
+                id: subcruddit.id,
+                subcrudditName: subName,
+                wiki: subcruddit.wiki,
+            moderators: moderatorObj
+        }
+
+        return res.status(200).send({subcruddit: responseObj});
     } catch (error) {
+        console.log(error)
         return res.status(500).send({message: "Internal server error"})
     }
 

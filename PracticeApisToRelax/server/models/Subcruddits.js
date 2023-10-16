@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     wiki: {
       type: DataTypes.STRING(10000),
-      allowNull: false,
+      allowNull: true,
     },
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -20,16 +20,16 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-//   Subcruddits.associate = (models) => {
+  Subcruddits.associate = (models) => {
 
-//     Subcruddits.hasMany(models.Moderators, {
-//       foreignKey: 'SubcrudditId'
-//     })
-//     Subcruddits.hasMany(models.Posts, {
-//       foreignKey: 'SubcrudditId'
-//   })
+    Subcruddits.hasMany(models.Moderators, {
+      foreignKey: 'SubcrudditId'
+    })
+    Subcruddits.hasMany(models.Posts, {
+      foreignKey: 'SubcrudditId'
+  })
 
-// }
+}
 
   return Subcruddits;
 };

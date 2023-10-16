@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   });
-//   Moderators.associate = (models) => {
-//     Moderators.belongsTo(models.Users);
-//     Moderators.belongsTo(models.Subcruddits);
-// }
+  Moderators.associate = (models) => {
+    Moderators.belongsTo(models.Users);
+    Moderators.belongsTo(models.Subcruddits);
+}
 
   return Moderators;
 };
