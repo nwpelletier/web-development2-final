@@ -234,6 +234,7 @@ Nick:
   - Sorting (hot/new)
   - Right nav contents
   - Upvote system
+  - Troubleshoot latest post-subcruddit changes w/ front-end
  Challenges: 
   - Populating posts per subcrudditName
   - Spelling/syntax mistakes..
@@ -243,8 +244,13 @@ Alex:
  Finished: 
   - Components to create posts (all types; text, imgae, subcruddit creation)
   - Finished tutorial for drag and drop images
+  - finished most response objects 
  Working On:
-  - Finishing up back end and adding auth
+  - Finish the posts (add subcruddit, add post - image/text)
+  - comments components 
+     - view comments
+     - edit comments 
+  - AWS set up 
  Challenges:
   - Had to give up on cropping images
 
@@ -254,7 +260,9 @@ Ehsan:
   - Finishing userpage links
   - Update user password update/change
  Working On: 
-  - User page and user profile
- Challenges: 
+  - User page submitted show data
+  - Right-Nav
+  - use logged in user for userpage and userprofile
+ Challenges:
   - Understanding reddit (I am new in reddit)
 
