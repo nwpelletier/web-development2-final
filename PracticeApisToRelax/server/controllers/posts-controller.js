@@ -609,8 +609,14 @@ module.exports = {
 
     }, 
     findAllByUser: async (req, res) => {
-        const userId = req.params.id
+        
         try {
+            const userId = req.params.id
+            const user = await Users.findByPk(userId);
+
+            if (!user) {
+                return res.status(400).send({message: "That user does not exist."})
+            }
             activePosts = await Posts.findAll({
                 where: {
                     isActive: true,
@@ -650,7 +656,7 @@ module.exports = {
                 postId: post.postId,
                 parentId: post.parentId,
                 UserId: post.UserId,
-                Username: post.username,
+                UserName: user.username,
                 SubcrudditId: post.SubcrudditId, 
                 title: post.title,
                 postType: post.postType,

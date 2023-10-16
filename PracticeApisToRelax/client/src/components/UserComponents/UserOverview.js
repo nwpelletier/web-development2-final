@@ -51,16 +51,16 @@ function UserOverview(userID) {
     try {
       console.log(userID.UserID);
       axios
-        .get(`http://localhost:8080/api/posts/${userID.UserID}/posts/`)
+        .get(`http://localhost:8080/api/posts/user/${userID.UserID}`)
         .then((response) => {
           setPosts(response.data);
           console.log(response.data);
         });
     } catch (error) {
-      console.log("SHOW ERROE", error);
+      console.log("SHOW ERROR", error);
     }
   }, []);
-  
+
   let { id } = useParams();
   const [comments, setComments] = useState([]);
   useEffect(() => {
