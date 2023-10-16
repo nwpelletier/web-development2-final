@@ -41,6 +41,7 @@ function SubcrudditDisplay({ subcrudditName }) {
           UserId={post.UserId}
           SubcrudditId={post.SubcrudditId}
           createdAt={post.createdAt}
+          SubcrudditName={post.subcrudditName}
         />
       ))}
     </div>
