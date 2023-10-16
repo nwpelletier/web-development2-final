@@ -393,7 +393,28 @@ module.exports = {
                   }]  
             })
 
-
+            for (let post of activePosts){
+                if (post.postType === "comment") {
+                    const parent = await Posts.findByPk(post.parentId, {
+                        include: [{
+                            model: Users,
+                            attributes: ['username']  
+                          }]
+                    })
+                    post.parentId = parent
+                    if (post.parentId !== post.postId) {
+                        const originalPost = await Posts.findByPk(post.postId, {
+                            include: [{
+                                model: Users,
+                                attributes: ['username']  
+                              }]
+                        })
+                        post.postId = originalPost
+                    } else {
+                        post.postId = parent
+                    }
+                }
+            }
 
             const returnObj = activePosts.map((post) => ({
                 id: post.id,
@@ -569,51 +590,9 @@ module.exports = {
                 include: [{
                     model: Users,
                     attributes: ['username', 'id'] 
-                  }, {
-                    model: Subcruddits,
-                    attributes: ['subcrudditName'] 
-                  }]  
+                  }] 
             })
-            for (let post of activePosts){
-                if (post.postType === "comment") {
-                    
-                        const originalPost = await Posts.findByPk(post.postId, {
-                            include: [{
-                                model: Users,
-                                attributes: ['username']  
-                              }]
-                        })
-                        const originalObj = {
-                            id: originalPost.id, 
-                            title: originalPost.title,
-                            username: originalPost.User.username
-
-                        }
-                        post.postId = originalObj
-                   
-                }
-            }
-
-            const returnObj = activePosts.map((post) => ({
-                id: post.id,
-                postId: post.postId,
-                parentId: post.parentId,
-                UserId: post.UserId,
-                SubcrudditId: post.SubcrudditId, 
-                title: post.title,
-                postType: post.postType,
-                content: post.content,
-                caption: post.caption,
-                children_count: post.children_count,
-                points: post.points,
-                isStickied: post.isStickied,
-                createdAt: post.createdAt,
-                subcrudditName: post.Subcruddit.subcrudditName,
-    
-    
-
-            }));
-            res.status(200).send(returnObj);
+            res.status(200).send(activePosts);
 
         } catch(error){
             console.log(error);
