@@ -1,5 +1,6 @@
 require('dotenv').config({ path: "../.env" });
 const {Users} = require("../models");
+const {Posts} = require("../models");
 const bcrypt = require('bcrypt');
 const validator = require('validator');
 const bodyParser = require('body-parser');
@@ -264,6 +265,35 @@ module.exports = {
             console.log(error);
             res.status(500).json({message: "Internal Server Error"})
         }
+
+
+    },
+    findKarma: async (req, res) => {
+        const userId = req.params.id
+        try {
+            const posts = await Posts.findAll({
+                where: {
+                    UserId: userId
+                }
+            })
+            let postPoints = 0;
+            let commentPoints = 0;
+            for (let post of posts) {
+                if (post.postType === "comment") {
+                    commentPoints += post.points
+                } else {
+                    postPoints += post.points
+                }
+            }
+
+            return res.status(200).send({postKarma: postPoints, commentKarma: commentPoints})
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({message: "Internal server error"})
+        }
+
+
+
 
 
     }

@@ -17,6 +17,9 @@ import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
 import Subcruddit from './pages/Subcruddit'
 import TextPost from "./pages/TextPost";
+import ImgPost from "./pages/ImgPost";
+import SinglePost from "./pages/SinglePost";
+
 
 export const AuthContext = React.createContext();
 export const UsernameContext = React.createContext();
@@ -38,8 +41,12 @@ function App() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
-                <Route path="/post" element={<TextPost />}></Route>
+                <Route path="/post/text/:subcruddit" element={<TextPost />}></Route>
+                <Route path="/post/img/:subcruddit" element={<ImgPost />}></Route>
+                <Route path="/c/new" element={< SubcrudditPost />}></Route>
                 <Route path="/c/:handle" element={<Subcruddit />} />
+                <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
+
               </Routes>
             </Router>
           </UserRoleContext.Provider>

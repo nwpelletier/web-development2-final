@@ -6,6 +6,7 @@ const controller = require("../controllers/votes-controller");
 router.post("/:id", controller.addVote)
 router.delete("/:id", controller.deleteVote)
 // add get method 
+router.get("/:id", controller.getVote);
 
 
 

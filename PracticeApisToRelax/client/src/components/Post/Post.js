@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 
-function Post({ id, points, title, postType, UserId, SubcrudditId, createdAt }) {
+function Post({ id, points, title, postType, UserId, SubcrudditId, SubcrudditName, createdAt }) {
   const [voteStatus, setVoteStatus] = useState('none');
   const [localPoints, setLocalPoints] = useState(points);
 
@@ -67,7 +68,12 @@ function Post({ id, points, title, postType, UserId, SubcrudditId, createdAt }) 
         </div>
 
         <div className="post-content-container col-md-10 col-sm-5 row">
-          <div className="post-title">{title}</div>
+          <div className="post-title">
+            <Link to={`/c/${SubcrudditName}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
+              {title}
+            </Link>
+
+          </div>
           <div className="post-submission-info">Posted {createdAt} by {UserId} to {SubcrudditId}</div>
           <div className="post-links">
             <span># of child comments</span>

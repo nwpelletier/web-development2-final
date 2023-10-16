@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Formik, Field, ErrorMessage, withFormik } from 'formik';
 import cardImage from '../../assets/card-image.svg';
 
-function DropImg({ open, formObj, warning, title, setBannerFile }) {
+function DropImg({ open, warning, title, setBannerFile, name, formId }) {
   const [file, setFile] = useState("");
   
 
@@ -27,7 +27,7 @@ function DropImg({ open, formObj, warning, title, setBannerFile }) {
   return (
     <div className="row">
     <div className="bg-cruddit-blue col-5 mt-2 mx-3 mx-2 py-2 px-3">
-      <label htmlFor={formObj.formId} className='text-dark-blue-20 mb-0 my-1'>
+      <label htmlFor={formId} className='text-dark-blue-20 mb-0 my-1'>
         {title}
       </label>
       <p className='small-warning-txt'>
@@ -40,10 +40,10 @@ function DropImg({ open, formObj, warning, title, setBannerFile }) {
           <img src={cardImage} alt="Your Icon" width="auto" height="80%" className="m-2 icon-grey" />
             Drag and drop image here
           </div>
-          <ErrorMessage name={formObj.formName} component="div" className='text-danger' />
+          <ErrorMessage name={name} component="div" className='text-danger' />
           <Field
-            id={formObj.formId}
-            name={formObj.formName}
+            id={formId}
+            name={name}
             hidden={file === "" ? true : false}
             
           />

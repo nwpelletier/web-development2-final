@@ -1,8 +1,10 @@
 
-import {btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt} from "../components/CreatePost/textPostInit";
+import {btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt} from "../components/CreatePost/subcrudditPostInit";
 import PostCreate from "../components/CreatePost/PostCreate"
 
-function TextPost() {
+function SubcrudditPost () {
+
+    
     const valuesToPass = {
         btnText: btnText,
         formInitValues: formInitValues,
@@ -12,6 +14,7 @@ function TextPost() {
         postType: postType,
         redirect: redirect,
         redirectTxt: redirectTxt, 
+       
    
       };
 return (
@@ -21,4 +24,4 @@ return (
 )
 }
 
-export default TextPost;
+export default SubcrudditPost;
