@@ -11,7 +11,8 @@ function TextPost() {
         postForm: postForm,
         postType: postType,
         redirect: redirect,
-        redirectTxt: redirectTxt
+        redirectTxt: redirectTxt, 
+   
       };
 return (
     <div>

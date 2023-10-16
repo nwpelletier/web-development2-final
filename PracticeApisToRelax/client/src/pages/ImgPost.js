@@ -1,8 +1,8 @@
 
-import {btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt} from "../components/CreatePost/imagePostInit";
+import {btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt, imgDetails} from "../components/CreatePost/imagePostInit";
 import PostCreate from "../components/CreatePost/PostCreate"
 
-function TextPost() {
+function ImgPost() {
     const valuesToPass = {
         btnText: btnText,
         formInitValues: formInitValues,
@@ -11,7 +11,8 @@ function TextPost() {
         postForm: postForm,
         postType: postType,
         redirect: redirect,
-        redirectTxt: redirectTxt
+        redirectTxt: redirectTxt, 
+        imgDetails: imgDetails
       };
 return (
     <div>
@@ -20,4 +21,4 @@ return (
 )
 }
 
-export default TextPost;
+export default ImgPost;

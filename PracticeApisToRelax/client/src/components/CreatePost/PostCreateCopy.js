@@ -1,6 +1,5 @@
 import DropImg from "../Crop/DropImg";
 import Navbar from "../Navbar/Navbar";
-import { useState } from "react";
 import CategoryFields from "../SubcrudditCreate/CategoryFields";
 import {Formik, Form, Field, ErrorMessage, withFormik, useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -9,8 +8,7 @@ import * as Yup from 'yup';
 
 
 function PostCreate(props) {
-  const { btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt, imgDetails } = props;
-
+  const { btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt } = props;
 
 
   return (
@@ -25,8 +23,6 @@ function PostCreate(props) {
 
                 
 {formObject.map((formObj, index) => (
-
-  
   <CategoryFields 
   key={index}
   title={formObj.title}
@@ -36,20 +32,17 @@ function PostCreate(props) {
   formId={formObj.inputId}
   formType={formObj.formType}
   rows={formObj.rows}
-  lineHeight={formObj.lineHeight} 
-  />
+  lineHeight={formObj.lineHeight} />
 ))}
        
 
                 {postType === "image" &&
-                // <div>{imgDetails.formName} + {imgDetails.formId}</div>
             <DropImg 
-                title={"select image"} 
-                warning={"pick only one image"}
-                  name={imgDetails.formName}
-                  formId = {imgDetails.formId}
+                title={"banner"} 
+                warning={"optional. add some personality to your community"}
+                formObj={formObject[1]}
                 initValue = {""}
-                setBannerFile={(file) => formikProps.setFieldValue("content", file)}
+                setBannerFile={(file) => formikProps.setFieldValue("banner", file)}
                 />
             }
 
