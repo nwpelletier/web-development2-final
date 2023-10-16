@@ -1,25 +1,17 @@
-// I'll keep the login/registration "pages" just for reference as long as we need them - the logic I haven't changed, just the UI
-// Nick 2023/10/12... Using some console logs for debugging - will sweep through to remove!
-
-
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
-import axios from 'axios'; // Import axios and other necessary dependencies
+import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-// import { useNavigate } from "react-router-dom";
 import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
 
 // Login form & ability to setModalContent
 function Login({ setModalContent, closeModal }) {
 
-  // let navigate = useNavigate();
-
   axios.defaults.withCredentials = true;
   const [isAuth, setIsAuth] = useContext(AuthContext);
   const [username, setUsername] = useContext(UsernameContext);
   const [userRole, setUserRole] = useContext(UserRoleContext);
-
 
   const initialLogin = {
     username: "",
@@ -88,7 +80,7 @@ function Login({ setModalContent, closeModal }) {
           <button
             className='btn btn-primary m-5'
             type='button'
-            onClick={() => setModalContent('signup')} // Set content to 'signup' on button click
+            onClick={() => setModalContent('signup')}
           >
             Sign Up
           </button>

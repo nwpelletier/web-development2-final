@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Post from '../Post/DemoPost';
+import { useParams } from 'react-router-dom'; 
+import SubcrudditDisplay from './SubcrudditDisplay';
 
-function Main() {
 
-  // Default: will display posts by new
-  // Todo: implement useEffect to allow toggling between hot/new
-  const [posts, setPosts] = useState([]);
-
+function Main({handle}) {
+  // hard coded for now**
+  const contentType = 'subcruddit'
   useEffect(() => {
-    axios.get('http://localhost:8080/api/posts/posts/new')
-      .then(response => {
-        setPosts(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching posts:', error);
-      });
-  }, []); 
+    if (contentType === 'subcruddit') {
+
+      const fetchSubcrudditId = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8080/api/subcruddits/${handle}`);
+        } catch (error) {
+          console.error('Error fetching subcruddit:', error);
+        }
+      };
+      fetchSubcrudditId();
+    }
+  }, [handle]);
+
 
   return (
     <div>
-      {posts.map(posts => (
-        <Post
-          key={posts.id}
-          id={posts.id}
-          points={posts.points}
-          title={posts.title}
-          postType={posts.postType}
-          UserId={posts.UserId}
-          SubcrudditId={posts.SubcrudditId}
-          createdAt={posts.createdAt}
-        />
-      ))}
+      <SubcrudditDisplay subcrudditName={handle} />
     </div>
   );
 }

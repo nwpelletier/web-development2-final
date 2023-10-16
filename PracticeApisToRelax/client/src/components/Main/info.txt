@@ -1,0 +1,10 @@
+"Main" is the pane that displays either a subcruddit's posts, or a single post's content
+
+Main component will build one of the following components.
+
+-SubcrudditDisplay
+
+-PostDisplay
+
+*Depending on the "content type" that will be passed to the main component
+*Right now it's hard coded for SubcrudditDisplay just to get things rolling

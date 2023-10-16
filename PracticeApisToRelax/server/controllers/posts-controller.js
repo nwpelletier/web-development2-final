@@ -1,9 +1,7 @@
 const {Posts} = require("../models");
 const {Users} = require("../models");
 const {Moderators} = require("../models");
-const {Subcruddits} = require("../models");
 const validator = require('validator');
-
 //TODO ONCE MORE ASSOCIATIONS ARE INCLUDED
 module.exports = {
     createPost: async (req, res) => {
@@ -50,7 +48,6 @@ module.exports = {
     createComment: async (req, res) => {
         const comment = req.body
        // comment.UserId = req.UserId;
-
         const postId = req.params.id
         let layer = 0;
         let parentPostId = 0;
@@ -69,8 +66,11 @@ module.exports = {
                     message: "You must reply to a valid post."
             })
             }
-            //comment.SubcrudditId = originalPost.SubcrudditId;
-            const user = await Users.findByPk(comment.UserId)
+            const user = await Users.findAll({
+                where: {
+                    id: comment.UserId
+                }
+            })
             if (user.length < 1){
                 return res.status(400).json({message : "Create post from valid user account", user: false})
             } 
@@ -105,7 +105,6 @@ module.exports = {
             comment.layer = layer;
             comment.parentId = postId;
             comment.SubcrudditId = subcrudditId;
-            comment.postType = "comment";
 
             const newComment = await Posts.create(comment);
             if (newComment) {
@@ -142,11 +141,8 @@ module.exports = {
                 }, 
                 order: [['isStickied', 'DESC'], ['points', 'DESC']],
                 include: [{
-                    model: Subcruddits,
-                    attributes: ['subcrudditName']  
-                  }, {
                     model: Users,
-                    attributes: ['username']  
+                    attributes: ['username', 'id']  
                   }] 
             })
         } else {
@@ -155,28 +151,9 @@ module.exports = {
             });
             return false;
         }
- 
-
-        const returnObj = activePosts.map((post) => ({
-            id: post.id,
-            UserId: post.UserId,
-            SubcrudditId: post.SubcrudditId, 
-            title: post.title,
-            postType: post.postType,
-            content: post.content,
-            caption: post.caption,
-            children_count: post.children_count,
-            points: post.points,
-            isStickied: post.isStickied,
-            createdAt: post.createdAt,
-            subcrudditName: post.Subcruddit.subcrudditName,
-            username: post.User.username
 
 
-        }));
-
-
-        res.status(200).send(returnObj);
+        res.status(200).send(activePosts);
         } catch (error){
             console.log(error);
             res.status(500).json({message: "Internal Server Error"})    
@@ -238,23 +215,8 @@ module.exports = {
             }
          }
 
-         const returnObj = parentComments.map((comment) => ({
-            id: comment.id,
-            UserId: comment.UserId,
-            username: comment.User.username,
-            content: comment.content,
-            children_count: comment.children_count,
-            points: comment.points,
-            layer: comment.layer,
-            isStickied: comment.isStickied,
-            createdAt: comment.createdAt,
-        }));
 
-   
-  
-
-
-        res.status(200).send(returnObj);
+        res.status(200).send(parentComments);
      
         } catch (error){
             console.log(error);
@@ -290,14 +252,14 @@ module.exports = {
     },
     findAllActivePostsSubcruddit: async(req, res) => {
         const order = req.params.order
-        const subId = req.params.subcruddit
+        const subcrudditId = req.params.id
         let activePosts;
         if (order === "new"){
             activePosts = await Posts.findAll({
                 where: {
                     isActive: true,
                     layer: 0,
-                    subcrudditId: subId
+                    SubcrudditId: subcrudditId
                 }, 
                 order: [['isStickied', 'DESC'], ['createdAt', 'DESC']],
                 include: [{
@@ -449,8 +411,9 @@ module.exports = {
         const postId = req.params.id;
     //    const requestId = req.UserId; 
         try {
-            const thePost = await Posts.findByPk(postId, {
+            const thePost = await Posts.findOne({
                 where: {
+                    id : postId,
                     isActive: true
                 }
             })
@@ -649,9 +612,15 @@ function validatePost(post, req, res) {
 }
 
 function validateComment(comment, postId, req, res) {
-    if (!postId || !comment.UserId  || !comment.content) {
+    if (!postId || !comment.UserId || !comment.postType || !comment.content) {
         res.status(400).send({
             message: "You must send user id, subcruddit id, a post type, and post content ."
+        });
+        return false;
+    }
+    if (comment.postType !== "comment"){
+        res.status(400).send({
+            message: "The only valid type for commenting is a text."
         });
         return false;
     }
@@ -665,3 +634,70 @@ function validateComment(comment, postId, req, res) {
     return true;
 }
 
+//  id: {
+//     type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true
+// },
+// UserId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+// },
+// SubcrudditId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+// },
+// parentId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: true,
+// },
+// postId: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+// },
+// title: {
+//     type: DataTypes.STRING(360),
+//     allowNull: true,
+//     unique: true
+// }, 
+// type: {
+//     type: DataTypes.ENUM("image", "text"),
+//     allowNull: false,
+// }, 
+// content : {
+//     type: DataTypes.STRING(50000),
+//     allowNull: false,
+// }, 
+// caption: {
+//     type: DataTypes.STRING(200),
+//     allowNull: true,
+// }, 
+// mimeType : {
+//     type: DataTypes.STRING(200),
+//     allowNull: true,
+// }, 
+// children_count: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+//     defaultValue: 0
+// }, 
+// points : {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+//     defaultValue: 0
+// },
+// layer: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+// },
+// isActive: {
+//     type: DataTypes.BOOLEAN,
+//     allowNull: false,
+//     defaultValue: true
+// },
+// isStickied: {
+//     type: DataTypes.BOOLEAN,
+//     allowNull: false,
+//     defaultValue: false
+
+// }

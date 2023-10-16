@@ -1,34 +1,40 @@
-import React, { useState, useEffect } from 'react';
+// SubCrudditList.js
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { SubcrudditContext } from '../../App';
 
 function SubCrudditList() {
   const [subcruddits, setSubcruddits] = useState([]);
 
-  // temp data just for testing purposes --> will have to do proper Axios request here when it comes to it
   useEffect(() => {
-    const getSubcruddits = async () => {
-      const data = ["home", "news", "askcruddit", "pics", "funny", "politics", "music", "world", "montreal", "johnabbottcollege", "react", "computerscience"]
-      setSubcruddits(data);
+    const fetchSubcruddits = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/subcruddits/all');
+        setSubcruddits(response.data);
+      } catch (error) {
+        console.error('Error fetching subcruddits:', error);
+      }
     };
 
-    getSubcruddits();
-  }, [])
+    fetchSubcruddits();
+  }, []);
+
   return (
     <div className="sub-cruddit-list">
       <div className="orange-box"></div>
       <div className="subcruddit-links">
+        <a href={`/c/all`}>ALL</a>
         {subcruddits.map((subcruddit, index) => (
           <React.Fragment key={index}>
-            {subcruddit === 'home' ? (
-              <a href={`/`}>HOME</a>
-            ) : (
-              <a href={`/c/${subcruddit}`}>{subcruddit.toUpperCase()}</a>
-            )}
+            <a href={`/c/${subcruddit.subcrudditName}`}>
+              {typeof subcruddit.subcrudditName === 'string' ? subcruddit.subcrudditName.toUpperCase() : ''}
+            </a>
             {index < subcruddits.length - 1 && ' - '}
           </React.Fragment>
         ))}
-
       </div>
     </div>
+
   );
 }
 

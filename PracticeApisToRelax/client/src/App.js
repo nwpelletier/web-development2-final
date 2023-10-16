@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import React, { useEffect, useState, createContext } from "react";
 import Navbar from "./components/Navbar/Navbar";
-import Main from "./components/Main/Main";
+import MainUpdate from "./components/Main/Main";
 import RightNav from "./components/RightNav/RightNav";
 
 import "./App.css";
@@ -15,35 +15,31 @@ import UserPage from "./pages/UserPage";
 import UserProfile from "./pages/UserProfile";
 import AddSubcruddit from "./pages/AddSubcruddit"
 import Home from './pages/Home'
+import Subcruddit from './pages/Subcruddit'
 import TextPost from "./pages/TextPost";
 
 export const AuthContext = React.createContext();
 export const UsernameContext = React.createContext();
 export const UserRoleContext = React.createContext();
+export const SubcrudditContext = createContext();
 
 function App() {
-
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem("token"));
   const [username, setUsername] = useState(localStorage.getItem("username") || null);
   const [userRole, setUserRole] = useState(localStorage.getItem("userRole") || null);
-
 
   return (
     <div>
       <AuthContext.Provider value={[isAuth, setIsAuth]}>
         <UsernameContext.Provider value={[username, setUsername]}>
           <UserRoleContext.Provider value={[userRole, setUserRole]}>
-            {/* Ignore - will delete this stuff, was for testing */}
-            {/* <div>{username}</div>
-            <div>{userRole}</div>
-            <div>{isAuth.toString()}</div>
-            <a href={`/userpage`}>USERPAGE</a> */}
             <Router>
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
                 <Route path="/post" element={<TextPost />}></Route>
+                <Route path="/c/:handle" element={<Subcruddit />} />
               </Routes>
             </Router>
           </UserRoleContext.Provider>
