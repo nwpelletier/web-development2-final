@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import UserCommentsTab from "./UserCommentsTab";
 import UserOverview from "./UserOverview";
 import UserSubmitted from "./UserSubmitted"; 
-import UserUpvoted from "./UserUpvoted"; 
-import UserDownvoted from "./UserDownvoted"; 
 function UserNav() {
   const [showComments, setShowComments] = useState(false);
   const [showOverview, setShowOverview] = useState(true);
   const [showSubmitted, setShowSubmitted] = useState(false);
-  const [showUpvoted, setShowUpvoted] = useState(false);
-  const [showDownvoted, setShowDownvoted] = useState(false);
+
+  const userID = 2;
+
+  
 
   return (
     <div className="container">
@@ -21,8 +21,6 @@ function UserNav() {
             setShowOverview(true);
             setShowComments(false);
             setShowSubmitted(false);
-            setShowUpvoted(false);
-            setShowDownvoted(false);
           }}
         >
           Overview
@@ -49,8 +47,6 @@ function UserNav() {
                   setShowComments(true);
                   setShowOverview(false);
                   setShowSubmitted(false);
-                  setShowUpvoted(false);
-                  setShowDownvoted(false);
                 }}
               >
                 COMMENTS
@@ -64,51 +60,17 @@ function UserNav() {
                   setShowSubmitted(true);
                   setShowOverview(false);
                   setShowComments(false);
-                  setShowUpvoted(false);
-                  setShowDownvoted(false);
                 }}
               >
                 SUBMITTED
               </a>
             </li> 
-            <li className="nav-item">
-              <a
-                className="nav-link fs-6"
-                href="#"
-                onClick={() => {
-                  setShowUpvoted(true);
-                  setShowOverview(false);
-                  setShowComments(false);
-                  setShowSubmitted(false);
-                  setShowDownvoted(false);
-                }}
-              >
-                UPVOTED
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link fs-6"
-                href="#"
-                onClick={() => {
-                  setShowDownvoted(true);
-                  setShowOverview(false);
-                  setShowComments(false);
-                  setShowSubmitted(false);
-                  setShowUpvoted(false);
-                }}
-              >
-                DOWNVOTED
-              </a>
-            </li>
           </ul>
         </div>
       </nav>
-      {showOverview && <UserOverview />}
+      {showOverview && <UserOverview  UserID={userID}/>}
       {showComments && <UserCommentsTab />}
       {showSubmitted && <UserSubmitted />}
-      {showUpvoted && <UserUpvoted />}
-      {showDownvoted && <UserDownvoted />}
     </div>
   );
 }

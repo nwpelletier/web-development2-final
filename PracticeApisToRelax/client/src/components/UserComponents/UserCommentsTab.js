@@ -5,7 +5,6 @@ import axios from 'axios';
 function UserCommentsTab() {
   let { id } = useParams();
   const [comments, setComments] = useState([]);
-  id = 1;
   useEffect(() => {
     try {
       axios
