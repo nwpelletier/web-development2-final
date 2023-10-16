@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Field, ErrorMessage } from 'formik';
 
 function CategoryFields(props) {
-    const { title, warning, formName, formStyle, formId, formType, rows, lineHeight } = props;
+    const { title, warning, formName, formStyle, formId, formType, rows, lineHeight, onBlurWarning, onBlurFunction, value } = props;
+    const [subcrudditExists, setSubcrudditExists] = useState()
+   
+
+    // // onBlurFunction = {formObj.onBlur ? formObj.onBlurFunction : undefined}
+    // // onBlurWarning = {formObj.onBlur ? formObj.onBlurWarning : undefined}
+
+    const onBlur = (data) => {
+        setSubcrudditExists(true)
+        onBlurFunction(data)
+    }
 
     return (
         <div>
+            
             <div className="row">
                 <div className="bg-cruddit-blue col-5 mt-2 mx-3 mx-2 py-2 px-3">
                     <label htmlFor={formId} className="text-dark-blue-20 mb-0 my-1">
@@ -16,6 +27,7 @@ function CategoryFields(props) {
                     </p>
                     <>
                         <ErrorMessage name={formName} component="div" className="text-danger" />
+                        <div>{(onBlurWarning  && subcrudditExists ) && (<div className='text-danger'>{onBlurWarning}</div>)}</div>
                         <Field
                             className={formStyle}
                             id={formId}
@@ -24,6 +36,9 @@ function CategoryFields(props) {
                             type={formType !== "textarea" ? formType : undefined}
                             rows={rows}
                             style={{ lineHeight: lineHeight }}
+                            onBlurCapture= {onBlurWarning ?  onBlur : undefined}
+                            defaultValue={value ? value : undefined}
+                            
                         />
                     </>
                 </div>

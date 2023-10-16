@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Formik, Field, ErrorMessage, withFormik } from 'formik';
 import cardImage from '../../assets/card-image.svg';
 
-function DropImg({ open, formObj, warning, title, setBannerFile, name, formId }) {
+function DropImg({ open, warning, title, setBannerFile, name, formId }) {
   const [file, setFile] = useState("");
   
 

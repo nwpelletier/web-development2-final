@@ -18,6 +18,7 @@ import Home from './pages/Home'
 import Subcruddit from './pages/Subcruddit'
 import TextPost from "./pages/TextPost";
 import ImgPost from "./pages/ImgPost";
+import SubcrudditPost from "./pages/SubcrudditPost";
 
 
 export const AuthContext = React.createContext();
@@ -40,8 +41,9 @@ function App() {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
-                <Route path="/post/text" element={<TextPost />}></Route>
-                <Route path="/post/img" element={<ImgPost />}></Route>
+                <Route path="/post/text/:subcruddit" element={<TextPost />}></Route>
+                <Route path="/post/img/:subcruddit" element={<ImgPost />}></Route>
+                <Route path="/c/new" element={< SubcrudditPost />}></Route>
                 <Route path="/c/:handle" element={<Subcruddit />} />
               </Routes>
             </Router>

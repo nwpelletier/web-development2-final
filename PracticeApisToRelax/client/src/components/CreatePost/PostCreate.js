@@ -1,6 +1,7 @@
 import DropImg from "../Crop/DropImg";
 import Navbar from "../Navbar/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom'
 import CategoryFields from "../SubcrudditCreate/CategoryFields";
 import {Formik, Form, Field, ErrorMessage, withFormik, useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -9,8 +10,22 @@ import * as Yup from 'yup';
 
 
 function PostCreate(props) {
-  const { btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt, imgDetails } = props;
+  const { btnText, formInitValues, formObject, formSchema, postForm, postType, redirect, redirectTxt, imgDetails} = props;
+  const {subcruddit} = useParams()
+  const [subParam, setSubParam] = useState()
+  
 
+
+
+  useEffect(() => {
+    if (subcruddit === "all") {
+      setSubParam("")
+      formInitValues.subcrudditName = ""
+    } else {
+      setSubParam(subcruddit)
+      formInitValues.subcrudditName = subcruddit;
+    }
+  })
 
 
   return (
@@ -37,6 +52,15 @@ function PostCreate(props) {
   formType={formObj.formType}
   rows={formObj.rows}
   lineHeight={formObj.lineHeight} 
+  onBlurWarning = {formObj.onBlur ? formObj.onBlurWarning : undefined}
+  onBlurFunction = {formObj.onBlur ? formObj.onBlurFunction : undefined}
+  value = {formObj.value ? subParam : undefined}
+
+  
+
+ 
+
+
   />
 ))}
        

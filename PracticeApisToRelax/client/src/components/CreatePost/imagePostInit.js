@@ -17,6 +17,9 @@ export const formInitValues = {
 export const postForm = (data) => {
     console.log(data)
 }
+const onBlurCheck = (data) => {
+    console.log(data)
+}
   
 export const formSchema = Yup.object({
     title: Yup
@@ -43,6 +46,19 @@ export const formSchema = Yup.object({
 })
 
 export const formObject = [{
+    inputId: "subcrudditNameInput",
+    name: "subcrudditName",
+    formType: "text",
+    rows: "",
+    lineHeight: 2.2,
+    title: "subcruddit",
+    warning: "please select a subcruddit that exists",
+    formStyle: "form-text custom-form",
+    onBlur: true,
+    onBlurWarning: "This subcruddit does not exist",
+    onBlurFunction: onBlurCheck,
+    value: " "
+}, {
     inputId: "titleInput",
     name: "title",
     formType: "text",
