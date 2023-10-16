@@ -18,6 +18,7 @@ import Home from './pages/Home'
 import Subcruddit from './pages/Subcruddit'
 import TextPost from "./pages/TextPost";
 import ImgPost from "./pages/ImgPost";
+import SinglePost from "./pages/SinglePost";
 
 
 export const AuthContext = React.createContext();
@@ -43,6 +44,8 @@ function App() {
                 <Route path="/post/text" element={<TextPost />}></Route>
                 <Route path="/post/img" element={<ImgPost />}></Route>
                 <Route path="/c/:handle" element={<Subcruddit />} />
+                <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
+
               </Routes>
             </Router>
           </UserRoleContext.Provider>
