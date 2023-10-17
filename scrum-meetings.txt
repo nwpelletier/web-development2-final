@@ -266,3 +266,46 @@ Ehsan:
  Challenges:
   - Understanding reddit (I am new in reddit)
 
+===================
+Date: 2023/10/17
+
+Nick:
+ Finished: 
+  - Clicking post displays content (needs formatting)
+  - RDS Database Host
+ Working On: 
+  - Hot/New, date, time username format on posts (early today)
+  - Upvote/downvote on posts
+  - S3 file upload
+ Challenges: 
+  - RDS security groups
+
+
+Alex:
+ Finished: 
+  - Bulk of posts - image, subcrud, text available 
+  - Bulk of comments 
+  - finished creating return objects in post controller 
+ Working On:
+  - Finish comments 
+  - finish posts 
+  - file upload in back end 
+  - file upload with bucket 
+  - comment upvote/downvote 
+ Challenges:
+  - getting reply values to change 
+  - duplicate comments after post 
+  - use context for order value 
+
+ 
+Ehsan:
+ Finished: 
+  - restructured userpage by overview/comments/submitted
+  - added user name to the page 
+ Working On: 
+  - right panel 
+  - restructuring userprofile to look similar to the user page 
+ Challenges:
+  - NA
+
+
