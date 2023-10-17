@@ -1,36 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
 
-// function UserOverview() {
-//   let id = 2;
-
-//   const [posts, setPosts] = useState([]);
-//   useEffect(() => {
-//     try {
-//       axios.get(`http://localhost:8080/api/posts/${id}/posts`).then((response) => {
-//         setPosts(response.data);
-//       });
-//     } catch (error) {}
-//   }, []);
-
-//   return (
-//     <div className="container mt-3">
-//       <ul className="list-group">
-//         {posts.map((post, index) => (
-//           <li
-//             key={index}
-//             className="list-group-item col-md-8 mb-3 border rounded p-3 shadow"
-//           >
-//             <div className="">{post.title}</div>
-//             <div className="">{post.caption}</div>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default UserOverview;
 import axios from "axios";
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
@@ -38,42 +6,24 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
-function UserOverview(userID) {
-
-  
-
-
+function UserOverview(user) {
+  console.log("USER:", user);
+  let userId = user.UserID;
   const [voteStatus, setVoteStatus] = useState("none");
   const [localPoints, setLocalPoints] = useState(0);
-  //let { userid } = useParams();
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     try {
-      console.log(userID.UserID);
       axios
-        .get(`http://localhost:8080/api/posts/user/${userID.UserID}`)
+        .get(`http://localhost:8080/api/overview/${userId}`)
         .then((response) => {
           setPosts(response.data);
-          console.log(response.data);
+          //console.log(response.data);
         });
     } catch (error) {
       console.log("SHOW ERROR", error);
     }
   }, []);
-
-  let { id } = useParams();
-  const [comments, setComments] = useState([]);
-  useEffect(() => {
-    try {
-      axios
-        .get(`http://localhost:8080/api/posts/${id}/comments`)
-        .then((response) => {
-          setComments(response.data);
-        });
-    } catch (error) {
-      
-    }
-  },[]);
 
   //  I think "localPoints" could make sense for instant feedback
   //  On an upvote/downvote, without having to refresh the posts every time
@@ -141,9 +91,21 @@ function UserOverview(userID) {
               </div>
             </div>
             <div class="col-md-10">
-              <div className="post-title">{post.title}</div>
+              <div >
+                {console.log("POSTTYPE",post.type)}
+                {post.postType === "comment" ? (
+                  <div>
+                    <p>{post.content}</p>
+                  </div>
+                ) : (
+                  <div className="post-title">
+                    <h3>{post.title}</h3>
+                  </div>
+                )}
+              </div>
               <div className="post-submission-info">
-                Posted {format(new Date(post.createdAt),"MM/dd/yyyy")} by {post.UserName} to {"  "}
+                Posted {format(new Date(post.createdAt), "MM/dd/yyyy")} by{" "}
+                {post.UserName} to {"  "}
                 {post.subcrudditName}
               </div>
               <div className="post-links">

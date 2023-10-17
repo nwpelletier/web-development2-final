@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require("../controllers/users-controller");
+const controller = require("../controllers/PostUserController");
 
-router.get("/:id/user/posts", controller.findAllActivePostsUser)
+router.get("/:id", controller.findAllActivePostsCommentsByUser);
+
+module.exports = router; 

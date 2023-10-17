@@ -632,7 +632,7 @@ module.exports = {
                   }]  
             })
             for (let post of activePosts) {
-                console.log("FINDALL", originalPost);
+                
                 if (post.postType === "comment") {
                     
                         const originalPost = await Posts.findByPk(post.postId, {

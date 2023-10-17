@@ -1,47 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserCommentsTab from "./UserCommentsTab";
 import UserOverview from "./UserOverview";
-import UserSubmitted from "./UserSubmitted"; 
+import UserSubmitted from "./UserSubmitted";
+import Logo from "../../assets/reddit-logo.svg";
+
 function UserNav() {
   const [showComments, setShowComments] = useState(false);
   const [showOverview, setShowOverview] = useState(true);
   const [showSubmitted, setShowSubmitted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUsername = localStorage.getItem("username");
+    if (token) {
+      setIsAuthenticated(true);
+      setUsername(storedUsername); 
+    }
+  }, []);
   const userID = 2;
 
-  
-
   return (
-    <div className="container">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a
-          className="navbar-brand"
-          href="#"
-          onClick={() => {
-            setShowOverview(true);
-            setShowComments(false);
-            setShowSubmitted(false);
-          }}
-        >
-          Overview
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+    <div className="container-fluid mt-4">
+      <div className="row">
+        <div className="col-md-8">
+          <ul className="nav nav-tabs">
+            {isAuthenticated && (
+              <li className="nav-item d-flex align-items-center">
+                <a className="nav-link" href="/c/all">
+                  <img
+                    src={Logo}
+                    alt="Reddit Logo"
+                    width="100rem"
+                    className="px-2"
+                  />
+                </a>
+                <div className="d-flex align-items-center">
+                  <strong className="text-dark me-3 fs-3">{username}</strong>
+                </div>
+              </li>
+            )}
             <li className="nav-item">
               <a
-                className="nav-link fs-6"
+                className={`nav-link ${showOverview ? "active" : ""}`}
+                href="#"
+                onClick={() => {
+                  setShowOverview(true);
+                  setShowComments(false);
+                  setShowSubmitted(false);
+                }}
+              >
+                Overview
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className={`nav-link ${showComments ? "active" : ""}`}
                 href="#"
                 onClick={() => {
                   setShowComments(true);
@@ -49,12 +64,12 @@ function UserNav() {
                   setShowSubmitted(false);
                 }}
               >
-                COMMENTS
+                Comments
               </a>
             </li>
-             <li className="nav-item">
+            <li className="nav-item">
               <a
-                className="nav-link fs-6"
+                className={`nav-link ${showSubmitted ? "active" : ""}`}
                 href="#"
                 onClick={() => {
                   setShowSubmitted(true);
@@ -62,15 +77,19 @@ function UserNav() {
                   setShowComments(false);
                 }}
               >
-                SUBMITTED
+                Submitted
               </a>
-            </li> 
+            </li>
           </ul>
         </div>
-      </nav>
-      {showOverview && <UserOverview  UserID={userID}/>}
-      {showComments && <UserCommentsTab />}
-      {showSubmitted && <UserSubmitted />}
+      </div>
+      <div className="row">
+        <div className="col-md-8">
+          {showOverview && <UserOverview UserID={userID} />}
+          {showComments && <UserCommentsTab UserID={userID} />}
+          {showSubmitted && <UserSubmitted UserID={userID} />}
+        </div>
+      </div>
     </div>
   );
 }
