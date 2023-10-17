@@ -36,14 +36,11 @@ function SubcrudditDisplay({ subcrudditName }) {
           points={post.points}
           title={post.title}
           postType={post.postType}
-          UserId={post.UserId}
+          username={post.username} // Assuming the user object is nested within the post object
           SubcrudditId={post.SubcrudditId}
-
-          // formatDistance (goes by hours ago, days ago, etc)
           createdAt={formatDistance(new Date(post.createdAt), new Date(), {
             addSuffix: true,
           })}
-          by={post.username}
           SubcrudditName={post.subcrudditName}
         />
       ))}

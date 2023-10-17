@@ -416,8 +416,9 @@ module.exports = {
             });
             
         }
-
+       
         const returnObj = activePosts.map((post) => ({
+            
             id: post.id,
             UserId: post.UserId,
             SubcrudditId: post.SubcrudditId, 
@@ -434,7 +435,7 @@ module.exports = {
 
 
         }));
-
+        console.log(post); 
         res.status(200).send(returnObj);
     },
     findAllActivePostsUser: async(req, res) => {

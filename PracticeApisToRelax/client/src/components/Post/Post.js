@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 
-function Post({ id, points, title, postType, UserId, SubcrudditId, SubcrudditName, createdAt }) {
+function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt }) {
   const [voteStatus, setVoteStatus] = useState('none');
   const [localPoints, setLocalPoints] = useState(points);
+  const currentPath = useLocation().pathname;
 
   //  I think "localPoints" could make sense for instant feedback
   //  On an upvote/downvote, without having to refresh the posts every time
@@ -74,7 +75,11 @@ function Post({ id, points, title, postType, UserId, SubcrudditId, SubcrudditNam
             </Link>
 
           </div>
-          <div className="post-submission-info">Posted {createdAt} by {UserId} to {SubcrudditId}</div>
+          {currentPath.includes('/c/all') ? (
+            <div className="post-submission-info">Posted {createdAt} by {username} to {SubcrudditName}</div>
+          ) : (
+            <div className="post-submission-info">Posted {createdAt} by {username}</div>
+          )}
           <div className="post-links">
             <span># of child comments</span>
             &nbsp;&nbsp;&nbsp;&nbsp;
