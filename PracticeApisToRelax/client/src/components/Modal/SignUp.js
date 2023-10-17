@@ -47,7 +47,11 @@ function Register({ setModalContent, closeModal }) {
   // };
 
   const register = (userData) => {
-    return axios.post(`${BASE_URL}/api/users/register`, userData)
+    return axios.post(`${BASE_URL}/api/users/register`, userData, {
+      headers: {
+        "x-access-token": localStorage.getItem('token')
+      }
+    })
     .then((response) => {
       navigate("/");
       closeModal();

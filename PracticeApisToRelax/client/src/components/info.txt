@@ -1,0 +1,7 @@
+Send authentication headers:
+
+-login
+-registration (I don't think it makes sense for this?  Token isn't create yet, and we have separate auth in controller)
+
+-most user page actions will need to send header
+

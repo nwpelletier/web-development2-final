@@ -25,7 +25,11 @@ function Login({ setModalContent, closeModal }) {
 
 
   const login = (data) => {
-    axios.post(`http://localhost:8080/api/users/login`, data)
+    axios.post(`http://localhost:8080/api/users/login`, data, {
+      headers: {
+        "x-access-token": localStorage.getItem('token')
+      }
+    })
       .then((response) => {
         if (response.data.auth === true) {
           setIsAuth(response.data.auth);
