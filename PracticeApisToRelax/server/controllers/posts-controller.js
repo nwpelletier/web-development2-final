@@ -67,6 +67,11 @@ module.exports = {
             return;
         }
         try {
+            const user = await Users.findByPk(comment.UserId)
+            if (user.length < 1){
+                return res.status(400).json({message : "Create post from valid user account", user: false})
+            } 
+
             const originalPost = await Posts.findOne({
                 where: {
                     id: postId
@@ -77,46 +82,89 @@ module.exports = {
                     message: "You must reply to a valid post."
             })
             }
-            //comment.SubcrudditId = originalPost.SubcrudditId;
-            const user = await Users.findByPk(comment.UserId)
-            if (user.length < 1){
-                return res.status(400).json({message : "Create post from valid user account", user: false})
-            } 
-
-            if (originalPost.layer !== 0){
-                const parentPost = await Posts.findOne({
-                    where: {
-                        id: originalPost.postId
-                    }
-                })
-                parentPost.children_count++;
-                parentPostId = parentPost.id;
-                try {
-                    await parentPost.save()
-                } catch (error) {
-                    return res.status(500).json({message : "Could not update parent comment children", error: error})
-                }
-                
-            } else {
-                parentPostId = postId;
-            }
-            originalPost.children_count++;
-            layer = originalPost.layer + 1;
-            subcrudditId = originalPost.SubcrudditId;
-            try {
-                await originalPost.save()
-            } catch (error){
-                return res.status(500).json({message : "Could not update parent comment children", error: error})
-            }
-
-            comment.postId = parentPostId;
-            comment.layer = layer;
-            comment.parentId = postId;
-            comment.SubcrudditId = subcrudditId;
+            comment.SubcrudditId = originalPost.SubcrudditId;
+            comment.layer = originalPost.layer + 1;
+            comment.parentId = originalPost.id
             comment.postType = "comment";
             comment.points = 1;
+            let isComment;
+            if (originalPost.layer === 0) {
+                comment.postId = originalPost.id
+                isComment = false;
+            } else {
+                comment.postId = originalPost.postId
+                isComment = true;
+            }
+            parentId = originalPost.parentId 
+            originalPost.children_count += 1;
+            await originalPost.save()
+
+            while (isComment) {
+                const parent = await Posts.findByPk(parentId)
+                parent.children_count+= 1;
+                layer = parent.layer
+                parentId = parent.parentId
+                await parent.save()
+                if (layer === 0) {
+                    isComment = false;
+                }
+            }
+            
+
+
+
+
+            
+
+            // if (originalPost.layer !== 0){
+            //     const parentPost = await Posts.findOne({
+            //         where: {
+            //             id: originalPost.postId
+            //         }
+            //     })
+            //     parentPost.children_count++;
+            //     parentPostId = parentPost.id;
+            //     try {
+            //         await parentPost.save()
+            //     } catch (error) {
+            //         return res.status(500).json({message : "Could not update parent comment children", error: error})
+            //     }
+                
+            // } else {
+            //     parentPostId = postId;
+            // }
+            // originalPost.children_count++;
+            // layer = originalPost.layer + 1;
+            // subcrudditId = originalPost.SubcrudditId;
+            // try {
+            //     await originalPost.save()
+            // } catch (error){
+            //     return res.status(500).json({message : "Could not update parent comment children", error: error})
+            // }
+
+            // comment.postId = parentPostId;
+            // comment.layer = layer;
+            // comment.parentId = postId;
+            // comment.SubcrudditId = subcrudditId;
+            // comment.postType = "comment";
+            // comment.points = 1;
 
             const newComment = await Posts.create(comment);
+            const returnObj = {
+            id: newComment.id,
+            UserId: newComment.UserId,
+            username: user.username,
+            content: newComment.content,
+            children_count: newComment.children_count,
+            points: newComment.points,
+            layer: newComment.layer,
+            isStickied: newComment.isStickied,
+            isActive: newComment.isActive,
+            createdAt: newComment.createdAt,
+            }
+
+
+ 
             const vote = {
                 UserId: newComment.UserId,
                 PostId: newComment.id,
@@ -124,13 +172,13 @@ module.exports = {
             }
             await Votes.create(vote)
             if (newComment) {
-                return res.status(201).json(newComment) 
+                return res.status(201).json(returnObj) 
             }
             return res.status(400).json({message: "something went wrong"})
 
         } catch(error) {
             console.log(error);
-            res.status(500).json({message: "Internal Server Error"})  
+            return res.status(500).json({message: "Internal Server Error"})  
         }
     },
     findAllActivePosts: async(req, res) => {
@@ -262,6 +310,7 @@ module.exports = {
             points: comment.points,
             layer: comment.layer,
             isStickied: comment.isStickied,
+            isActive: comment.isActive,
             createdAt: comment.createdAt,
         }));
 

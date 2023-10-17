@@ -21,6 +21,7 @@ import ImgPost from "./pages/ImgPost";
 import SubcrudditPost from "./pages/SubcrudditPost";
 import SinglePost from "./pages/SinglePost";
 import PostComments from "./components/Post/PostComments"
+import CommentPlay from "./components/Post/CommentPlay";
 
 
 export const AuthContext = React.createContext();
@@ -47,7 +48,7 @@ function App() {
                 <Route path="/post/img/:subcruddit" element={<ImgPost />}></Route>
                 <Route path="/c/new" element={< SubcrudditPost />}></Route>
                 <Route path="/c/:handle" element={<Subcruddit />} />
-                <Route path="/comments" element={<PostComments />} />
+                <Route path="/comments" element={<CommentPlay />} />
                 <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
 
               </Routes>

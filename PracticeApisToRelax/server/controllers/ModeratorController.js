@@ -1,4 +1,4 @@
-const { Moderators } = require("../models");
+const { Moderators, Subcruddits, Users } = require("../models");
 
 exports.create = async (req, res) => {
   try {
@@ -69,4 +69,39 @@ exports.findAll = async (req, res) => {
     }
   }
   
+
+exports.isModerator = async (req, res) => {
+  // const userId = req.UserId;
+  const userId = req.body.UserId;
+  const subName = req.params.subcruddit
+  try {
+    const subcruddit = await Subcruddits.findOne({
+      where: {
+        subcrudditName: subName
+      }
+    })
+
+    if(!subcruddit) {
+      return res.status(400).message({message: "that subcruddit does not exist"})
+    }
+
+    const mod = await Moderators.findOne({
+      where: {
+        UserId: userId,
+        SubcrudditId: subcruddit.id
+      }
+    })
+
+    if (!mod) {
+      return res.status(200).send(false)
+    } else {
+      return res.status(200).send(true)
+    }
+
+
+
+  } catch {
+
+  }
+}
   

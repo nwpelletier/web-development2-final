@@ -251,6 +251,54 @@ RIGHTNAV
   font-family: 'verdana',arial,helvetica,sans-serif!important;
   color: #808080;
  
+}  
+
+.comment-box {
+  margin: 4px 2px 4px 30px;
+  padding: 2px 0px 2px 30px;
+  border: 1px solid lightgray;
 }
 
+.background-0 {
+  background-color: #f1f1f1;
+}
 
+.background-1 {
+  /* background-color: #e7e7e7; */
+  background-color: #fafafa;
+}
+
+.comment-area {
+  margin-left: -70px;
+  font-family: 'verdana',arial,helvetica,sans-serif!important;
+}
+.vote-area {
+  margin-left: 0px;
+}
+
+.comment-links {
+  color: #336699;
+  
+
+}
+
+.comment-small {
+  font-size: 14px;
+}
+
+.comment-big {
+  font-size: 20px;
+}
+
+.form-comment{
+  margin-top: 4px;
+  width: 90%;
+}
+
+.comment-warning {
+  margin-left: 40px;
+}
+
+.comment-form{
+  margin-left: 40px;
+}
