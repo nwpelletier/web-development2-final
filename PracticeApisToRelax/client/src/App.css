@@ -42,7 +42,6 @@ RIGHTNAV
 .lower-half {
   background-color: rgb(199, 223, 244);
   position: relative;
-  height: 50px;
   width: 100%;
   border-top: 1px solid rgb(92, 106, 122);
   border-bottom: 1px solid rgb(92, 106, 122);
@@ -174,6 +173,10 @@ RIGHTNAV
   font-size:17px;
   font-weight:400;
   color:#0c17b0;
+}
+
+.post-title, a {
+  text-decoration:none;
 }
 
 .post-submission-info {
