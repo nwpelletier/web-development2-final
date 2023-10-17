@@ -4,7 +4,6 @@ import axios from 'axios';
 function PostDisplay({ postId }) {
   const [selectedPost, setSelectedPost] = useState(null);
 
-  // Log the type of postId
   console.log(typeof postId);
 
   useEffect(() => {
@@ -33,7 +32,7 @@ function PostDisplay({ postId }) {
           <p>Points: {selectedPost.points}</p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p></p>
       )}
     </div>
   );

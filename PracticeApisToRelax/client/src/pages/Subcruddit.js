@@ -4,7 +4,7 @@ import RightNav from "../components/RightNav/RightNav";
 import { SubcrudditContext } from "../App";
 import { useParams } from "react-router-dom";
 
-
+//To Do: useContext (isMod) to initialize right panel
 function Subcruddit() {
 
   const { handle } = useParams();

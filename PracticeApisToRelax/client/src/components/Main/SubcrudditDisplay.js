@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post';
+import { formatDistance } from 'date-fns';
 
-// Changing to display posts by subcrudditName
 function SubcrudditDisplay({ subcrudditName }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-
-    // console.log(subcrudditName)
     const fetchPosts = async () => {
       try {
         let response;
@@ -40,12 +38,18 @@ function SubcrudditDisplay({ subcrudditName }) {
           postType={post.postType}
           UserId={post.UserId}
           SubcrudditId={post.SubcrudditId}
-          createdAt={post.createdAt}
+
+          // formatDistance (goes by hours ago, days ago, etc)
+          createdAt={formatDistance(new Date(post.createdAt), new Date(), {
+            addSuffix: true,
+          })}
+          by={post.username}
           SubcrudditName={post.subcrudditName}
         />
       ))}
     </div>
   );
+
 }
 
 export default SubcrudditDisplay;
