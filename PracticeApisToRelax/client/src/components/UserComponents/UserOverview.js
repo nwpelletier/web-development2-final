@@ -112,53 +112,6 @@ function UserOverview(userID) {
   return (
     <div>
       {posts.map((post, index) => (
-        // <div className="post-container row">
-
-        //   <div className="vote-and-type-container row">
-        //     <div className="vote-container">
-        //       <img
-        //         className={`upvote ${voteStatus === "upvote" ? "voted" : ""}`}
-        //         src={arrowUpImage}
-        //         alt="upvote"
-        //         width="40%"
-        //         height="40%"
-        //         // onClick={() => handleVote(true)}
-        //       />
-        //       <h6 className="vote-count">{localPoints}</h6>
-        //       <img
-        //         className={`downvote ${
-        //           voteStatus === "downvote" ? "voted" : ""
-        //         }`}
-        //         src={arrowDownImage}
-        //         alt="downvote"
-        //         width="40%"
-        //         height="40%"
-        //         // onClick={() => handleVote(false)}
-        //       />
-        //     </div>
-        //     <div className="post-type-container">
-        //       <p>{posts.postType}</p>
-        //     </div>
-        //   </div>
-
-        //   <div className="">
-        //     <li
-        //       key={index}
-        //       className=""
-        //     >
-        //       <div className="post-title">{post.title}</div>
-        //       <div className="post-submission-info">
-        //         Posted {post.createdAt} by {post.UserName} to{" "}
-        //         {post.subcrudditName}
-        //       </div>
-        //       <div className="post-links">
-        //         <span># of child comments</span>
-        //         &nbsp;&nbsp;&nbsp;&nbsp;
-        //         <span>report</span>
-        //       </div>
-        //     </li>
-        //   </div>
-        // </div>
         <div class="row my-2">
           <div className="post-container row">
             <div class="col-md-2 d-flex flex-column">

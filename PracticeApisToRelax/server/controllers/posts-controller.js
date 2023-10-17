@@ -631,7 +631,8 @@ module.exports = {
                     attributes: ['subcrudditName'] 
                   }]  
             })
-            for (let post of activePosts){
+            for (let post of activePosts) {
+                console.log("FINDALL", originalPost);
                 if (post.postType === "comment") {
                     
                         const originalPost = await Posts.findByPk(post.postId, {
@@ -640,6 +641,7 @@ module.exports = {
                                 attributes: ['username']  
                               }]
                         })
+                    console.log("FINDALL", originalPost);
                         const originalObj = {
                             id: originalPost.id, 
                             title: originalPost.title,
@@ -674,7 +676,7 @@ module.exports = {
             res.status(200).send(returnObj);
 
         } catch(error){
-            console.log(error);
+            console.log("ERROR: ",error);
             res.status(500).json({message: "Internal Server Error"}) 
         }
     },
