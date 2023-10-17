@@ -91,7 +91,7 @@ function UserCommentsTab(user) {
             </div>
             <div class="col-md-10">
               <div>
-                {console.log("POSTTYPE", post.type)}
+                
                 {post.postType === "comment" ? (
                   <div>
                     <p>{post.content}</p>

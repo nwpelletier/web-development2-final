@@ -21,12 +21,6 @@ function UserSubmitted(user) {
     }
   }, []);
 
-  //  I think "localPoints" could make sense for instant feedback
-  //  On an upvote/downvote, without having to refresh the posts every time
-  //  The database patch will be made, so refreshing the whole page
-  //  Will still show updated; but localPoints could be what
-  //  affects the orange uparrow, blue downarrow + immediate points change
-  //UserId = 2;
   const handleVote = (liked) => {
     // This case: it has already been upvoted, and you click upvote again
     if (voteStatus === liked) {
@@ -89,7 +83,7 @@ function UserSubmitted(user) {
             </div>
             <div class="col-md-10">
               <div>
-                {console.log("POSTTYPE", post.type)}
+               
                 {post.postType === "comment" ? (
                   <div>
                     <p>{post.content}</p>

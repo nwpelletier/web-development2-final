@@ -3,11 +3,10 @@ import axios from "axios";
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
 function UserOverview(user) {
-  console.log("USER:", user);
+ 
   let userId = user.UserID;
   const [voteStatus, setVoteStatus] = useState("none");
   const [localPoints, setLocalPoints] = useState(0);
@@ -18,7 +17,7 @@ function UserOverview(user) {
         .get(`http://localhost:8080/api/overview/${userId}`)
         .then((response) => {
           setPosts(response.data);
-          //console.log(response.data);
+          
         });
     } catch (error) {
       console.log("SHOW ERROR", error);
@@ -62,9 +61,9 @@ function UserOverview(user) {
   return (
     <div>
       {posts.map((post, index) => (
-        <div class="row my-2">
+        <div className="row my-2">
           <div className="post-container row">
-            <div class="col-md-2 d-flex flex-column">
+            <div className="col-md-2 d-flex flex-column">
               <div className="row">
                 <div className="col-md-2">
                   <img
@@ -90,9 +89,9 @@ function UserOverview(user) {
                 </div>
               </div>
             </div>
-            <div class="col-md-10">
+            <div className="col-md-10">
               <div >
-                {console.log("POSTTYPE",post.type)}
+                
                 {post.postType === "comment" ? (
                   <div>
                     <p>{post.content}</p>
