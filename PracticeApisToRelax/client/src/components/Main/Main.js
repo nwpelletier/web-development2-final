@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import SubcrudditDisplay from './SubcrudditDisplay';
 import PostDisplay from './PostDisplay';

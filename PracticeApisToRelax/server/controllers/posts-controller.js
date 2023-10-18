@@ -435,7 +435,6 @@ module.exports = {
 
 
         }));
-        console.log(post); 
         res.status(200).send(returnObj);
     },
     findAllActivePostsUser: async(req, res) => {

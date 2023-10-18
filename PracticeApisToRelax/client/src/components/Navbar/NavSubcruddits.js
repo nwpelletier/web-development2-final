@@ -1,9 +1,7 @@
-// SubCrudditList.js
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { SubcrudditContext } from '../../App';
 
-function SubCrudditList() {
+function NavSubcruddits() {
   const [subcruddits, setSubcruddits] = useState([]);
 
   useEffect(() => {
@@ -38,4 +36,4 @@ function SubCrudditList() {
   );
 }
 
-export default SubCrudditList;
+export default NavSubcruddits;

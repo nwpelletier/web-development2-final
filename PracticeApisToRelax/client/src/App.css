@@ -34,6 +34,11 @@ RIGHTNAV
   color: #555;
 }
 
+.current-subcruddit {
+  font-size:32px;
+  font-weight:700
+}
+
 .orange-box {
   width: 3%;
   background-color: #ff6314;
@@ -42,6 +47,8 @@ RIGHTNAV
 .lower-half {
   background-color: rgb(199, 223, 244);
   position: relative;
+  padding-top: 10px;
+  padding-bottom: 10px;
   width: 100%;
   border-top: 1px solid rgb(92, 106, 122);
   border-bottom: 1px solid rgb(92, 106, 122);
@@ -174,7 +181,7 @@ RIGHTNAV
 
 .post-title {
   font-size:17px;
-  font-weight:400;
+  font-weight:500;
   color:#0c17b0;
 }
 

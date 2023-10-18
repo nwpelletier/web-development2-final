@@ -1,11 +1,11 @@
 import React from 'react';
-import SubCrudditList from './SubCrudditList';
-import LowerHalf from './LowerHalf';
+import NavSubcruddits from './NavSubcruddits';
+import LowerHalf from './NavBlueSection';
 
 function Navbar() {
   return (
     <div>
-      <SubCrudditList/>
+      <NavSubcruddits/>
       <LowerHalf/>
     </div>
   )
