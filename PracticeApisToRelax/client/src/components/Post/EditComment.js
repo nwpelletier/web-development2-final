@@ -4,32 +4,15 @@ import axios from 'axios';
 import Comments from './Comments';
 import PostComments from './PostComments';
 
-function CreateComment(props) {
-    const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props
+function EditComment(props) {
+    const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit} = props
     const formInitValues = {
         UserId: 1,
-        content: "",
+        content: value,
     }
     
     const postForm = (data) => {
-        if (value) {
-
-        } else {
-        console.log(data)
-        axios
-        .post(`http://localhost:8080/api/posts/comment/${comment.id}`, data)
-        .then((response) => {
-            setReply(false)
-            setNewComment(response.data)
-            setNestedReply(true)
-            setCommentReplies(commentReplies + 1)
-           
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-        
+    console.log(data) 
     }
 
     
@@ -44,7 +27,7 @@ function CreateComment(props) {
     })
 
     const cancel = () => {
-        setReply(false)
+        setEdit(false)
     }
 
   
@@ -61,6 +44,7 @@ function CreateComment(props) {
                              as={"textarea"}
                             rows={6}
                             style={{ lineHeight: 1 }}
+                            value={value}
                          
                             
                         />
@@ -82,4 +66,4 @@ function CreateComment(props) {
 
 
 }
-export default CreateComment;
+export default EditComment;

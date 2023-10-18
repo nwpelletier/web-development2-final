@@ -50,7 +50,7 @@ module.exports = {
                             PostId: postId
                         }
                     })
-                    return res.status(200).json({ message: "Successfully deleted vote"});
+                    return res.status(200).send({vote: "nothing", points: points});
 
                 }
     
@@ -86,7 +86,7 @@ module.exports = {
     
             try {
                 await post.save();
-                res.status(200).json({ message: "Successfully voted", post: post });
+                res.status(200).json({ vote: vote.liked, points: points });
             } catch (error) {
                 return res.status(500).json({ message: "Could not complete voting", error: error });
             }
@@ -151,7 +151,8 @@ module.exports = {
 
     getVote: async (req, res) => {
         const post = req.params.id;
-        const userId = req.body.UserId;
+      //  const userId = req.id
+      const userId = 1;
         try {
             const vote = await Votes.findOne({
                 where: {
@@ -160,7 +161,7 @@ module.exports = {
                 }
             })
             if (!vote) {
-                return res.status(200).send(null);
+                return res.status(200).send("nothing");
             } 
 
             return res.status(200).send(vote.liked)

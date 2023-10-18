@@ -345,8 +345,8 @@ a {
 }
 
 .comment-box {
-  margin: 4px 2px 4px 30px;
-  padding: 2px 0px 2px 30px;
+  margin: 4px 1px 4px 10px;
+  padding: 2px 0px 2px 10px;
   border: 1px solid lightgray;
 }
 
@@ -360,14 +360,18 @@ a {
 }
 
 .comment-area {
-  margin-left: -70px;
+ 
   font-family: 'verdana', arial, helvetica, sans-serif !important;
 }
 
 .vote-area {
+ 
   margin-left: 0px;
 }
 
+.comment-row{
+  display: flex;
+}
 .comment-links {
   color: #336699;
 
@@ -393,4 +397,23 @@ a {
 
 .comment-form {
   margin-left: 40px;
+}
+
+.comment-vote {
+  
+  width: 30px;
+  color: rgb(20, 20, 20);
+  font-weight: 800;
+ 
+}
+
+
+.comment-vote:hover {
+  fill:  #ff6314;
+}
+
+
+
+.comment-true {
+  fill:  #ff6314;
 }

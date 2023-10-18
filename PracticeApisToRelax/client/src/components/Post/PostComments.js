@@ -4,6 +4,11 @@ import Comments from './Comments';
 
 function PostComments({ order, postId }) {
   const [comments, setComments] = useState([]);
+  const [show, setShow] = useState(true);
+
+  const toggleShow = () => {
+    setShow(!show)
+  }
  
  
 
@@ -22,11 +27,22 @@ function PostComments({ order, postId }) {
   }, [order, postId]);
 
   return (
+    
     <div>
       {(comments.length) > 0 && (
         comments.map((comment, key) => {
+          
           return (
-            <Comments key={key} comment={comment} order={order}  />
+            <Comments 
+            key={key} 
+            comment={comment} 
+            order={order}
+            points={comment.points}
+            children={comment.children_count}
+            setShow={setShow}
+            show={show}
+            toggleShow={toggleShow}
+              />
           );
         })
       )}
