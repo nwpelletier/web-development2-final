@@ -52,10 +52,10 @@ function UserSubmitted(user) {
   return (
     <div>
       {posts.map((post, index) => (
-        <div class="row my-2">
+        <div className="row my-2" key={index}>
           {post.postType === "text" ? (
             <div className="post-container row">
-            <div class="col-md-2 d-flex flex-column">
+            <div className="col-md-2 d-flex flex-column">
               <div className="row">
                 <div className="col-md-2">
                   <img
@@ -81,7 +81,7 @@ function UserSubmitted(user) {
                 </div>
               </div>
             </div>
-            <div class="col-md-10">
+            <div className="col-md-10">
               <div>
                
                 {post.postType === "comment" ? (

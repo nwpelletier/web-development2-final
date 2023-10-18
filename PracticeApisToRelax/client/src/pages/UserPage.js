@@ -1,49 +1,34 @@
-// import React, { useState } from "react";
-// import Navbar from "../components/Navbar/Navbar";
-// import UserNav from "../components/UserComponents/UserNavbar";
-// import RightNav from "../components/RightNav/RightNav";
-// import "../components/RightNav/RightNav.css"
-// function UserPage(id) {
-
-
-//   return (
-//     <>
-
-//       <RightNav />
-
-//       <Navbar />
-
-//       <UserNav />
-
-      
-      
-//     </>
-//   );
-// }
-
-// export default UserPage;
-
-
-// UserPage.js
-import React from "react";
+import React ,{useEffect,useState} from "react";
 import Navbar from "../components/Navbar/Navbar";
 import UserNav from "../components/UserComponents/UserNavbar";
-import RightPanel from "../components/RightNav/RightNav"; 
-import "../components/RightNav/RightNav.css"
+import RightNav from "../components/RightNav/RightNav";
+import "../components/RightNav/RightNav.css";
+import "./UserPage.css";
 
-function UserPage(id) {
+function UserPage() {
+
+  const [userId, setUserId] = useState(0);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUserId = localStorage.getItem("userId");
+    if (token) {
+      setUserId(storedUserId);
+    }
+  }, []);
   return (
     <>
-      <div >
-      <RightPanel /> 
-        {/* <div className="main-content"> */}
-          <Navbar />
-          <UserNav />
+      <div>
+        <div className="">
+         
         </div>
+        {/* <div className="main-content"> */}
+        <Navbar />
+        <RightNav margin={"3.4rem"} />
+        <UserNav/>
+      </div>
       {/* </div> */}
     </>
   );
 }
 
 export default UserPage;
-
