@@ -35,8 +35,8 @@ function PostCreate(props) {
       </div>
       <div className="App">
       <Formik initialValues={formInitValues} validationSchema={formSchema} onSubmit={postForm} >
-      {formikProps => (
-            <Form>
+      {(formikProps) => (
+            <Form encType={"multipart/form-data"}>
 
                 
 {formObject.map((formObj, index) => (
@@ -72,8 +72,10 @@ function PostCreate(props) {
                 warning={"pick only one image"}
                   name={imgDetails.formName}
                   formId = {imgDetails.formId}
-                initValue = {""}
-                setBannerFile={(file) => formikProps.setFieldValue("content", file)}
+                  formikProps={formikProps}
+                 
+
+              // setBannerFile={(imageData) => formikProps.setFieldValue("content", imageData)}
                 />
             }
 

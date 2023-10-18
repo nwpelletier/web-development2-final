@@ -171,38 +171,4 @@ module.exports = {
 
 }
 
-// subcrudditName: Yup
-// .string()
-// .required()
-// .max(5, "Name must be over 10 characters long.")
-// .min(64, "Name must be less than 64 characters long.")
-// ,
-// wiki: Yup
-// .string()
-// .max(10, "Wiki must be over 10 characters long.")
-//.min(10000, "Wiki must not exceed 10,000 characters.")
 
-
-// id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//   },
-//   subcrudditName: {
-//     type: DataTypes.STRING(64),
-//     allowNull: false,
-//   },
-//   subType: {
-//     type: DataTypes.ENUM("public", "private"),
-//     allowNull: false,
-//   },
-//   wiki: {
-//     type: DataTypes.STRING(10000),
-//     allowNull: false,
-//   },
-//   isActive: {
-//     type: DataTypes.BOOLEAN,
-//     allowNull: false,
-//     defaultValue: true
-//   },
-// });

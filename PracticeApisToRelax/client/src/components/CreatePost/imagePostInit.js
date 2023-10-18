@@ -1,12 +1,18 @@
+import axios from 'axios';
 import * as Yup from 'yup';
+const FormData = require('form-data');
+
+
 export const postType = "image"
 export const btnText = "Create Post"
 export const redirect = ""
 export const redirectTxt = "Create Text Post"
 
 
+
 export const formInitValues = {
     subcrudditName: "", // filled in by react
+    UserId: 1,
     title: "",
     postType: "image",
     content: "",
@@ -14,9 +20,52 @@ export const formInitValues = {
 
 }
 
+// export const postForm = (data) => {
+    
+//    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+//     console.log(data)
+
+//     axios
+//     .post(`http://localhost:8080/api/posts/post/`, data, config)
+//     .then((response) => {
+      
+//       console.log(response.data)
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+// }
+
+
+
 export const postForm = (data) => {
-    console.log(data)
-}
+    const formData = new FormData();
+    formData.append('subcrudditName', data.subcrudditName);
+    formData.append('title', data.title);
+    formData.append('postType', data.postType);
+    formData.append('caption', data.caption);
+    formData.append('content', data.content);
+    formData.append('UserId', data.UserId);
+  
+    const headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+  
+    axios
+      .post(`http://localhost:8080/api/posts/image`, formData, {headers:headers})
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+
+
+
+
+
 const onBlurCheck = (data) => {
     console.log(data)
 }

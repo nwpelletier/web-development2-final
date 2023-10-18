@@ -13,6 +13,7 @@ function PostComments({ order, postId }) {
     axios
       .get(`http://localhost:8080/api/posts/comments/${order}/${postId}`)
       .then((response) => {
+        
         setComments(response.data);
       })
       .catch((error) => {
