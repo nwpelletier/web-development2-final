@@ -17,6 +17,9 @@ module.exports = {
         if (!validator.isAlphanumeric(newSubcruddit.subcrudditName)) {
             return res.status(400).send({message: "Subcruddit name must contain only letters and numbers."});
         }
+        if (!validator.isLowercase(newSubcruddit.subcrudditName)) {
+            return res.status(400).send({message: "Subcruddit name must be lower case."});
+        }
         if (newSubcruddit.wiki && !validator.isLength(newSubcruddit.wiki, {min: 10, max:10000})) {
             return res.status(400).send({message: "If you choose to create a wiki, it must be between 10 and 10,000 characters long."});
         }
@@ -167,6 +170,28 @@ module.exports = {
         } catch (error) {
             return res.status(500).send({message: "Internal server error"})
         }
+    },
+    doesExist: async (req, res) => {
+        
+            subName = req.params.subcruddit;
+            
+            try {
+                const subcruddit = await Subcruddits.findOne({
+                    where: {
+                        subcrudditName: subName
+                    }
+                })
+                if (!subcruddit) {
+                    return res.status(200).send(false)
+                } else {
+                    return res.status(200).send(true)
+                }
+
+             } catch (error) {
+                    console.log(error)
+                    return res.status(500).send({message: "Internal server error"})
+                }
+
     }
 
 }

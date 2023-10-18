@@ -66,8 +66,17 @@ export const postForm = (data) => {
 
 
 
-const onBlurCheck = (data) => {
-    console.log(data)
+const onBlurCheck =  (data) => {
+    console.log(data + " my data")
+    return axios
+    .get(`http://localhost:8080/api/subcruddits/exists/` + data)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
 }
   
 export const formSchema = Yup.object({

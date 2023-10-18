@@ -89,72 +89,48 @@ module.exports = {
     },
 
     createTextPost: async (req, res) => {
-                    // if (!validatePost(post, req, res)) {
-            //     return;
-            // }
-            // post.layer = 0; 
-            // const user = await Users.findAll({
-            //     where: {
-            //         id: post.UserId
-            //     }
-            // })
-            // if (user.length < 1){
-            //     return res.status(400).json({message : "Create post from valid user account", user: false})
-            // }
-            // const subcruddit = await Subcruddits.findAll({
-            //     where: {
-            //         subcrudditName: post.subcrudditName
-            //     }
-            // })
-            // if (subcruddit.length < 1){
-            //     return res.status(400).json({message : "Create post to valid subcruddit", user: false})
-            // }
-            // post.SubcrudditId = subcruddit.id;
-            // post.points = 1;
-            // let newPost ={}
+        try {
+            const post = req.body
+            if (!validateTextPost(post, req, res)) {
+                return;
+            }
+            post.layer = 0; 
+            const user = await Users.findAll({
+                where: {
+                    id: post.UserId
+                }
+            })
+            if (user.length < 1){
+                return res.status(400).json({message : "Create post from valid user account", user: false})
+            }
+            const subcruddit = await Subcruddits.findOne({
+                where: {
+                    subcrudditName: post.subcrudditName
+                }
+            })
+            if (!subcruddit){
+                return res.status(400).json({message : "Create post to valid subcruddit", user: false})
+            }
+            post.SubcrudditId = subcruddit.id;
+            post.points = 1;
 
-            // if (post.postType === "image") {
-
-
-            //     const parsefile = async (req) => {
-            //         return new Promise((resolve, reject) => {
-            //             let options = {
-            //                 maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
-            //                 allowEmptyFiles: false
-            //             }
-                
-            //             const form = formidable(options);
-                        
-            //             form.parse(req, (err, fields, files) => {});
-                
-            //             form.on('error', error => {
-            //                 reject(error.message)
-            //             })
-                        
-            //             form.on('data', data => {
-            //                 if (data.name === "successUpload") {
-            //                     resolve(data.value);
-            //                 }
-            //             })
-                
-                        
-            //         })
-            //     }
-
-            // } else {
-            //     newPost = await Posts.create(post);
-            // }
-            // const vote = {
-            //     UserId: newPost.UserId,
-            //     PostId: newPost.id,
-            //     liked: true
-            // }
-            // await Votes.create(vote)
-            // if (newPost.id) {
-            //     return res.status(201).json(newPost)
-            // } else {
-            //     return res.status(500).json({message: "something went wrong creating your post."})
-            // }
+            newPost = await Posts.create(post);
+            const vote = {
+                UserId: newPost.UserId,
+                PostId: newPost.id,
+                liked: true
+            }
+            await Votes.create(vote)
+            if (newPost.id) {
+                console.log(newPost)
+                return res.status(201).json(newPost)
+            } else {
+                return res.status(500).json({message: "something went wrong creating your post."})
+            }
+        } catch(error) {
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"})  
+        }
 
     },
     //TODO add transactions
@@ -934,25 +910,14 @@ function validateTextPost(post, req, res) {
         });
         return false;
     }
-    if (post.parentId|| post.postId){
+    if (post.parentId|| post.postId ){
             res.status(400).send({
             message: "Please do not provide a parent ID or a post ID."
         });
         return false;
     }
-    if (post.postType === "image" && (post.caption == undefined || post.mimetype == undefined)) {
-                res.status(400).send({
-            message: "For images, you must provide a capition and a mimetype."
-        });
-        return false;
-    }
-    if (post.postType === "image" && !validator.isLength(post.caption, {min: 10, max:200})) {
-                res.status(400).send({
-            message: "Your image caption must be between 10 and 200 characters long."
-        });
-        return false;
-    }
-    if (post.postType === "text" && (post.caption !== undefined || post.mimetype !== undefined)) {
+
+    if ( (post.caption !== undefined || post.mimetype !== undefined)) {
                 res.status(400).send({
             message: "Please do not provide a caption or mimetype for a text post."
         });
@@ -964,13 +929,13 @@ function validateTextPost(post, req, res) {
         });
         return false;
     }
-    if (post.postType !== "image" && post.postType !== "text"){
+    if (post.postType !== "text"){
                 res.status(400).send({
-            message: "Post type must be an image or text."
+            message: "Post type must be text."
         });
         return false;
     }
-    if (post.postType == "text" && !validator.isLength(post.content, {min: 10, max:50000})) {
+    if ( !validator.isLength(post.content, {min: 10, max:50000})) {
         res.status(400).send({
             message: "Post content must be between 10 and 50 000 characters ."
         });

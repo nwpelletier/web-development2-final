@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
    export const postType = "text"
@@ -11,14 +12,32 @@ import * as Yup from 'yup';
        title: "",
        postType: "text",
        content: "",
+       UserId: 1,
    }
    
    export const  postForm = (data) => {
-       console.log(data)
+    console.log(data)
+    axios
+    .post(`http://localhost:8080/api/posts/text`, data)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
    }
 
-   const onBlurCheck = (data) => {
-    console.log(data)
+   const onBlurCheck =  (data) => {
+    console.log(data + " my data")
+    return axios
+    .get(`http://localhost:8080/api/subcruddits/exists/` + data)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
 }
    
    export const  formSchema = Yup.object({

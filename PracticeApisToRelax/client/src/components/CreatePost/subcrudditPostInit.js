@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import * as Yup from 'yup';
 export const postType = "subcruddit"
 export const btnText = "Create Subcruddit"
@@ -7,25 +8,46 @@ export const redirectTxt = "Create Image Post"
 
 
 export const formInitValues = {
+    UserId: 1,
     subcrudditName: "",
     wiki: "",
 }
 
 export const postForm = (data) => {
     console.log(data)
+    data.UserId = 1
+    axios
+    .post(`http://localhost:8080/api/subcruddits/` , data)
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
-const onBlurCheck = (data) => {
-    console.log(data)
+const onBlurCheck =  (data) => {
+    console.log(data + " my data")
+    return axios
+    .get(`http://localhost:8080/api/subcruddits/exists/` + data)
+    .then((response) => {
+      return !response.data
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
 }
+
 
 
 export const formSchema = Yup.object({
     subcrudditName: Yup
     .string()
     .required()
-    .min(5, "Name must be over 5 characters long.")
+    .min(4, "Name must be over 3 characters long.")
     .max(20, "Name must be less than 64 characters long.")
+    .matches(/^[a-z0-9]+$/, "Name must be in lowercase letters and contain no spaces")
     ,
     wiki: Yup
     .string()

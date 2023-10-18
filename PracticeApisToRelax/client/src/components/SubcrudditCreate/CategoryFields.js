@@ -6,13 +6,13 @@ function CategoryFields(props) {
     const [subcrudditExists, setSubcrudditExists] = useState()
    
 
-    // // onBlurFunction = {formObj.onBlur ? formObj.onBlurFunction : undefined}
-    // // onBlurWarning = {formObj.onBlur ? formObj.onBlurWarning : undefined}
-
-    const onBlur = (data) => {
-        setSubcrudditExists(true)
-        onBlurFunction(data)
+    const onBlur = async (event) => {
+        console.log(event.target.value)
+        const  doesExist =  await onBlurFunction(event.target.value)
+        setSubcrudditExists(!doesExist)
     }
+
+    
 
     return (
         <div>

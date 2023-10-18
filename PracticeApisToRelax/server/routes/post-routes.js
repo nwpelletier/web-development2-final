@@ -11,6 +11,7 @@ const upload = multer({ storage: storage });
 
 //router.post("/text", controller.createPost)
 router.post("/image", upload.single('content'), controller.createImgPost)
+router.post("/text",  controller.createTextPost)
 router.post("/comment/:id([0-9]+)", controller.createComment)
 
 router.get("/posts/:order", controller.findAllActivePosts)
