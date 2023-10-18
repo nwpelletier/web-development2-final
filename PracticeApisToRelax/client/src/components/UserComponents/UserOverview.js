@@ -1,24 +1,31 @@
-
 import axios from "axios";
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 
 function UserOverview(user) {
- 
+  const navigate = useNavigate();
   let userId = user.UserID;
+  console.log("USERID OVERVIE", userId);
+  // console.log(`http://localhost:8080/api/overview/${userId}`);
   const [voteStatus, setVoteStatus] = useState("none");
-  const [localPoints, setLocalPoints] = useState(0);
+  const [localPoints, setLocalPoints] = useState("");
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     try {
-      axios
-        .get(`http://localhost:8080/api/overview/${userId}`)
-        .then((response) => {
-          setPosts(response.data);
-          
-        });
+      if (userId == 0) {
+        navigate("/c/all");
+      } else {
+        axios
+          .get(`http://localhost:8080/api/overview/${userId}`)
+          .then((response) => {
+            console.log("POSTS IN OVERVIEW", response.data);
+            // if(!response)
+            setPosts(response.data);
+          });
+      }
     } catch (error) {
       console.log("SHOW ERROR", error);
     }
@@ -61,7 +68,7 @@ function UserOverview(user) {
   return (
     <div>
       {posts.map((post, index) => (
-        <div className="row my-2">
+        <div className="row my-2" key={index}>
           <div className="post-container row">
             <div className="col-md-2 d-flex flex-column">
               <div className="row">
@@ -90,8 +97,7 @@ function UserOverview(user) {
               </div>
             </div>
             <div className="col-md-10">
-              <div >
-                
+              <div>
                 {post.postType === "comment" ? (
                   <div>
                     <p>{post.content}</p>

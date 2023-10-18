@@ -10,16 +10,22 @@ function UserNav() {
   const [showSubmitted, setShowSubmitted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState(null);
+  let token = localStorage.getItem("token");
+  const [userId, setUserId] = useState(
+    token ? localStorage.getItem("userId") : 0
+  );
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    token = localStorage.getItem("token");
     const storedUsername = localStorage.getItem("username");
+    const storedUseId = localStorage.getItem("userId");
+    console.log("USERID TOKEN", storedUseId);
     if (token) {
       setIsAuthenticated(true);
-      setUsername(storedUsername); 
+      setUsername(storedUsername);
+      setUserId(storedUseId);
     }
   }, []);
-  const userID = 2;
 
   return (
     <div className="container-fluid mt-4">
@@ -85,9 +91,10 @@ function UserNav() {
       </div>
       <div className="row">
         <div className="col-md-8">
-          {showOverview && <UserOverview UserID={userID} />}
-          {showComments && <UserCommentsTab UserID={userID} />}
-          {showSubmitted && <UserSubmitted UserID={userID} />}
+          {/* {console.log("USERID USERNAVBAR:",userId)} */}
+          {showOverview && <UserOverview UserID={userId} />}
+          {showComments && <UserCommentsTab UserID={userId} />}
+          {showSubmitted && <UserSubmitted UserID={userId} />}
         </div>
       </div>
     </div>

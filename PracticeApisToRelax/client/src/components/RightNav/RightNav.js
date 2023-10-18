@@ -2,9 +2,11 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function RightPanel() {
+
+function RightNav(margin) {
+  //console.log("RIGHTNAV POSITION: ",margin.margin)
   return (
-    <div className="right-panel">
+    <div className="right-panel" style={{ marginTop: margin.margin }}>
       <div className="mb-3">
         <div className="d-flex align-items-center">
           <input type="text" className="col-md-10" placeholder="Search" />
@@ -43,4 +45,4 @@ function RightPanel() {
   );
 }
 
-export default RightPanel;
+export default RightNav;
