@@ -38,6 +38,7 @@ function Login({ setModalContent, closeModal }) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('username', response.data.username);
           localStorage.setItem('userRole', response.data.role);
+          localStorage.setItem('userId', response.data.id);
           closeModal();
           window.location.reload();
         } else {

@@ -14,7 +14,7 @@ function RightPanel() {
         </div>
       </div>
 
-      <div class="border  border-dark p-3"> 
+      <div className="border  border-dark p-3"> 
       <div className="row ">
         <div className="col-md-5">
           <input type="text" placeholder="username" />

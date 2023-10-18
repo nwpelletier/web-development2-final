@@ -11,6 +11,16 @@ RIGHTNAV
 
 
 /* NAVBAR */
+#temp-for-icon {
+  color:grey;
+  font-style:italic
+}
+
+#navbar-user-karma {
+  font-weight:700;
+  color:grey;
+}
+
 .sub-cruddit-list {
   font-size: 11px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
