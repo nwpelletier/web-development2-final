@@ -481,9 +481,8 @@ module.exports = {
             });
             
         }
-       
+
         const returnObj = activePosts.map((post) => ({
-            
             id: post.id,
             UserId: post.UserId,
             SubcrudditId: post.SubcrudditId, 
@@ -500,6 +499,7 @@ module.exports = {
 
 
         }));
+
         res.status(200).send(returnObj);
     },
     findAllActivePostsUser: async(req, res) => {
@@ -909,9 +909,9 @@ function validateImgPost(post, req, res) {
         });
         return false;
     }
-    if (post.postType !== "image" && post.postType !== "text"){
+    if (post.postType !== "image"){
                 res.status(400).send({
-            message: "Post type must be an image or text."
+            message: "Post type must be an imagetext."
         });
         return false;
     }
