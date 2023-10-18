@@ -4,54 +4,158 @@ const {Moderators} = require("../models");
 const {Votes} = require("../models");
 const {Subcruddits} = require("../models");
 const validator = require('validator');
+const {validateImage} = require("image-validator");
+
+
+
+const { S3Client, ListBucketsCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
+const dotenv = require('dotenv');
+const { Pricing } = require("aws-sdk");
+dotenv.config()
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.AWS_ACCESS_KEY_ID
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
+
+
+
+const client = new S3Client({
+   credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey,
+   },
+    region: bucketRegion
+})
+
 
 //TODO ONCE MORE ASSOCIATIONS ARE INCLUDED
 module.exports = {
-    createPost: async (req, res) => {
+    
+    createImgPost: async (req, res) => {
+        console.log("AM I getting here")
         const post = req.body
         // post.UserId = req.UserId
+        // username = req.username
+        username = "alexfranklin"
+        if (!validateImgPost(post, req, res)) {
+            return;
+        }
         try {
-            if (!validatePost(post, req, res)) {
-                return;
-            }
-            post.layer = 0; 
-            const user = await Users.findAll({
-                where: {
-                    id: post.UserId
-                }
-            })
-            if (user.length < 1){
-                return res.status(400).json({message : "Create post from valid user account", user: false})
-            }
-            const subcruddit = await Subcruddits.findAll({
+            const subcruddit = await Subcruddits.findOne({
                 where: {
                     subcrudditName: post.subcrudditName
                 }
             })
-            if (subcruddit.length < 1){
-                return res.status(400).json({message : "Create post to valid subcruddit", user: false})
+            if (!subcruddit) {
+                return res.status(400).send({message: "you must post to a valid subcruddit"})
             }
-            post.SubcrudditId = subcruddit.id;
+            post.SubcrudditId = subcruddit.id
+            console.log(post)
+            console.log(req.file)
+            const imgName = username + Date.now() + ".jpg"
+
+            
+            const params = {
+                Bucket: bucketName,
+                Key: imgName,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype
+            }
+            const command = new PutObjectCommand(params)
+            try {
+                const data = await client.send(command)
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+            
+            post.content = imgName;
+            post.layer = 0;
             post.points = 1;
-            newPost = await Posts.create(post);
+            const newPost = await Posts.create(post)
             const vote = {
                 UserId: newPost.UserId,
                 PostId: newPost.id,
                 liked: true
             }
             await Votes.create(vote)
-            if (newPost.id) {
-                return res.status(201).json(newPost)
-            } else {
-                return res.status(500).json({message: "something went wrong creating your post."})
-            }
-
-            
+            return res.status(201).send(post)
+     
 
         } catch(error) {
             console.log(error);
             res.status(500).json({message: "Internal Server Error"})  
         }
+    },
+
+    createTextPost: async (req, res) => {
+                    // if (!validatePost(post, req, res)) {
+            //     return;
+            // }
+            // post.layer = 0; 
+            // const user = await Users.findAll({
+            //     where: {
+            //         id: post.UserId
+            //     }
+            // })
+            // if (user.length < 1){
+            //     return res.status(400).json({message : "Create post from valid user account", user: false})
+            // }
+            // const subcruddit = await Subcruddits.findAll({
+            //     where: {
+            //         subcrudditName: post.subcrudditName
+            //     }
+            // })
+            // if (subcruddit.length < 1){
+            //     return res.status(400).json({message : "Create post to valid subcruddit", user: false})
+            // }
+            // post.SubcrudditId = subcruddit.id;
+            // post.points = 1;
+            // let newPost ={}
+
+            // if (post.postType === "image") {
+
+
+            //     const parsefile = async (req) => {
+            //         return new Promise((resolve, reject) => {
+            //             let options = {
+            //                 maxFileSize: 100 * 1024 * 1024, //100 MBs converted to bytes,
+            //                 allowEmptyFiles: false
+            //             }
+                
+            //             const form = formidable(options);
+                        
+            //             form.parse(req, (err, fields, files) => {});
+                
+            //             form.on('error', error => {
+            //                 reject(error.message)
+            //             })
+                        
+            //             form.on('data', data => {
+            //                 if (data.name === "successUpload") {
+            //                     resolve(data.value);
+            //                 }
+            //             })
+                
+                        
+            //         })
+            //     }
+
+            // } else {
+            //     newPost = await Posts.create(post);
+            // }
+            // const vote = {
+            //     UserId: newPost.UserId,
+            //     PostId: newPost.id,
+            //     liked: true
+            // }
+            // await Votes.create(vote)
+            // if (newPost.id) {
+            //     return res.status(201).json(newPost)
+            // } else {
+            //     return res.status(500).json({message: "something went wrong creating your post."})
+            // }
+
     },
     //TODO add transactions
     // TODO ensure deleted users display as "deleted-user"
@@ -110,45 +214,6 @@ module.exports = {
                 }
             }
             
-
-
-
-
-            
-
-            // if (originalPost.layer !== 0){
-            //     const parentPost = await Posts.findOne({
-            //         where: {
-            //             id: originalPost.postId
-            //         }
-            //     })
-            //     parentPost.children_count++;
-            //     parentPostId = parentPost.id;
-            //     try {
-            //         await parentPost.save()
-            //     } catch (error) {
-            //         return res.status(500).json({message : "Could not update parent comment children", error: error})
-            //     }
-                
-            // } else {
-            //     parentPostId = postId;
-            // }
-            // originalPost.children_count++;
-            // layer = originalPost.layer + 1;
-            // subcrudditId = originalPost.SubcrudditId;
-            // try {
-            //     await originalPost.save()
-            // } catch (error){
-            //     return res.status(500).json({message : "Could not update parent comment children", error: error})
-            // }
-
-            // comment.postId = parentPostId;
-            // comment.layer = layer;
-            // comment.parentId = postId;
-            // comment.SubcrudditId = subcrudditId;
-            // comment.postType = "comment";
-            // comment.points = 1;
-
             const newComment = await Posts.create(comment);
             const returnObj = {
             id: newComment.id,
@@ -416,9 +481,8 @@ module.exports = {
             });
             
         }
-       
+
         const returnObj = activePosts.map((post) => ({
-            
             id: post.id,
             UserId: post.UserId,
             SubcrudditId: post.SubcrudditId, 
@@ -435,6 +499,7 @@ module.exports = {
 
 
         }));
+
         res.status(200).send(returnObj);
     },
     findAllActivePostsUser: async(req, res) => {
@@ -680,8 +745,7 @@ module.exports = {
                     attributes: ['subcrudditName'] 
                   }]  
             })
-            for (let post of activePosts) {
-                
+            for (let post of activePosts){
                 if (post.postType === "comment") {
                     
                         const originalPost = await Posts.findByPk(post.postId, {
@@ -690,7 +754,6 @@ module.exports = {
                                 attributes: ['username']  
                               }]
                         })
-                    console.log("FINDALL", originalPost);
                         const originalObj = {
                             id: originalPost.id, 
                             title: originalPost.title,
@@ -725,7 +788,7 @@ module.exports = {
             res.status(200).send(returnObj);
 
         } catch(error){
-            console.log("ERROR: ",error);
+            console.log(error);
             res.status(500).json({message: "Internal Server Error"}) 
         }
     },
@@ -813,9 +876,59 @@ module.exports = {
 
 }
 
-function validatePost(post, req, res) {
-    if (!post.UserId || !post.title || !post.postType || !post.content)  {
+function validateImgPost(post, req, res) {
+    const file = req.file
+    if (!post.UserId || !post.title || !post.postType || !req.file || !post.subcrudditName)  {
+        res.status(400).send({
+            message: "You must send user id, a post title, a post type, a subcruddit name, and post content ."
+        });
+        return false;
+    }
+    if (post.parentId|| post.postId){
+            res.status(400).send({
+            message: "Please do not provide a parent ID or a post ID."
+        });
+        return false;
+    }
+    if (post.caption == undefined) {
+                res.status(400).send({
+            message: "For images, you must provide a capition."
+        });
+        return false;
+    }
+    if ( !validator.isLength(post.caption, {min: 10, max:200})) {
+                res.status(400).send({
+            message: "Your image caption must be between 10 and 200 characters long."
+        });
+        return false;
+    }
 
+    if (!validator.isLength(post.title, {min: 10, max:360})){
+        res.status(400).send({
+            message: "Title must be between 10 and 360 characters long."
+        });
+        return false;
+    }
+    if (post.postType !== "image"){
+                res.status(400).send({
+            message: "Post type must be an imagetext."
+        });
+        return false;
+    }
+    
+    const fileValidation = async (file) => {
+        const isValidImage = await validateImage(file);
+        if (!isValidImage){
+            res.status(400).send({message: "please send valid image"})
+        }
+        return false;
+      }
+    return true;
+
+}
+
+function validateTextPost(post, req, res) {
+    if (!post.UserId || !post.title || !post.postType || !post.content)  {
         res.status(400).send({
             message: "You must send user id, a post title, a post type, and post content ."
         });

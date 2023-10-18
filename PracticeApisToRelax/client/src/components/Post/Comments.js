@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PostComments from "./PostComments";
 import CreateComment from "./CreateComment";
+import { format } from "date-fns";
 
 
 function Comments(props){
@@ -17,11 +18,13 @@ function Comments(props){
     const load = () => {
         console.log("clicked")
         setLoadMore(true);
+        setNestedReply(false)
     }
 
     const replyToComment = () => {
         setReply(true)
-        setCommentReplies(comment.children_count);
+        comment.children_count += 1;
+        //setCommentReplies(comment.children_count);
     }
 
     const hide = () => {
@@ -44,8 +47,8 @@ function Comments(props){
                         <span onClick={hide} className="comment-info mx-1 " >[-]</span>
                             <span className="comment-info mx-1 comment-links" >{comment.username}</span>
                             <span className="comment-info mx-1" >{comment.points > 0 ? comment.points : 0} points</span>
-                            <span className="comment-info mx-1" >{comment.createdAt}</span>
-                            {comment.id}
+                            <span className="comment-info mx-1" >{format(new Date(comment.createdAt), "MM/dd/yyyy")}</span>
+                    
                         </div>
                     </div>
                 {show && <p className="comment-big my-1" >{comment.content}</p>}
@@ -53,7 +56,6 @@ function Comments(props){
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({comment.children_count} replies)</span></span>
                 } {comment.isActive && <span onClick={replyToComment} className="comment-small fw-bolder">reply</span>}
                 </div>
-
                 {reply && <div className="">
                 <CreateComment 
                 comment={comment} 

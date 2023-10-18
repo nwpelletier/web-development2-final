@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "../.env" });
+const multer = require('multer')
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -16,7 +17,12 @@ const subcrudditRoutes = require("./routes/subcruddit-routes");
 
 const userpage = require("./routes/PostUserRoutes");
 
-app.use(express.json());
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
+
+
+app.use(express.json({ limit: "50mb" }));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -53,3 +59,5 @@ db.sequelize.sync().then(() => {
     console.log("server running on port " + process.env.DEV_PORT);
   });
 });
+
+// upload.single('avatar')

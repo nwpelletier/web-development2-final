@@ -26,9 +26,6 @@ function Login({ setModalContent, closeModal }) {
 
   const login = (data) => {
     axios.post(`http://localhost:8080/api/users/login`, data, {
-      headers: {
-        "x-access-token": localStorage.getItem('token')
-      }
     })
       .then((response) => {
         if (response.data.auth === true) {
@@ -52,43 +49,49 @@ function Login({ setModalContent, closeModal }) {
 
   return (
     <>
+      <div className="modal-big-text col-10">Sign up to get your own personalized Cruddit experience!</div>
+      <p className="modal-info-text">By having a Cruddit account, you can join, vote and comment on all of your favorite content!</p>
       <Formik
         initialValues={initialLogin}
         onSubmit={login}
         validationSchema={loginSchema} >
         <Form>
-          <label htmlFor="usernameInput">Username: </label>
-          <ErrorMessage
+          <label className="modal-label" htmlFor="usernameInput">LOGIN </label>
+          {/* <ErrorMessage
             name='username'
             component="div"
-            className='text-danger' />
+            className='modal-danger-text' /> */}
           <Field
-            className="form-group form-control mx-1"
+            className="modal-text-input form-control mx-1"
+            placeholder="username"
             id="usernameInput"
             name="username"
           />
 
-          <label htmlFor="passwordInput">Password: </label>
-          <ErrorMessage
+          {/* <label className="modal-label" htmlFor="passwordInput">Password: </label> */}
+          {/* <ErrorMessage
             name='password'
             component="div"
-            className='text-danger' />
+            className='modal-danger-text' /> */}
           <Field
-            className="form-group form-control mx-1"
+            className="modal-text-input form-control mx-1"
             id="passwordInput"
+            placeholder="password"
             name="password"
             type="password"
           />
-          <button
-            className='btn btn-warning m-5'
-            type='submit'>Log In</button>
-          <button
-            className='btn btn-primary m-5'
-            type='button'
-            onClick={() => setModalContent('signup')}
-          >
-            Sign Up
-          </button>
+          <div className="modal-signup-reminder mx-1">
+            <span>Don't have an account? </span>
+            <a className="modal-signup-prompt" onClick={() => setModalContent('signup')}> Sign Up</a>
+            <span> | </span><span className="modal-signup-prompt">Reset password</span>
+          </div>
+
+          <div class="offset-8">
+            <button
+              className='btn btn-primary mt-4'
+              type='submit'>LOG IN</button>
+          </div>
+
         </Form>
       </Formik>
     </>
