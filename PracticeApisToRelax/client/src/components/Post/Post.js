@@ -39,7 +39,7 @@ function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditN
   return (
     <div>
       <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''}`}>
-        <div className="vote-and-type-container row">
+        <div className="vote-and-type-container">
           <div className="vote-container">
             <img
               className={`upvote ${voteStatus === 'upvote' ? 'voted' : ''}`}

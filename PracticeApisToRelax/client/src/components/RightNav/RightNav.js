@@ -25,7 +25,7 @@ function RightPanel() {
       </div>
 
       <div className="row">
-        <a className="col-md-6 mt-3 link-dark text-decoration-none">reset password</a>
+        <a className="col-md-6 mt-3 link-dark text-decoration-none" href="#">reset password</a>
         <div className="col-md-6 d-flex justify-content-end">
           <button className="btn btn-secondary mt-3">Log In</button>
         </div>
