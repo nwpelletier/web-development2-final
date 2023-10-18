@@ -92,10 +92,13 @@ RIGHTNAV
 .post-container {
   margin-left: 1%;
   margin-bottom: 1%;
-  height: 80px;
   border: 1px solid rgb(183, 195, 209);
   box-shadow: -1px 1px 3px rgb(156, 156, 156);
   /* background-color: rgba(152, 225, 233, 0.192); */
+}
+
+.post-subcruddit-height {
+  height: 80px;
 }
 
 .post-container:hover {

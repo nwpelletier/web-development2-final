@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
+import { ContentTypeContext } from '../Main/Main';
 
-function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt }) {
+function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content }) {
   const [voteStatus, setVoteStatus] = useState('none');
   const [localPoints, setLocalPoints] = useState(points);
   const currentPath = useLocation().pathname;
-
-  //  I think "localPoints" could make sense for instant feedback
-  //  On an upvote/downvote, without having to refresh the posts every time
-  //  The database patch will be made, so refreshing the whole page
-  //  Will still show updated; but localPoints could be what
-  //  affects the orange uparrow, blue downarrow + immediate points change
+  const contentType = useContext(ContentTypeContext);
 
   const handleVote = (liked) => {
 
@@ -42,7 +38,7 @@ function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditN
 
   return (
     <div>
-      <div className="post-container row">
+      <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''}`}>
         <div className="vote-and-type-container row">
           <div className="vote-container">
             <img
@@ -79,6 +75,15 @@ function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditN
             <div className="post-submission-info">Posted {createdAt} by {username} to {SubcrudditName}</div>
           ) : (
             <div className="post-submission-info">Posted {createdAt} by {username}</div>
+          )}
+          
+          {content && (
+            <>
+            <hr></hr>
+            <div className="post-content col-10">
+              <p>{content}</p>
+            </div>
+            </>
           )}
           <div className="post-links">
             <span># of child comments</span>
