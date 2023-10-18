@@ -4,18 +4,23 @@ import { useParams } from 'react-router-dom';
 import Post from '../Post/Post';
 import { formatDistance } from 'date-fns';
 
-function SubcrudditDisplay({ subcrudditName }) {
+function SubcrudditDisplay({ subcrudditName, sortingType }) {
   const [posts, setPosts] = useState([]);
+  if (!sortingType) {
+    sortingType = "hot";
+  }
+
+  const [sortBy, setSortBy] = useState('')
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         let response;
         if (subcrudditName === 'all') {
-          response = await axios.get('http://localhost:8080/api/posts/posts/hot');
+          response = await axios.get('http://localhost:8080/api/posts/posts/${sortingType}');
         } else {
           response = await axios.get(
-            `http://localhost:8080/api/posts/posts/${subcrudditName}/hot`
+            `http://localhost:8080/api/posts/posts/${subcrudditName}/${sortingType}`
           );
         }
         setPosts(response.data);
@@ -25,7 +30,7 @@ function SubcrudditDisplay({ subcrudditName }) {
     };
 
     fetchPosts();
-  }, [subcrudditName]);
+  }, [subcrudditName, sortingType]);
 
   return (
     <div>

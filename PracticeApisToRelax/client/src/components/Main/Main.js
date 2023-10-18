@@ -5,14 +5,14 @@ import PostDisplay from './PostDisplay';
 
 export const ContentTypeContext = React.createContext();
 
-function Main({ handle }) {
+function Main({ handle, sortingType }) {
   const { postId } = useParams();
   const contentType = postId ? 'post' : 'subcruddit';
   return (
     <ContentTypeContext.Provider value={contentType}>
       <div>
         {contentType === 'subcruddit' ? (
-          <SubcrudditDisplay subcrudditName={handle} />
+          <SubcrudditDisplay subcrudditName={handle} sortingType={sortingType} />
         ) : (
           <PostDisplay postId={postId} />
         )}

@@ -12,10 +12,10 @@ function LowerHalf() {
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
 
-
   // Testing w/ userId localStorage
   const getKarma = async () => {
     try {
+      
       const response = await fetch(`http://localhost:8080/api/users/karma/${userId}`);
       const data = await response.json();
       const postKarma = parseInt(data.postKarma, 10);
@@ -37,9 +37,6 @@ function LowerHalf() {
     }
   }, []);
 
-
-
-
   const userLogout = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('userRole');
@@ -51,8 +48,15 @@ function LowerHalf() {
 
   const handleNavigation = () => {
     navigate('/userpage');
-
   }
+
+  const navigateNew = () => {
+    navigate(`/c/${currentPath}/new`);
+  };
+  
+  const navigateHot = () => {
+    navigate(`/c/${currentPath}/hot`);
+  };
 
   useEffect(() => {
     console.log(currentPath)
@@ -67,24 +71,27 @@ function LowerHalf() {
   };
 
   return (
-    <div className="lower-half">
-      <div className="current-subcruddit my-3 mx-3">
+
+    // Temp formatting! Fix after functionality
+    <div className="lower-half row ">
+      <div className="current-subcruddit my-3 mx-3 col-3">
         {currentPath}
       </div>
+      <span className= "hot-new-sorting col-3" onClick={navigateHot}>HOT</span>
+      <span className= "hot-new-sorting col-3" onClick={navigateNew}>NEW</span>
       <div className="login-box">
         {isAuthenticated ? (
           <>
-
-            <span onClick={handleNavigation}>{localStorage.getItem('username')}</span>
+            <span className="navbar-user-link" onClick={handleNavigation}>{localStorage.getItem('username')}</span>
             <span id="navbar-user-karma"> ({userKarma}) </span>
             <span id="temp-for-icon">| --- | --- | </span>
-            <span className="px-4" onClick={userLogout}>logout</span>
+            <span className="navbar-user-link px-4" onClick={userLogout}>logout</span>
           </>
         ) : (
           <span>
             Want to join?{' '}
             <span
-              id="link"
+              className="navbar-user-link"
               onClick={() => openModal('login')}
               data-bs-toggle="modal"
               data-bs-target="#defaultModal"
@@ -93,7 +100,7 @@ function LowerHalf() {
             </span>{' '}
             or{' '}
             <span
-              id="link"
+              className="navbar-user-link"
               onClick={() => openModal('signup')}
               data-bs-toggle="modal"
               data-bs-target="#defaultModal"

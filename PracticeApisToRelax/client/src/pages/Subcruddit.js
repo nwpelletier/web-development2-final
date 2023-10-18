@@ -4,10 +4,9 @@ import RightNav from "../components/RightNav/RightNav";
 import { SubcrudditContext } from "../App";
 import { useParams } from "react-router-dom";
 
-//To Do: useContext (isMod) to initialize right panel
 function Subcruddit() {
 
-  const { handle } = useParams();
+  const { handle, sortingType } = useParams();
 
   return (
     <>
@@ -17,12 +16,13 @@ function Subcruddit() {
       <div className="App">
         <div className="row">
           <div className="col-11">
-            <Main handle={handle}/>
+            <Main handle={handle} sortingType={sortingType} />
           </div>
           <div className="col-1 right-nav-pin">
+            {/* ToDo: Props/params to get proper rightNav still needed */}
             <RightNav />
           </div>
-        </div>      
+        </div>
       </div>
     </>
   );

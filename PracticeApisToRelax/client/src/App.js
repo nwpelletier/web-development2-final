@@ -48,6 +48,7 @@ function App() {
                 <Route path="/post/img/:subcruddit" element={<ImgPost />}></Route>
                 <Route path="/c/new" element={< SubcrudditPost />}></Route>
                 <Route path="/c/:handle" element={<Subcruddit />} />
+                <Route path="/c/:handle/:sortingType" element={<Subcruddit />} />
                 <Route path="/comments" element={<CommentPlay />} />
                 <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
 
