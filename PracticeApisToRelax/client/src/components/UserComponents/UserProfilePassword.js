@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 
-function UserProfilePassword() {
+function UserProfilePassword(userId) {
   return (
     <>
       <div className="container mt-4">

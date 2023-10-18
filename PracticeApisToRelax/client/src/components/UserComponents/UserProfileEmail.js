@@ -4,7 +4,9 @@ import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-function UserProfileEmail() {
+function UserProfileEmail(userId) {
+
+
   const initialValues = {
     email: "",
   };
@@ -14,7 +16,7 @@ function UserProfileEmail() {
     email: Yup.string().email("Invalid email format"),
   });
 
-  const userId = 4;
+  //const userId = 4;
   const handleSubmit = (values) => {
     
     axios
