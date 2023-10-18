@@ -45,6 +45,9 @@ RIGHTNAV
 }
 
 .current-subcruddit {
+  padding-left:25px;
+  text-shadow: -1px 1px 1px rgb(26, 32, 61), -2px 2px 2px rgb(33, 52, 135);
+
   font-size:32px;
   font-weight:700
 }

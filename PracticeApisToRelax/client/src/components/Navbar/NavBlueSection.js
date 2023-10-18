@@ -70,7 +70,6 @@ function LowerHalf() {
     <div className="lower-half">
       <div className="current-subcruddit my-3 mx-3">
         {currentPath}
-        {userKarma}
       </div>
       <div className="login-box">
         {isAuthenticated ? (
