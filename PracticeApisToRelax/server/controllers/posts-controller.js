@@ -7,8 +7,8 @@ const validator = require('validator');
 const {validateImage} = require("image-validator");
 
 
-
-const { S3Client, ListBucketsCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const { S3Client, ListBucketsCommand, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
 const dotenv = require('dotenv');
 const { Pricing } = require("aws-sdk");
 dotenv.config()
@@ -234,8 +234,11 @@ module.exports = {
                 }, 
                 order: [['isStickied', 'DESC'], ['createdAt', 'DESC']],
                 include: [{
+                    model: Subcruddits,
+                    attributes: ['subcrudditName']  
+                  }, {
                     model: Users,
-                    attributes: ['username', 'id'] 
+                    attributes: ['username']  
                   }] 
             })
         } else if (order === "hot"){
@@ -259,7 +262,21 @@ module.exports = {
             });
             return false;
         }
+
+
  
+        for (let post of activePosts) {
+            
+            if (post.postType === "image") {
+                const imgParams = {
+                    Bucket: bucketName,
+                    Key: post.content
+                }
+                const command = new GetObjectCommand(imgParams)
+                const url = await getSignedUrl(client, command, {expiresIn: 3600})
+                post.content = url;
+            }
+        }
 
         const returnObj = activePosts.map((post) => ({
             id: post.id,
@@ -384,6 +401,21 @@ module.exports = {
                     message:  "Please select a valid post."
                 });
             }
+
+            if (originalPost.postType === "image") {
+                const imgParams = {
+                    Bucket: bucketName,
+                    Key: originalPost.content
+                }
+                const command = new GetObjectCommand(imgParams)
+                const url = await getSignedUrl(client, command, {expiresIn: 3600})
+                originalPost.content = url;
+            }
+
+
+
+
+
             const responseObj = {
                 id: originalPost.id,
                 UserId: originalPost.UserId,
@@ -457,6 +489,18 @@ module.exports = {
             });
             
         }
+        for (let post of activePosts) {
+            
+            if (post.postType === "image") {
+                const imgParams = {
+                    Bucket: bucketName,
+                    Key: post.content
+                }
+                const command = new GetObjectCommand(imgParams)
+                const url = await getSignedUrl(client, command, {expiresIn: 3600})
+                post.content = url;
+            }
+        }
 
         const returnObj = activePosts.map((post) => ({
             id: post.id,
@@ -497,6 +541,19 @@ module.exports = {
                     attributes: ['subcrudditName']  
                   }]  
             })
+
+            for (let post of activePosts) {
+            
+                if (post.postType === "image") {
+                    const imgParams = {
+                        Bucket: bucketName,
+                        Key: post.content
+                    }
+                    const command = new GetObjectCommand(imgParams)
+                    const url = await getSignedUrl(client, command, {expiresIn: 3600})
+                    post.content = url;
+                }
+            }
 
 
 
@@ -736,8 +793,15 @@ module.exports = {
                             username: originalPost.User.username
 
                         }
-                        post.postId = originalObj
-                   
+                        post.postId = originalObj 
+                } else if (post.postType === "image") {
+                            const imgParams = {
+                                Bucket: bucketName,
+                                Key: post.content
+                            }
+                            const command = new GetObjectCommand(imgParams)
+                            const url = await getSignedUrl(client, command, {expiresIn: 3600})
+                            post.content = url;
                 }
             }
 

@@ -33,6 +33,7 @@ function PostCreate(props) {
       <div>
         <Navbar />
       </div>
+
       <div className="App">
       <Formik initialValues={formInitValues} validationSchema={formSchema} onSubmit={postForm} >
       {(formikProps) => (
