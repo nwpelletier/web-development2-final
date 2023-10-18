@@ -308,4 +308,46 @@ Ehsan:
  Challenges:
   - NA
 
+===================
+Date: 2023/10/18
+
+Nick:
+ Finished: 
+  - Single posts show relevant post content
+  - Navbar has logout; click 'username' brings to userpage, logout, display karma
+  - hot/new
+  - date formatting
+ Working On: 
+  - any 'post' components, implementing front-end
+  - icon for post type
+  - karma for right panel
+  - upvote/downvote
+ Challenges: 
+  - a lot of errors to handle
+
+
+Alex:
+ Finished: 
+  - fixed comment duplication bug 
+  - almost done comments 
+  - created successful axios call 
+ Working On:
+  - figure out bug with file upload 
+  - recreate post text/post image controller 
+  - finish comments
+  - fix collapse 
+  - comment upvote component 
+ Challenges:
+  - figuring out axios call 
+  - getting formik/dropzone to cooperate to fetch data 
+  - my own mind 
+
+ 
+Ehsan:
+ Finished: 
+  - not registerd user right panel
+ Working On: 
+  - right panel for registerd user
+ Challenges:
+  - fitting new component into previuos ones
 
