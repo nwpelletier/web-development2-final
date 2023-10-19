@@ -22,9 +22,10 @@ function Comments(props){
     
   
     useEffect(() => {
-       const userId = localStorage.getItem("UserId")
+       const userId = localStorage.getItem("userId")
+       console.log("useeffect")
         if (userId) {
-  
+ 
             axios
             .get(`http://localhost:8080/api/votes/${comment.id}/${userId}`)
             .then((response) => {

@@ -6,7 +6,7 @@ function CommentVotes({userLiked, setUserLiked, comment, commentPoints, setComme
 
     const vote = (value) => {
         value.UserId = 1;
-        const userId = localStorage.getItem("UserId")
+        const userId = localStorage.getItem("userId")
         if (userId) {
             axios
             .post(`http://localhost:8080/api/votes/${comment.id}`, value, {
