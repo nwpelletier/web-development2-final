@@ -30,6 +30,7 @@ function LowerHalf() {
 
 
   useEffect(() => {
+    console.log(currentPath);
     getKarma();
     const token = localStorage.getItem('token');
     if (token) {

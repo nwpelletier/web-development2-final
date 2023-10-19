@@ -17,7 +17,9 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
       try {
         let response;
         if (subcrudditName === 'all') {
-          response = await axios.get('http://localhost:8080/api/posts/posts/${sortingType}');
+          response = await axios.get(
+            `http://localhost:8080/api/posts/posts/${sortingType}`
+            );
         } else {
           response = await axios.get(
             `http://localhost:8080/api/posts/posts/${subcrudditName}/${sortingType}`

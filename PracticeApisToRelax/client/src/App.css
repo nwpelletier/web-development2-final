@@ -193,6 +193,10 @@ RIGHTNAV
 
 /* POST */
 
+.voted {
+  color: green;
+}
+
 .post-container {
   margin-left: 1%;
   margin-bottom: 1%;

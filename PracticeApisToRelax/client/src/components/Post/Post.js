@@ -1,62 +1,46 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import { ContentTypeContext } from '../Main/Main';
+import PostVote from './PostVote';
 
-function Post({ id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content }) {
-  const [voteStatus, setVoteStatus] = useState('none');
-  const [localPoints, setLocalPoints] = useState(points);
+function Post(props) {
+  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
 
-  const handleVote = (liked) => {
+  const [postLiked, setPostLiked] = useState();
+  const [postPoints, setPostPoints] = useState(points);
 
-    // This case: it has already been upvoted, and you click upvote again
-    if (voteStatus === liked) {
-      axios.delete(`/api/votes/${id}`)
-        .then(() => {
-          setLocalPoints(localPoints - (liked === 'upvote' ? 1 : -1));
-          setVoteStatus('none');
-        })
-        .catch(error => {
-          console.error('Error in handleVote:', error);
-        });
-    } else {
 
-      axios.post(`/api/votes/${id}`, { liked })
-        .then(response => {
-          setLocalPoints(localPoints + (liked === 'upvote' ? 1 : -1));
-          setVoteStatus(liked);
-        })
-        .catch(error => {
-          console.error('Error in handleVote:', error);
-        });
-    }
-  };
+  useEffect(() => {
+    axios
+    .get(`http://localhost:8080/api/votes/${id}`)
+    .then((response) => {
+      console.log(id + " " + response.data)
+
+      setPostLiked(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    setPostLiked("nothing")
+  }, [setPostLiked])
+
 
   return (
     <div>
       <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''}`}>
         <div className="vote-and-type-container">
           <div className="vote-container">
-            <img
-              className={`upvote ${voteStatus === 'upvote' ? 'voted' : ''}`}
-              src={arrowUpImage}
-              alt="upvote"
-              width="40%"
-              height="40%"
-            // onClick={() => handleVote(true)}
-            />
-            <h6 className="vote-count">{localPoints}</h6>
-            <img
-              className={`downvote ${voteStatus === 'downvote' ? 'voted' : ''}`}
-              src={arrowDownImage}
-              alt="downvote"
-              width="40%"
-              height="40%"
-            // onClick={() => handleVote(false)}
+            <PostVote
+              postLiked={postLiked}
+              setPostLiked={setPostLiked}
+              id={id}
+              postPoints={postPoints}
+              setPostPoints={setPostPoints}
             />
           </div>
           <div className="post-type-container">
