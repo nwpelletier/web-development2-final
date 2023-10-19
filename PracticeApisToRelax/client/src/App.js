@@ -27,7 +27,6 @@ import CommentPlay from "./components/Post/CommentPlay";
 export const AuthContext = React.createContext();
 export const UsernameContext = React.createContext();
 export const UserRoleContext = React.createContext();
-export const SubcrudditContext = createContext();
 
 function App() {
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem("token"));
