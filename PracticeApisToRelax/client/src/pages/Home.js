@@ -15,7 +15,7 @@ function Home() {
             <Main />
           </div>
           <div className="col-1 right-nav-pin">
-            <RightNav margin={"0.2rem"} />
+            <RightNav margin={"0.1rem"} loc={"home"} />
           </div>
         </div>      
       </div>
