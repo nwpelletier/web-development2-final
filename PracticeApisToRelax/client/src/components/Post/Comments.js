@@ -22,17 +22,26 @@ function Comments(props){
     
   
     useEffect(() => {
-        axios
-        .get(`http://localhost:8080/api/votes/${comment.id}`)
-        .then((response) => {
-            console.log(response.data)
-          
-          setUserLiked(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        setUserLiked("nothing")
+       const userId = localStorage.getItem("UserId")
+        if (userId) {
+  
+            axios
+            .get(`http://localhost:8080/api/votes/${comment.id}/${userId}`)
+            .then((response) => {
+                console.log(response.data)
+              
+              setUserLiked(response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+            
+        } else {
+            setUserLiked("nothing")
+        }
+
+
+
     },[setUserLiked])
  
 

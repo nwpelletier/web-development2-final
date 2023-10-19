@@ -9,8 +9,8 @@ module.exports = {
     addVote: async (req, res) => {
         const vote = req.body;
         const postId = req.params.id;
-        const userId = vote.UserId;
-        // const userId = req.UserId
+        const userId = req.UserId
+        vote.UserId = userId
     
         try {
             if (vote.liked === undefined) {
@@ -98,9 +98,8 @@ module.exports = {
     },
     
     deleteVote: async (req, res) => {
-        const userId = req.body.UserId
         const postId = req.params.id
-       // const userId = req.UserId
+        const userId = req.UserId
        
         try {
             let points = 0;
@@ -150,9 +149,8 @@ module.exports = {
     }, 
 
     getVote: async (req, res) => {
-        const post = req.params.id;
-      //  const userId = req.id
-      const userId = 1;
+        const post = req.params.commentid;
+        const userId = req.params.userid
         try {
             const vote = await Votes.findOne({
                 where: {

@@ -12,7 +12,6 @@ export const redirectTxt = "Create Text Post"
 
 export const formInitValues = {
     subcrudditName: "", // filled in by react
-    UserId: 1,
     title: "",
     postType: "image",
     content: "",
@@ -49,6 +48,7 @@ export const postForm = (data) => {
   
     const headers = {
         'Content-Type': 'multipart/form-data',
+        'x-access-token': localStorage.getItem("token")
       };
   
     axios
@@ -61,7 +61,7 @@ export const postForm = (data) => {
       });
   };
   
-
+ 
 
 
 

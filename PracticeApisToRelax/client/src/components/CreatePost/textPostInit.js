@@ -12,13 +12,17 @@ import axios from 'axios';
        title: "",
        postType: "text",
        content: "",
-       UserId: 1,
+
    }
    
    export const  postForm = (data) => {
     console.log(data)
     axios
-    .post(`http://localhost:8080/api/posts/text`, data)
+    .post(`http://localhost:8080/api/posts/text`, data, {
+      headers: {
+        'x-access-token': localStorage.getItem("token")
+      }
+      })
     .then((response) => {
       console.log(response.data);
     })
@@ -39,7 +43,7 @@ import axios from 'axios';
     });
 
 }
-   
+    
    export const  formSchema = Yup.object({
        title: Yup
        .string()

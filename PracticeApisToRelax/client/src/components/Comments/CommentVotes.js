@@ -6,15 +6,22 @@ function CommentVotes({userLiked, setUserLiked, comment, commentPoints, setComme
 
     const vote = (value) => {
         value.UserId = 1;
-        axios
-        .post(`http://localhost:8080/api/votes/${comment.id}`, value)
-        .then((response) => {
-            setUserLiked(response.data.vote)
-            setCommentPoints(commentPoints + response.data.points)
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        const userId = localStorage.getItem("UserId")
+        if (userId) {
+            axios
+            .post(`http://localhost:8080/api/votes/${comment.id}`, value, {
+                headers: {
+                  'x-access-token': localStorage.getItem("token")
+                }
+                })
+            .then((response) => {
+                setUserLiked(response.data.vote)
+                setCommentPoints(commentPoints + response.data.points)
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
 
     }
    

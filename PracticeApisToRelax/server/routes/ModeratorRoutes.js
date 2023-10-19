@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const controller = require('../controllers/ModeratorController');
+const {authAdmin, authUser} = require("../middleware/auth");
 
-router.post("/", controller.create);
+router.post("/", authUser, controller.create);
 
 router.get("/:id", controller.findById);
 

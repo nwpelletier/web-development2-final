@@ -17,7 +17,11 @@ function CreateComment(props) {
         } else {
         console.log(data)
         axios
-        .post(`http://localhost:8080/api/posts/comment/${comment.id}`, data)
+        .post(`http://localhost:8080/api/posts/comment/${comment.id}`, data, {
+            headers: {
+              'x-access-token': localStorage.getItem("token")
+            }
+            })
         .then((response) => {
             setReply(false)
             setNewComment(response.data)

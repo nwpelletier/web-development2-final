@@ -1,17 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/users-controller");
-// const authenticate = require("../authentication/auth");
+const {authAdmin, authUser} = require("../middleware/auth");
 
 
 router.post("/register", controller.createUser);
 router.post("/verify/email", controller.findEmail);
 router.post("/verify/username", controller.findUsername);
 router.post("/login", controller.login);
-router.patch("/make-admin/:id", controller.makeAdmin);
-router.delete("/:id", controller.deleteUser)
-router.patch("/email/:id", controller.addEmail)
-router.patch("/reinstate/:id", controller.reinstateUser)
+router.patch("/make-admin/:id", authAdmin, controller.makeAdmin);
+
+
+router.delete("/:id", authUser, controller.deleteUser)
+router.delete("/admin/:id", authAdmin, controller.deleteUser)
+
+router.patch("/email/:id", authUser, controller.addEmail)
+
+
+router.patch("/reinstate/:id", authAdmin, controller.reinstateUser)
 router.get("/karma/:id", controller.findKarma)
 
 

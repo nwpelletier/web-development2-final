@@ -7,7 +7,8 @@ const validator = require('validator');
 module.exports = {
     createNew: async (req, res) => {
         newSubcruddit = req.body;
-        userId = newSubcruddit.UserId;
+        userId = req.UserId;
+        newSubcruddit.UserId = userId;
         if (!newSubcruddit.subcrudditName) {
             return res.status(400).send({message: "You must provide a subcruddit name"});
         }
@@ -142,7 +143,7 @@ module.exports = {
 }, 
     editWiki: async (req, res) => {
        const modId = req.UserId
-       const wiki = req.body
+       const wiki = req.body.wiki
        const subId = req.params.id
 
         try {
@@ -158,7 +159,7 @@ module.exports = {
             if (modExists) {
                 return res.status(400).send({message: "You are not authorized to edit this subreddit's wiki"})
             }
-            subcruddit = await Subcruddits.findByPk()
+            subcruddit = await Subcruddits.findByPk(subId)
             subcruddit.wiki = wiki
             subcruddit.save()
             .then(()=> {

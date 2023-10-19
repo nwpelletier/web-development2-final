@@ -8,7 +8,7 @@ export const redirectTxt = "Create Image Post"
 
 
 export const formInitValues = {
-    UserId: 1,
+
     subcrudditName: "",
     wiki: "",
 }
@@ -17,7 +17,11 @@ export const postForm = (data) => {
     console.log(data)
     data.UserId = 1
     axios
-    .post(`http://localhost:8080/api/subcruddits/` , data)
+    .post(`http://localhost:8080/api/subcruddits/` , data, {
+    headers: {
+      'x-access-token': localStorage.getItem("token")
+    }
+    })
     .then((response) => {
       console.log(response)
     })
@@ -56,7 +60,7 @@ export const formSchema = Yup.object({
     ,
 })
 
-
+ 
 
 export const formObject = [{
     inputId: "subcrudditNameInput",

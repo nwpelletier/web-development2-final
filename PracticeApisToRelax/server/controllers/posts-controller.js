@@ -32,11 +32,11 @@ const client = new S3Client({
 module.exports = {
     
     createImgPost: async (req, res) => {
-        console.log("AM I getting here")
+
         const post = req.body
-        // post.UserId = req.UserId
-        // username = req.username
-        username = "alexfranklin"
+        post.UserId = req.UserId
+        username = req.username
+        
         if (!validateImgPost(post, req, res)) {
             return;
         }
@@ -50,8 +50,6 @@ module.exports = {
                 return res.status(400).send({message: "you must post to a valid subcruddit"})
             }
             post.SubcrudditId = subcruddit.id
-            console.log(post)
-            console.log(req.file)
             const imgName = username + Date.now() + ".jpg"
 
             
@@ -91,6 +89,7 @@ module.exports = {
     createTextPost: async (req, res) => {
         try {
             const post = req.body
+            post.UserId = req.UserId;
             if (!validateTextPost(post, req, res)) {
                 return;
             }
@@ -137,7 +136,7 @@ module.exports = {
     // TODO ensure deleted users display as "deleted-user"
     createComment: async (req, res) => {
         const comment = req.body
-       // comment.UserId = req.UserId;
+        comment.UserId = req.UserId;
 
         const postId = req.params.id
         let layer = 0;
@@ -647,8 +646,9 @@ module.exports = {
         try {
        const postId = req.params.id
        const comment = req.body
-     //   userId = req.UserId
-        const userId = comment.UserId
+       comment.UserId = req.UserId;
+        userId = req.UserId
+        
         if (!validator.isLength(comment.content, {min: 2, max:5000})){
             res.status(400).json({message: "Comments must be between 2 and 5000 characters"}) 
         }
@@ -682,29 +682,27 @@ module.exports = {
         try {
             const postId = req.params.id
             const editedPost = req.body
-          //   userId = req.UserId
-             const userId = editedPost.UserId
+            userId = req.UserId
+
              if (!validator.isLength(editedPost.content, {min: 2, max:50000})){
                  res.status(400).json({message: "Posts must be between 2 and 50, 000 characters"}) 
              }
              if (editedPost.postType === "image"){
-                console.log('hello')
+                res.status(400).json({message: "You cannot edit image posts"}) 
              }
              const post = await Posts.findOne({
                  where: {
                      id: postId,
                      layer: 0,
-                     isActive: true
+                     isActive: true,
+                     UserId: userId
                  }
              })
              if (!post) {
                  res.status(400).json({message: "Please select a valid post"}) 
              }
-             if (post.UserId !== userId) {
-                 res.status(400).json({message: "You are not authorized to edit a post that isn't yours."}) 
-     
-             }
-             post.content = comment.content;
+
+             post.content = editedPost.content;
              post.save()
              .then(()=> {
                  res.status(200).send({message: "Successfully edited comment", comment: post}) 
@@ -718,7 +716,7 @@ module.exports = {
     //TODO change when impl auth - comments
     deletePost: async (req, res) => {
         const postId = req.params.id;
-    //    const requestId = req.UserId; 
+        const requestId = req.UserId; 
         try {
             const thePost = await Posts.findByPk(postId, {
                 where: {
@@ -728,18 +726,18 @@ module.exports = {
             if(!thePost) {
                 return res.status(404).send({message: "Could not find post"});
             }
-            // if (req.role !== 'admin' && req.UserId !== thePost.UserId){
-            //     const mod = await Moderators.findOne({
-            //         where: {
-            //             UserId: req.UserId,
-            //             SubcrudditId: thePost.SubcrudditId
-            //         }
-            //     })
-            //     if (!mod) {
-            //         return res.status(401).send({message: "You do not have permission to delete this post"});
-            //     }
+            if (req.role !== 'admin' && requestId!== thePost.UserId){
+                const mod = await Moderators.findOne({
+                    where: {
+                        UserId: requestId,
+                        SubcrudditId: thePost.SubcrudditId
+                    }
+                })
+                if (!mod) {
+                    return res.status(401).send({message: "You do not have permission to delete this post"});
+                }
 
-            // }
+            }
             thePost.isActive = false;
             thePost.save()
             .then(()=> {
@@ -847,18 +845,18 @@ module.exports = {
             if(!thePost) {
                 return res.status(404).send({message: "Could not find post"});
             }
-            // if (req.role === 'user' ){
-            //     const mod = await Moderators.findOne({
-            //         where: {
-            //             UserId: req.UserId,
-            //             SubcrudditId: thePost.SubcrudditId
-            //         }
-            //     })
-            //     if (!mod) {
-            //         return res.status(401).send({message: "You do not have permission to delete this post"});
-            //     }
+            if (req.role === 'user' ){
+                const mod = await Moderators.findOne({
+                    where: {
+                        UserId: requestId,
+                        SubcrudditId: thePost.SubcrudditId
+                    }
+                })
+                if (!mod) {
+                    return res.status(401).send({message: "You do not have permission to delete this post"});
+                }
 
-            // }
+            }
            
             thePost.isLocked = !thePost.isLocked;
             thePost.save()
@@ -887,18 +885,18 @@ module.exports = {
             if(!thePost) {
                 return res.status(404).send({message: "Could not find post"});
             }
-            // if (req.role === 'user' ){
-            //     const mod = await Moderators.findOne({
-            //         where: {
-            //             UserId: req.UserId,
-            //             SubcrudditId: thePost.SubcrudditId
-            //         }
-            //     })
-            //     if (!mod) {
-            //         return res.status(401).send({message: "You do not have permission to sticky this post"});
-            //     }
+            if (req.role === 'user' ){
+                const mod = await Moderators.findOne({
+                    where: {
+                        UserId: requestId,
+                        SubcrudditId: thePost.SubcrudditId
+                    }
+                })
+                if (!mod) {
+                    return res.status(401).send({message: "You do not have permission to sticky this post"});
+                }
 
-            // }
+            }
             const isStickied = thePost.isStickied;
             thePost.isStickied = !isStickied;
             thePost.save().then(()=> {

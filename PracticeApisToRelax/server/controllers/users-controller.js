@@ -78,7 +78,8 @@ module.exports = {
                             
                             const id = userFound[0].id;
                             const role = userFound[0].role;
-                            const token = jwt.sign({id, role}, process.env.JWT_SECRET, {
+                            const username = userFound[0].username;
+                            const token = jwt.sign({id, role, username}, process.env.JWT_SECRET, {
                                 expiresIn: 1200, 
                             })
                             req.session.user = userFound[0];
@@ -160,12 +161,12 @@ module.exports = {
         }
     },
     deleteUser: async(req, res)=> {
-        const userId = req.params.id;
-        // TODO: uncomment when auth is implemented
+        const user = req.params.id;
+        
         try {
             userToDelete = await Users.findOne({
                 where: {
-                    id: userId,
+                    id: user,
                     isActive: true
                 }
             })
@@ -174,11 +175,11 @@ module.exports = {
                     message: "Could not find user."
                 });
             }
-            // if (req.role === 'user' && req.UserId !== userToDelete.id) {
-            //     return res.status(400).send({
-            //         message: "You do not have permission to delete this userr."
-            //     });
-            // }
+            if (req.role === 'user' && req.UserId !== userToDelete.id) {
+                return res.status(400).send({
+                    message: "You do not have permission to delete this userr."
+                });
+            }
             userToDelete.isActive = false;
             await userToDelete.save()
 
@@ -196,14 +197,20 @@ module.exports = {
 
     },
     addEmail: async(req, res) => {
-        //TODO: uncomment below code once authentication is active
+       
         const userId = req.params.id;
         const user = req.body;
-     //   const validUserId = req.UserId
+       const validUserId = req.UserId
+       user.id = validUserId
+       if (userId !== validUserId) {
+            return res.status(400).send({message: "You do not have permission to change this account."});  
+       }
+
+
         try {
             userFound = await Users.findOne({
                 where: {
-                    id: userId,
+                    id: validUserId,
                     isActive: true
                 }
             })
@@ -212,11 +219,7 @@ module.exports = {
                     message: "Could not find user."
                 });
             }
-            // if (validUserId !== userId){
-            //     return res.status(400).send({
-            //         message: "You do not have permission to change this account."
-            //     });
-            // }
+
             if ((!validator.isEmail(user.email))){
                 return res.status(400).send({
                     message: "Must provide valid email address."
@@ -305,19 +308,13 @@ function validateNewUser(user, req, res){
   
 
 
-     if ( !user.password || !user.passwordConfirm || !user.username) {
+     if ( !user.password || !user.username) {
         res.status(400).send({
-            message: "Must provide a valid username, and two matching passwords."
+            message: "Must provide a valid username, and password."
         });
         return false;
      } 
 
-     if (user.password !== user.passwordConfirm) {
-        res.status(400).send({
-            message: "Passwords must match"
-        });
-        return false;
-     } 
     
 
     if (user.email) {

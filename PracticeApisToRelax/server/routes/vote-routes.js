@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const controller = require("../controllers/votes-controller");
-// const authenticate = require("../authentication/auth");
+const {authAdmin, authUser} = require("../middleware/auth");
 
-router.post("/:id", controller.addVote)
-router.delete("/:id", controller.deleteVote)
+router.post("/:id", authUser, controller.addVote)
+router.delete("/:id", authUser, controller.deleteVote)
 // add get method 
-router.get("/:id", controller.getVote);
+router.get("/:commentid/:userid", controller.getVote);
 
 
 

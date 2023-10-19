@@ -2,8 +2,8 @@ const { Moderators, Subcruddits, Users } = require("../models");
 
 exports.create = async (req, res) => {
   try {
-    //const userId = req.UserId;
-    const userId = req.body.modId
+    const userId = req.UserId;
+   
     const subId = req.body.SubcrudditId;
     const mod = await Moderators.findOne({
       where: {
@@ -71,8 +71,7 @@ exports.findAll = async (req, res) => {
   
 
 exports.isModerator = async (req, res) => {
-  // const userId = req.UserId;
-  const userId = req.body.UserId;
+  const userId = req.UserId;
   const subName = req.params.subcruddit
   try {
     const subcruddit = await Subcruddits.findOne({
