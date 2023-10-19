@@ -14,36 +14,38 @@ function Comments(props){
     const [nestedReply, setNestedReply] = useState(false)
     const [newComment, setNewComment] = useState({})
     const [commentReplies, setCommentReplies] = useState(comment.children_count)
-   
+    const [commentContent, setCommentContent] = useState(comment.content)
     const [userLiked, setUserLiked] = useState()
     const [commentPoints, setCommentPoints] = useState(points)
     const [edit, setEdit] = useState();
+    const [isUser, setIsUser] = useState();
+    // add is admin 
    
     
   
     useEffect(() => {
-       const userId = localStorage.getItem("userId")
-       console.log("useeffect")
+        const userId = parseInt(localStorage.getItem("userId"), 10);
+       if (userId === comment.UserId) {
+        setIsUser(true)
+       } else {
+        setIsUser(false)
+       }
         if (userId) {
- 
             axios
             .get(`http://localhost:8080/api/votes/${comment.id}/${userId}`)
             .then((response) => {
-                console.log(response.data)
-              
               setUserLiked(response.data);
             })
             .catch((error) => {
               console.log(error);
-            });
-            
+            });   
         } else {
             setUserLiked("nothing")
         }
 
 
 
-    },[setUserLiked])
+    },[setUserLiked, setIsUser])
  
 
 
@@ -70,7 +72,7 @@ function Comments(props){
     //ONE SINGULAR COMMENT 
 
     return (
-        <div className={`comment-box background-${comment.layer % 2}`}>
+        <div className={`comment-box  background-${comment.layer % 2}`}>
             <div className="comment-row">
                 <div className="vote-area">
                     <CommentVotes 
@@ -92,17 +94,25 @@ function Comments(props){
                     
                         </div>
                     </div>
-                {show && <><p className="comment-big my-1" >{comment.content}</p>
+                {show && <><p className="comment-big my-1" >{commentContent}</p>
                 {(comment.children_count > 0 && !loadMore) && 
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
                 } {comment.isActive && <span onClick={replyToComment} className="comment-small fw-bolder">reply</span>}
-                {comment.isActive && <span onClick={editComment} className="comment-small  ms-1">edit</span>}
-                {comment.isActive && <span onClick={replyToComment} className="comment-small text-danger ms-1">delete</span>}
+                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small  ms-1">edit</span>}
+                {(comment.isActive && isUser )&& <span onClick={replyToComment} className="comment-small text-danger ms-1">delete</span>}
                 </>}
                 </div>
 
 
-                {reply && <div className="">
+
+
+
+
+
+{/* // value = {formObj.value ? subParam : undefined} */}
+
+            </div>
+            {reply && <div className="comment-block">
                 <CreateComment 
                 comment={comment} 
                 setReply={setReply} 
@@ -114,20 +124,19 @@ function Comments(props){
                 </div>
                 
                 }
-                { edit && 
+
+{ edit && 
                                 <EditComment 
+                                setCommentContent={setCommentContent}
                                 comment={comment} 
                                 order={order} 
                                 setEdit={setEdit}
-                                value={comment.content}/>
+                                value={commentContent}/>
 
                 }
 
 
 
-{/* // value = {formObj.value ? subParam : undefined} */}
-
-            </div>
             {nestedReply && <>
             
             <Comments 

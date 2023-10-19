@@ -9,6 +9,6 @@ router.get("/:id", controller.findById);
 
 router.get("/",controller.findAll);
 
-router.get("/ismod/:subcruddit", controller.isModerator)
+router.get("/ismod/:subcruddit", authUser, controller.isModerator)
 
 module.exports =  router;
