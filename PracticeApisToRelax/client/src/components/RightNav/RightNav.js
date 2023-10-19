@@ -1,8 +1,10 @@
 import React from "react";
 import RightNavNotLoggedIn from './RightNavNotLoggedIn';
 import RNNotLoggedInPage from './RNNotLoggedInPages';
-function RightNav() {
-  //console.log("RIGHTNAV POSITION: ",margin.margin)
+function RightNav(margin) {
+
+
+  console.log("RIGHTNAV MARGIN Value: ",margin)
   return (
     <>
       {/* 
@@ -12,10 +14,11 @@ function RightNav() {
           - user is logged in @user page (RightNavUserPage)
           - user is logged in @other page (RightNavSubcruddit)
       */}
-    
+    <div className="right-panel" style={{ marginTop: margin.margin }}>
     {/* <RightNavNotLoggedIn /> */}
-    <RNNotLoggedInPage />
-    
+        {/* <RNNotLoggedInPage margin={margin} /> */}
+        <p> RIGHTNAV MARGIN Value: {margin.margin}</p>
+    </div>
     </>
   );
 }
