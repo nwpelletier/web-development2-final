@@ -351,3 +351,52 @@ Ehsan:
  Challenges:
   - fitting new component into previuos ones
 
+===================
+Date: 2023/10/18
+
+Nick:
+ Finished: 
+  - Hot/New sorting
+  - Voting (still need visual feedback)
+  - Login/Signup modals, navbar functions
+ Working On: 
+  - register (doesn't need dupe password)
+  - add links to submit post in right nav
+  - mod privileges (subcruddit/right nav)
+  - include replies to posts
+ Challenges: 
+  - undefined in url for post view
+
+
+Alex:
+ Finished: 
+  -  image upload 
+  -  posts (subcruddit, img post, text post) 
+  - mostly comments - few things to add 
+ Working On:
+  - implement authorization 
+  - finish comments 
+        - fix text box (not flex) 
+        - update comment 
+        - minimize properly 
+  - update posts (text, subcruddit) 
+  - add transactions to back end 
+  - create search routes 
+  - create admin specific routes 
+ Challenges:
+  - comment minimization 
+ 
+Ehsan:
+ Finished: 
+  - userpage loading with usrId from localstorage
+ Working On: 
+   cases of right panel
+  - user not loggedin/registered in hoome page
+  - user not loggedin/registered in other page
+  - user loggedin in user page
+  - user loggedin in other pages
+ Challenges:
+  - understanding the reddit 
+  - matching and fitting the right panel copmonent into others
+
+
