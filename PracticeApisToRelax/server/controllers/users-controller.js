@@ -80,7 +80,7 @@ module.exports = {
                             const role = userFound[0].role;
                             const username = userFound[0].username;
                             const token = jwt.sign({id, role, username}, process.env.JWT_SECRET, {
-                                expiresIn: 1200, 
+                                expiresIn: '10h', 
                             })
                             req.session.user = userFound[0];
                             console.log(req.session.user);
