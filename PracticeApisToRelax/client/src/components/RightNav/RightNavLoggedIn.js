@@ -18,7 +18,7 @@ function RightNavLoggedIn() {
     <>
       <h3>{username}</h3>
 
-      <div className="mb-3">
+      <div className="">
         <div className="">
           <div className="row">
             <span className="fs-3 col-md-1">{curma}</span>
@@ -37,25 +37,15 @@ function RightNavLoggedIn() {
         </div>
       </div>
 
-      <div className="border  border-dark p-3">
-        <div className="row ">
-          <div className="col-md-5">
-            <input type="text" placeholder="username" />
-          </div>
-          <div className="col-md-5">
-            <input type="text" placeholder="password" />
-          </div>
-        </div>
-
-        <div className="row">
-          <a className="col-md-6 mt-3 link-dark text-decoration-none" href="#">
-            reset password
+      <div className="row mb-1">
+        <small>
+          {" "}
+          <a className="fw-bold text-info " href="#">
+            show karma breakdown by subreddit
           </a>
-          <div className="col-md-6 d-flex justify-content-end">
-            <button className="btn btn-secondary mt-3">Log In</button>
-          </div>
-        </div>
+        </small>
       </div>
+      <div className="border-top border-dark"></div>
       <div className="sponsored-section mt-3">
         <a className="sponsored-link" href="#">
           Submit a Post

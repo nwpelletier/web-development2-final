@@ -8,7 +8,7 @@ import { format } from "date-fns";
 function UserOverview(user) {
   const navigate = useNavigate();
   let userId = user.UserID;
-  console.log("USERID OVERVIE", userId);
+ // console.log("USERID OVERVIE", userId);
   // console.log(`http://localhost:8080/api/overview/${userId}`);
   const [voteStatus, setVoteStatus] = useState("none");
   const [localPoints, setLocalPoints] = useState("");
@@ -21,7 +21,7 @@ function UserOverview(user) {
         axios
           .get(`http://localhost:8080/api/overview/${userId}`)
           .then((response) => {
-            console.log("POSTS IN OVERVIEW", response.data);
+           // console.log("POSTS IN OVERVIEW", response.data);
             // if(!response)
             setPosts(response.data);
           });

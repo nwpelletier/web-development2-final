@@ -19,7 +19,7 @@ function UserNav() {
     token = localStorage.getItem("token");
     const storedUsername = localStorage.getItem("username");
     const storedUseId = localStorage.getItem("userId");
-    console.log("USERID TOKEN", storedUseId);
+    //console.log("USERID TOKEN UserNav", storedUseId);
     if (token) {
       setIsAuthenticated(true);
       setUsername(storedUsername);
