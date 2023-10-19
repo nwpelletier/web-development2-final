@@ -8,9 +8,7 @@ function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
-
-  console.log(currentPath);
-
+  const userId = localStorage.getItem('userId');
 
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
@@ -18,10 +16,8 @@ function Post(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/votes/${id}`)
+      .get(`http://localhost:8080/api/votes/${id}/${userId}`)
       .then((response) => {
-        console.log(id + " " + response.data)
-
         setPostLiked(response.data);
       })
       .catch((error) => {

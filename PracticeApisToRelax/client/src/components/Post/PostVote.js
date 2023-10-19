@@ -9,7 +9,11 @@ function PostVote(props) {
   const vote = (value) => {
     value.UserId = 1;
     axios
-      .post(`http://localhost:8080/api/votes/${id}`, value)
+      .post(`http://localhost:8080/api/votes/${id}`, value, {
+        headers: {
+          'x-access-token': localStorage.getItem("token")
+        }
+      })
       .then((response) => {
         setPostLiked(response.data.vote)
         setPostPoints(postPoints + response.data.points)
@@ -17,6 +21,7 @@ function PostVote(props) {
       .catch((error) => {
         console.log(error);
       })
+      console.log(postLiked)
   }
 
 
@@ -28,7 +33,7 @@ function PostVote(props) {
         alt="upvote"
         width="40%"
         height="40%"
-        onClick={() => vote({liked: true})}
+        onClick={() => vote({ liked: true })}
       />
       <h6 className="vote-count">{postPoints}</h6>
       <img
@@ -37,7 +42,7 @@ function PostVote(props) {
         alt="downvote"
         width="40%"
         height="40%"
-        onClick={() => vote({liked: false})}
+        onClick={() => vote({ liked: false })}
       />
     </div>
   )
