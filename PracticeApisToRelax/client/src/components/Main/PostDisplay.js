@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Post from '../Post/Post';
 import { formatDistance } from 'date-fns';
+import PostComments from '../Post/PostComments';
 
 function PostDisplay({ postId }) {
   const [post, setPost] = useState(null);
@@ -31,20 +32,28 @@ function PostDisplay({ postId }) {
   }
 
   return (
-    <Post
-      key={post.id}
-      id={post.id}
-      points={post.points}
-      title={post.title}
-      content={post.content}
-      postType={post.postType}
-      username={post.username} // Assuming the user object is nested within the post object
-      SubcrudditId={post.SubcrudditId}
-      createdAt={formatDistance(new Date(post.createdAt), new Date(), {
-        addSuffix: true,
-      })}
-      SubcrudditName={post.subcrudditName}
-    />
+    <>
+      <Post
+        key={post.id}
+        id={post.id}
+        points={post.points}
+        title={post.title}
+        content={post.content}
+        postType={post.postType}
+        username={post.username} // Assuming the user object is nested within the post object
+        SubcrudditId={post.SubcrudditId}
+        createdAt={formatDistance(new Date(post.createdAt), new Date(), {
+          addSuffix: true,
+        })}
+        SubcrudditName={post.subcrudditName}
+      />
+
+      <PostComments
+      // Hard coded for now. :)
+        order='new'
+        postId={post.id} />
+    </>
+
   );
 }
 
