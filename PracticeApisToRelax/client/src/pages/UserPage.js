@@ -23,7 +23,7 @@ function UserPage() {
         </div>
         {/* <div className="main-content"> */}
         <Navbar />
-        <RightNav margin={"3.4rem"} />
+        <RightNav margin={"4.4rem"} loc={"user"} />
         <UserNav/>
       </div>
       {/* </div> */}
