@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
 import { useLocation } from "react-router-dom";
+import { ModContext } from '../../pages/Subcruddit';
 
 function RNNotLoggedInPages(margin) {
+
+  // Verifying mod status!
+  const [isMod, setIsMod] = useContext(ModContext);
+  console.log('RightNav Mod Status: ' + isMod);
+
+
   //console.log("RIGHTNAV POSITION: ",margin.margin)
   const currentPath = useLocation().pathname.split("/")[2];
   const rules = [

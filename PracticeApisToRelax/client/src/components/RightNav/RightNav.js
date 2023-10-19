@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
 import RNNotLoggedInPage from "./RNNotLoggedInPages";
 import RightNavLoggedIn from "./RightNavLoggedIn";
-import { ModContext } from '../../pages/Subcruddit';
 function RightNav(params) {
 
 
@@ -14,10 +13,6 @@ function RightNav(params) {
   // when calling the Rightpanel(RightNav) we need to include (home, sub) as parameter(params.loc) to be displayed correctly
   // the other parameter(params.margin) is for the margin-top val for right panel
   // Verifying mod status!
-  
-  
-  //  const [isMod, setIsMod] = useContext(ModContext);
-  //  console.log('RightNav Mod Status: ' + isMod);
 
   let rightNavComponent = null;
   if (params.loc === "home") {
