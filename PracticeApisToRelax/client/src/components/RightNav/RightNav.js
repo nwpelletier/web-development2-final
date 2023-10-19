@@ -17,7 +17,7 @@ function RightNav(margin) {
     <div className="right-panel" style={{ marginTop: margin.margin }}>
     {/* <RightNavNotLoggedIn /> */}
         <RNNotLoggedInPage margin={margin} />
-        <p> RIGHTNAV MARGIN Value: {margin.margin}</p>
+        {/* <p> RIGHTNAV MARGIN Value: {margin.margin}</p> */}
     </div>
     </>
   );
