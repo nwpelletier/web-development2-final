@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function RightNavNotLoggedIn(margin) {
-  //console.log("RIGHTNAV POSITION: ",margin.margin)
+  
   return (
-    // <div className="right-panel" style={{ marginTop: margin.margin }}>
+   
     <>
       <div className="mb-3">
         <div className="d-flex align-items-center">
@@ -41,7 +41,7 @@ function RightNavNotLoggedIn(margin) {
         </a>
       </div>
     </>
-    // </div>
+
   );
 }
 
