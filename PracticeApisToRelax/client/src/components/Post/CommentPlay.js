@@ -6,7 +6,9 @@ const newOrder = "new"
     return (
         <PostComments
         order={newOrder}
-        postId={3} />
+        postId={3}
+        display={true}
+         />
     )
 
 }

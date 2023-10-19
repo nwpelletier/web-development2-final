@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 function Comments(props){
-    const {comment, order, points, show, setShow, toggleShow} = props;
+    const {comment, order, points, display, setChildrenShow, childrenShow } = props;
     const [loadMore, setLoadMore] = useState(false);
     const [reply, setReply] = useState(false)
     const [nestedReply, setNestedReply] = useState(false)
@@ -19,11 +19,20 @@ function Comments(props){
     const [commentPoints, setCommentPoints] = useState(points)
     const [edit, setEdit] = useState();
     const [isUser, setIsUser] = useState();
-    // add is admin 
+    const [show, setShow] = useState(childrenShow);
+   
+
+  const toggleShow = () => {
+    const isShow = !show
+    setShow(isShow)
+    setChildrenShow(isShow)
+  }
+ 
    
     
   
     useEffect(() => {
+    
         const userId = parseInt(localStorage.getItem("userId"), 10);
        if (userId === comment.UserId) {
         setIsUser(true)
@@ -151,6 +160,7 @@ function Comments(props){
                 <PostComments 
                 order={order}
                 postId={comment.id}
+                display={childrenShow}
                 
                 />
                 </div>

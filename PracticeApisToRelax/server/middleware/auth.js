@@ -38,7 +38,7 @@ module.exports = {
                     req.role = decoded.role;
                     req.username = decoded.username;
                     if (req.role !== "admin") {
-                        res.json({auth: false, message: "failed to authenticate"})
+                        return res.json({auth: false, message: "failed to authenticate"})
                     }
                     next();
                 }
