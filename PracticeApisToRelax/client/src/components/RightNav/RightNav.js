@@ -1,10 +1,17 @@
 import React from "react";
-import RightNavNotLoggedIn from './RightNavNotLoggedIn';
-import RNNotLoggedInPage from './RNNotLoggedInPages';
-function RightNav(margin) {
+import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
+import RNNotLoggedInPage from "./RNNotLoggedInPages";
+function RightNav(params) {
+  // console.log("RIGHTNAV MARGIN Value: ", params.margin);
+  // console.log("RIGHTNAV LOC Value: ", params.loc);
 
+  let rightNavComponent = null;
+  if (params.loc === "home") {
+    rightNavComponent = <RightNavNotLoggedIn />;
+  } else if (params.loc === "sub") {
+    rightNavComponent = <RNNotLoggedInPage />;
+  }
 
-  console.log("RIGHTNAV MARGIN Value: ",margin)
   return (
     <>
       {/* 
@@ -14,11 +21,9 @@ function RightNav(margin) {
           - user is logged in @user page (RightNavUserPage)
           - user is logged in @other page (RightNavSubcruddit)
       */}
-    <div className="right-panel" style={{ marginTop: margin.margin }}>
-    {/* <RightNavNotLoggedIn /> */}
-        <RNNotLoggedInPage margin={margin} />
-        {/* <p> RIGHTNAV MARGIN Value: {margin.margin}</p> */}
-    </div>
+      <div className="right-panel" style={{ marginTop: params.margin }}>
+        {rightNavComponent}
+      </div>
     </>
   );
 }

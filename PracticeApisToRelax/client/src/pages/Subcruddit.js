@@ -21,7 +21,7 @@ function Subcruddit() {
           </div>
           <div className="col-1 right-nav-pin">
             {/* ToDo: Props/params to get proper rightNav still needed */}
-            <RightNav margin={"0.1rem"} />
+            <RightNav margin={"0.1rem"} loc={"sub"} />
           </div>
         </div>
       </div>
