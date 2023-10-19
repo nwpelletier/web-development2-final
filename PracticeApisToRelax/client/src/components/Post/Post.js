@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
-import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
-import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
 
@@ -11,21 +9,24 @@ function Post(props) {
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
 
+  console.log(currentPath);
+
+
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
 
 
   useEffect(() => {
     axios
-    .get(`http://localhost:8080/api/votes/${id}`)
-    .then((response) => {
-      console.log(id + " " + response.data)
+      .get(`http://localhost:8080/api/votes/${id}`)
+      .then((response) => {
+        console.log(id + " " + response.data)
 
-      setPostLiked(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+        setPostLiked(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     setPostLiked("nothing")
   }, [setPostLiked])
 
@@ -50,23 +51,25 @@ function Post(props) {
 
         <div className="post-content-container col-md-10 col-sm-5 row">
           <div className="post-title">
-            <Link to={`/c/${SubcrudditName}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
+            <a href={`${currentPath}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
               {title}
-            </Link>
-
+            </a>
+            {/* <Link to={`/c/${subName}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
+              {title}
+            </Link> */}
           </div>
           {currentPath.includes('/c/all') ? (
             <div className="post-submission-info">Posted {createdAt} by {username} to {SubcrudditName}</div>
           ) : (
             <div className="post-submission-info">Posted {createdAt} by {username}</div>
           )}
-          
+
           {content && (
             <>
-            <hr></hr>
-            <div className="post-content col-10">
-              <p>{content}</p>
-            </div>
+              <hr></hr>
+              <div className="post-content col-10">
+                <p>{content}</p>
+              </div>
             </>
           )}
           <div className="post-links">
