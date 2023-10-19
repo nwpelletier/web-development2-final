@@ -8,9 +8,9 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
   
   
   const [posts, setPosts] = useState([]);
-  const [subName, setSubName] = useState(subcrudditName);
+  // const [subName, setSubName] = useState(subcrudditName);
 
-  console.log('SubName: ' + subcrudditName);
+  
 
   if (!sortingType) {
     sortingType = "hot";
@@ -41,7 +41,6 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
   }, [subcrudditName, sortingType]);
 
   return (
-    <SubcrudditContext.Provider value={subName}>
       <div>
         {posts.map((post) => (
           <Post
@@ -58,7 +57,6 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
           />
         ))}
       </div>
-    </SubcrudditContext.Provider>
   );
 
 }

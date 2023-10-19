@@ -30,7 +30,6 @@ function LowerHalf() {
 
 
   useEffect(() => {
-    console.log(currentPath);
     getKarma();
     const token = localStorage.getItem('token');
     if (token) {
@@ -60,7 +59,6 @@ function LowerHalf() {
   };
 
   useEffect(() => {
-    console.log(currentPath)
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
