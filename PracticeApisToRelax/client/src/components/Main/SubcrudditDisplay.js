@@ -1,22 +1,26 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Post from '../Post/Post';
 import { formatDistance } from 'date-fns';
+import { ModContext } from '../../pages/Subcruddit';
 export const SubcrudditContext = createContext();
 function SubcrudditDisplay({ subcrudditName, sortingType }) {
-  
-  
-  const [posts, setPosts] = useState([]);
-  // const [subName, setSubName] = useState(subcrudditName);
 
-  
+  const [posts, setPosts] = useState([]);
+  const [isMod, setIsMod] = useContext(ModContext);
 
   if (!sortingType) {
     sortingType = "hot";
   }
 
+  // Verifying mod status!
+  console.log('Subcruddit Mod Status: ' + isMod);
+
+
   const [sortBy, setSortBy] = useState('')
+
+
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -41,22 +45,22 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
   }, [subcrudditName, sortingType]);
 
   return (
-      <div>
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            id={post.id}
-            points={post.points}
-            title={post.title}
-            postType={post.postType}
-            username={post.username}
-            SubcrudditName={post.SubcrudditName}
-            createdAt={formatDistance(new Date(post.createdAt), new Date(), {
-              addSuffix: true,
-            })}
-          />
-        ))}
-      </div>
+    <div>
+      {posts.map((post) => (
+        <Post
+          key={post.id}
+          id={post.id}
+          points={post.points}
+          title={post.title}
+          postType={post.postType}
+          username={post.username}
+          SubcrudditName={post.SubcrudditName}
+          createdAt={formatDistance(new Date(post.createdAt), new Date(), {
+            addSuffix: true,
+          })}
+        />
+      ))}
+    </div>
   );
 
 }

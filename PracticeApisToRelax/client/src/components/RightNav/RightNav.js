@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
 import RNNotLoggedInPage from "./RNNotLoggedInPages";
+import { ModContext } from '../../pages/Subcruddit';
 function RightNav(params) {
   // console.log("RIGHTNAV MARGIN Value: ", params.margin);
   // console.log("RIGHTNAV LOC Value: ", params.loc);
+
+  // Verifying mod status!
+  const [isMod, setIsMod] = useContext(ModContext);
+  console.log('RightNav Mod Status: ' + isMod);
 
   let rightNavComponent = null;
   if (params.loc === "home") {
