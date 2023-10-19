@@ -5,7 +5,7 @@ import Comments from './Comments';
 import PostComments from './PostComments';
 
 function EditComment(props) {
-    const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit} = props
+    const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit, setCommentContent} = props
     const formInitValues = {
         UserId: 1,
         content: value,
@@ -13,6 +13,7 @@ function EditComment(props) {
     
     const postForm = (data) => {
     console.log(data) 
+setCommentContent("alex")
     }
 
     
@@ -44,7 +45,7 @@ function EditComment(props) {
                              as={"textarea"}
                             rows={6}
                             style={{ lineHeight: 1 }}
-                            value={value}
+                            defaultValue={value}
                          
                             
                         />

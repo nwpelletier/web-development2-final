@@ -118,7 +118,7 @@ function Register({ setModalContent, closeModal }) {
             <a className="modal-signup-prompt" onClick={() => setModalContent('login')}> Log In</a>
             <span> | </span>
           </div>
-          <div class="button-container ">
+          <div className="button-container ">
             <button
               className='btn btn-primary mt-4'
               type='submit'>SIGN UP</button>

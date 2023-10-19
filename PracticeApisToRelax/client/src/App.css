@@ -372,6 +372,7 @@ a {
   margin: 4px 1px 4px 10px;
   padding: 2px 0px 2px 10px;
   border: 1px solid lightgray;
+  width: 100%;
 }
 
 .background-0 {
@@ -382,20 +383,23 @@ a {
   /* background-color: #e7e7e7; */
   background-color: #fafafa;
 }
+.comment-row{
+  display: flex;
+}
 
 .comment-area {
- 
+  
   font-family: 'verdana', arial, helvetica, sans-serif !important;
 }
 
 .vote-area {
- 
+
   margin-left: 0px;
 }
-
-.comment-row{
-  display: flex;
+.comment-block {
+  display: block;
 }
+
 .comment-links {
   color: #336699;
 
