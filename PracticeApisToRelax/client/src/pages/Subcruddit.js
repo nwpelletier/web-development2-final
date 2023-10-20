@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Main from "../components/Main/Main";
 import RightNav from "../components/RightNav/RightNav";
 import { useParams } from "react-router-dom";
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import axios from 'axios';
 
