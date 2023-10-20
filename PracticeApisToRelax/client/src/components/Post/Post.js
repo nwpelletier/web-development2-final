@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
 import txtThumb from '../../assets/comment-svgrepo-com.svg'
-import imgThumb from '../../assets/image-svgrepo-com.svg'
+import imgThumb from '../../assets/imageclr-svgrepo-com.svg'
 
 function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content } = props;
