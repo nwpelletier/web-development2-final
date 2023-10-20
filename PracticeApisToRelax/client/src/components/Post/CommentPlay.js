@@ -7,7 +7,7 @@ const newOrder = "new"
         <PostComments
         order={newOrder}
         postId={3}
-        display={true}
+       
          />
     )
 

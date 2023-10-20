@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import PostComments from "./PostComments";
 import CreateComment from "./CreateComment";
 import EditComment from "./EditComment";
 import { format } from "date-fns";
 import CommentVotes from "../Comments/CommentVotes";
 import axios from "axios";
+import Delete from "../Modal/Delete";
+import { BASE_API_URL } from "../../utils/constant";
+
 
 
 function Comments(props){
-    const {comment, order, points, display, setChildrenShow, childrenShow } = props;
+    const {comment, order, points,  } = props;
     const [loadMore, setLoadMore] = useState(false);
     const [reply, setReply] = useState(false)
     const [nestedReply, setNestedReply] = useState(false)
@@ -19,20 +22,21 @@ function Comments(props){
     const [commentPoints, setCommentPoints] = useState(points)
     const [edit, setEdit] = useState();
     const [isUser, setIsUser] = useState();
-    const [show, setShow] = useState(childrenShow);
+    const [show, setShow] = useState(true)
+    const [showModal, setShowModal] = useState(false)
+
+    const [toBeDeleted, setToBeDeleted] = useState(false)
+    const [isDeleted, setIsDeleted] = useState(false)
+ 
+
    
 
   const toggleShow = () => {
-    const isShow = !show
-    setShow(isShow)
-    setChildrenShow(isShow)
+   setShow(!show)
   }
  
-   
-    
-  
     useEffect(() => {
-    
+   
         const userId = parseInt(localStorage.getItem("userId"), 10);
        if (userId === comment.UserId) {
         setIsUser(true)
@@ -41,7 +45,7 @@ function Comments(props){
        }
         if (userId) {
             axios
-            .get(`http://localhost:8080/api/votes/${comment.id}/${userId}`)
+            .get(BASE_API_URL + `/api/votes/${comment.id}/${userId}`)
             .then((response) => {
               setUserLiked(response.data);
             })
@@ -78,12 +82,29 @@ function Comments(props){
     }
 
 
+    const destroy = () => {
+        setIsDeleted(true)
+        setToBeDeleted(false)
+        console.log("DELETE")
+    }
+    const deleteRequest = () => {
+        setToBeDeleted(!toBeDeleted)
+        console.log(toBeDeleted)
+    }
+
+
+
+
     //ONE SINGULAR COMMENT 
 
     return (
+        
         <div className={`comment-box  background-${comment.layer % 2}`}>
+         
             <div className="comment-row">
                 <div className="vote-area">
+                    {comment.isActive && <>
+
                     <CommentVotes 
                     userLiked={userLiked} 
                     setUserLiked={setUserLiked} 
@@ -91,7 +112,7 @@ function Comments(props){
                     commentPoints={commentPoints}
                     setCommentPoints={setCommentPoints}
                     
-                    />
+                    /></>}
                 </div>
                 <div className=" comment-area">
                     <div className="row">
@@ -106,16 +127,34 @@ function Comments(props){
                 {show && <><p className="comment-big my-1" >{commentContent}</p>
                 {(comment.children_count > 0 && !loadMore) && 
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
-                } {comment.isActive && <span onClick={replyToComment} className="comment-small fw-bolder">reply</span>}
+                } 
+                
+                {comment.isActive && <span onClick={replyToComment} className="comment-small ms-1 fw-bolder">reply</span>}
+
+
                 {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small  ms-1">edit</span>}
-                {(comment.isActive && isUser )&& <span onClick={replyToComment} className="comment-small text-danger ms-1">delete</span>}
+
+
+                {(comment.isActive && isUser && !isDeleted ) && 
+                    <span onClick={() => {setToBeDeleted(true)}} className="comment-small  ms-1">delete</span>}
+
+
+                {isDeleted && <span className="comment-small text-danger  ms-1">deleted</span>}
+
+                {toBeDeleted &&
+                <>
+                <span className="comment-small text-danger ms-1">Are you sure?</span>
+                <span onClick={destroy} className="comment-small fw-bolder ms-1">Yes</span>
+                <span className="comment-small text-danger ms-1">/</span>
+                <span onClick={() => setToBeDeleted(false)} className="comment-small fw-bolder ms-1">No</span>
+                </>
+                }
                 </>}
+
+
+                {!show &&  <span className="ms-3 mt-1 comment-small" >{commentReplies} children</span> }
                 </div>
-
-
-
-
-
+ 
 
 
 {/* // value = {formObj.value ? subParam : undefined} */}
@@ -155,12 +194,12 @@ function Comments(props){
         
         />
         </>}
-            {(loadMore && comment.children_count > 0) && 
+            {(loadMore && comment.children_count > 0 && show) && 
                 <div className="mt-2" >
                 <PostComments 
                 order={order}
                 postId={comment.id}
-                display={childrenShow}
+                display={show}
                 
                 />
                 </div>

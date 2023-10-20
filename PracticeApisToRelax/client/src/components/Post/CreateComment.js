@@ -3,6 +3,7 @@ import {Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import Comments from './Comments';
 import PostComments from './PostComments';
+import { BASE_API_URL } from '../../utils/constant';
 
 function CreateComment(props) {
     const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props
@@ -17,7 +18,7 @@ function CreateComment(props) {
         } else {
         console.log(data)
         axios
-        .post(`http://localhost:8080/api/posts/comment/${comment.id}`, data, {
+        .post(BASE_API_URL + `/api/posts/comment/${comment.id}`, data, {
             headers: {
               'x-access-token': localStorage.getItem("token")
             }

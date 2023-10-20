@@ -3,6 +3,7 @@ import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { BASE_API_URL } from "../../utils/constant";
 
 function UserSubmitted(user) {
   let userId = user.UserID;
@@ -12,7 +13,7 @@ function UserSubmitted(user) {
   useEffect(() => {
     try {
       axios
-        .get(`http://localhost:8080/api/overview/${userId}`)
+        .get(BASE_API_URL + `/api/overview/${userId}`)
         .then((response) => {
           setPosts(response.data);
         });
