@@ -15,6 +15,8 @@ function RightNav(params) {
   // Verifying mod status!
 
   let rightNavComponent = null;
+
+  
   if (params.loc === "home") {
     rightNavComponent = <RightNavNotLoggedIn />;
   } else if (params.loc === "sub") {
