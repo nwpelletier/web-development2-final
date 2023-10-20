@@ -3,6 +3,8 @@ import * as Yup from 'yup';
 const FormData = require('form-data');
 
 
+
+
 export const postType = "image"
 export const btnText = "Create Post"
 export const redirect = ""

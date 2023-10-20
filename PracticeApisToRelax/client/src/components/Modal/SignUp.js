@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, withFormik } from 'formik';
 import * as Yup from 'yup';
-const BASE_URL = "http://localhost:8080";
+import { BASE_API_URL } from '../../utils/constant';
 
 
 // Register form & ability to setModalContent
@@ -43,7 +43,7 @@ function Register({ setModalContent, closeModal }) {
   // };
 
   const register = (userData) => {
-    return axios.post(`${BASE_URL}/api/users/register`, userData)
+    return axios.post(`${BASE_API_URL}/api/users/register`, userData)
       .then((response) => {
         navigate("/");
         closeModal();

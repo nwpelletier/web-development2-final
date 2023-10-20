@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
+import { BASE_API_URL } from '../../utils/constant';
 
 // Login form & ability to setModalContent
 function Login({ setModalContent, closeModal }) {
@@ -25,7 +26,7 @@ function Login({ setModalContent, closeModal }) {
 
 
   const login = (data) => {
-    axios.post(`http://localhost:8080/api/users/login`, data)
+    axios.post(BASE_API_URL + `/api/users/login`, data)
       .then((response) => {
         if (response.data.auth === true) {
           setIsAuth(response.data.auth);

@@ -4,12 +4,13 @@ import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { BASE_API_URL } from "../../utils/constant";
 
 function UserOverview(user) {
   const navigate = useNavigate();
   let userId = user.UserID;
  // console.log("USERID OVERVIE", userId);
-  // console.log(`http://localhost:8080/api/overview/${userId}`);
+  // console.log(BASE_API_URL + `/api/overview/${userId}`);
   const [voteStatus, setVoteStatus] = useState("none");
   const [localPoints, setLocalPoints] = useState("");
   const [posts, setPosts] = useState([]);
@@ -19,7 +20,7 @@ function UserOverview(user) {
         navigate("/c/all");
       } else {
         axios
-          .get(`http://localhost:8080/api/overview/${userId}`)
+          .get(BASE_API_URL + `/api/overview/${userId}`)
           .then((response) => {
            // console.log("POSTS IN OVERVIEW", response.data);
             // if(!response)

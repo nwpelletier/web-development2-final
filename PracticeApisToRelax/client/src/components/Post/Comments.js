@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import CommentVotes from "../Comments/CommentVotes";
 import axios from "axios";
 import Delete from "../Modal/Delete";
+import { BASE_API_URL } from "../../utils/constant";
 
 
 
@@ -44,7 +45,7 @@ function Comments(props){
        }
         if (userId) {
             axios
-            .get(`http://localhost:8080/api/votes/${comment.id}/${userId}`)
+            .get(BASE_API_URL + `/api/votes/${comment.id}/${userId}`)
             .then((response) => {
               setUserLiked(response.data);
             })

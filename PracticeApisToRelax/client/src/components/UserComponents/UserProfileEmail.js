@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-
+import { BASE_API_URL } from "../../utils/constant";
 function UserProfileEmail(userId) {
 
 
@@ -20,7 +20,7 @@ function UserProfileEmail(userId) {
   const handleSubmit = (values) => {
     
     axios
-      .patch(`http://localhost:8080/api/users/email/${userId}`, {
+      .patch(BASE_API_URL + `/api/users/email/${userId}`, {
         email: values.email,
       })
       .then((response) => {

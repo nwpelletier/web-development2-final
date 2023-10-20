@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Comments from './Comments';
+import { BASE_API_URL } from '../../utils/constant';
 
 function PostComments({ order, postId, }) {
   const [comments, setComments] = useState([]);
@@ -12,7 +13,7 @@ function PostComments({ order, postId, }) {
 
 
     axios
-      .get(`http://localhost:8080/api/posts/comments/${order}/${postId}`)
+      .get(BASE_API_URL + `/api/posts/comments/${order}/${postId}`)
       .then((response) => {
         
         setComments(response.data);

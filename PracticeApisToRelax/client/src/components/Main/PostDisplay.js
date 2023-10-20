@@ -3,6 +3,7 @@ import axios from 'axios';
 import Post from '../Post/Post';
 import { formatDistance } from 'date-fns';
 import PostComments from '../Post/PostComments';
+import { BASE_API_URL } from "../../utils/constant";
 
 function PostDisplay({ postId }) {
   const [post, setPost] = useState(null);
@@ -11,7 +12,7 @@ function PostDisplay({ postId }) {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/posts/${parseInt(postId)}`);
+        const response = await axios.get(BASE_API_URL + `/api/posts/${parseInt(postId)}`);
         setPost(response.data);
       } catch (error) {
         console.error('Error fetching post:', error);

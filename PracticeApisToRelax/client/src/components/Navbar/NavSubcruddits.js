@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-
+import { BASE_API_URL } from '../../utils/constant';
 function NavSubcruddits() {
   const [subcruddits, setSubcruddits] = useState([]);
 
   useEffect(() => {
     const fetchSubcruddits = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/subcruddits/all');
+        const response = await axios.get(BASE_API_URL + '/api/subcruddits/all');
         setSubcruddits(response.data);
       } catch (error) {
         console.error('Error fetching subcruddits:', error);

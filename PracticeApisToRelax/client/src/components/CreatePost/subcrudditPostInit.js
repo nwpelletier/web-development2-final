@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { BASE_API_URL } from "../../utils/constant";
 export const postType = "subcruddit"
 export const btnText = "Create Subcruddit"
 export const redirect = ""
 export const redirectTxt = "Create Image Post"
+
 
 
 export const formInitValues = {
@@ -17,7 +19,7 @@ export const postForm = (data) => {
     console.log(data)
     data.UserId = 1
     axios
-    .post(`http://localhost:8080/api/subcruddits/` , data, {
+    .post(BASE_API_URL + `/api/subcruddits/` , data, {
     headers: {
       'x-access-token': localStorage.getItem("token")
     }
@@ -33,7 +35,7 @@ export const postForm = (data) => {
 const onBlurCheck =  (data) => {
     console.log(data + " my data")
     return axios
-    .get(`http://localhost:8080/api/subcruddits/exists/` + data)
+    .get(BASE_API_URL + `/api/subcruddits/exists/` + data)
     .then((response) => {
       return !response.data
     })

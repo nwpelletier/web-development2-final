@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import React from 'react';
 import axios from 'axios';
+import { BASE_API_URL } from "../utils/constant";
 
 export const ModContext = React.createContext();
 
@@ -22,7 +23,7 @@ function Subcruddit() {
         } else {
           const userId = localStorage.getItem('userId');
           const response = await axios.get(
-            `http://localhost:8080/api/moderators/ismod/${handle}`, {
+            BASE_API_URL + `/api/moderators/ismod/${handle}`, {
               headers: {
                 'x-access-token' : localStorage.getItem('token')
               }

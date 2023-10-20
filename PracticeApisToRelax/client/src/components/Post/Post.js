@@ -5,6 +5,7 @@ import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
 import txtThumb from '../../assets/comment-svgrepo-com.svg'
 import imgThumb from '../../assets/imageclr-svgrepo-com.svg'
+import { BASE_API_URL } from '../../utils/constant';
 
 function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content } = props;
@@ -20,7 +21,7 @@ function Post(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/votes/${id}/${userId}`)
+      .get(BASE_API_URL + `/api/votes/${id}/${userId}`)
       .then((response) => {
         setPostLiked(response.data);
       })

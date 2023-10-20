@@ -3,6 +3,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import ReactPaginate from 'react-paginate';
 import { formatDistance } from 'date-fns';
 import Post from '../Post/Post';
+import { BASE_API_URL } from '../../utils/constant';
 
 import { ModContext } from '../../pages/Subcruddit';
 import { btnText } from '../CreatePost/textPostInit';
@@ -56,11 +57,11 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
         let response;
         if (subcrudditName === 'all') {
           response = await axios.get(
-            `http://localhost:8080/api/posts/posts/${sortingType}`
+            BASE_API_URL + `/api/posts/posts/${sortingType}`
           );
         } else {
           response = await axios.get(
-            `http://localhost:8080/api/posts/posts/${subcrudditName}/${sortingType}`
+            BASE_API_URL + `/api/posts/posts/${subcrudditName}/${sortingType}`
           );
         }
         setPosts(response.data);
