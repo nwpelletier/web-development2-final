@@ -230,7 +230,7 @@ RIGHTNAV
 
 .post-type-container {
   position: absolute;
-  right: 5%;
+  right: -2%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,8 +238,12 @@ RIGHTNAV
   margin-top: 10px;
   height: 60px;
   width: 60px;
-  border-radius: 40px;
   /* border: 1px solid blue; */
+}
+
+.post-type-container img {
+  max-width:50px;
+  max-height:50px;
 }
 
 .upvote,
@@ -301,6 +305,11 @@ a {
 }
 
 /* MAIN */
+
+.main-image-post img {
+  max-width: 100vh;
+}
+
 
 /* RIGHTNAV */
 .right-nav-pin {

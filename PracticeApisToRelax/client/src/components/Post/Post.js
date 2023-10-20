@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
+import txtThumb from '../../assets/comment-svgrepo-com.svg'
+import imgThumb from '../../assets/image-svgrepo-com.svg'
 
 function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content } = props;
@@ -12,6 +14,8 @@ function Post(props) {
 
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
+
+  console.log(imgThumb);
 
 
   useEffect(() => {
@@ -41,7 +45,11 @@ function Post(props) {
             />
           </div>
           <div className="post-type-container">
-            <p>{postType}</p>
+            {postType === 'image' ? (
+              <img src={imgThumb}></img>
+            ) : (
+              <img src={txtThumb}></img>
+            )}
           </div>
         </div>
 
@@ -50,9 +58,6 @@ function Post(props) {
             <a href={`${currentPath}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
               {title}
             </a>
-            {/* <Link to={`/c/${subName}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
-              {title}
-            </Link> */}
           </div>
           {currentPath.includes('/c/all') ? (
             <div className="post-submission-info">Posted {createdAt} by {username} to {SubcrudditName}</div>
@@ -64,7 +69,13 @@ function Post(props) {
             <>
               <hr></hr>
               <div className="post-content col-10">
-                <p>{content}</p>
+                {postType === 'image' ? (
+                  <a className="main-image-post" href={content}>
+                    <img src={content} alt="Image Content" />
+                  </a>
+                ) : (
+                  <p>{content}</p>
+                )}
               </div>
             </>
           )}
