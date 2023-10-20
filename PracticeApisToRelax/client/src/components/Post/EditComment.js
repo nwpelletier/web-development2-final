@@ -13,7 +13,8 @@ function EditComment(props) {
     
     const postForm = (data) => {
     console.log(data) 
-setCommentContent("alex")
+        setCommentContent(data.content)
+        setEdit(false)
     }
 
     

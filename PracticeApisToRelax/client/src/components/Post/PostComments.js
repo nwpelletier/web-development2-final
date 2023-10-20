@@ -2,15 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Comments from './Comments';
 
-function PostComments({ order, postId, display }) {
+function PostComments({ order, postId, }) {
   const [comments, setComments] = useState([]);
-  const [childrenShow, setChildrenShow] = useState(display)
-  // const [show, setShow] = useState(display);
 
-  // const toggleShow = () => {
-  //   setShow(!show)
-  // }
- 
+
  
 
   useEffect(() => {
@@ -40,11 +35,7 @@ function PostComments({ order, postId, display }) {
             order={order}
             points={comment.points}
             children={comment.children_count}
-            // setShow={setShow}
-            // show={show}
-            // toggleShow={toggleShow}
-            setChildrenShow={setChildrenShow}
-            childrenShow={childrenShow}
+ 
               />
           );
         })
