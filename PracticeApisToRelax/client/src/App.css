@@ -405,6 +405,26 @@ a {
   box-shadow: -0.3em 0em 3px hwb(0 73% 27%);
 }
 
+/* FOOTER */
+.footer-box-low {
+  width:80px;
+  height:10px;
+  background-color:rgb(178, 214, 218);
+  border-radius: 1px 10px 1px 10px;
+}
+
+.footer-box-high {
+  width:80px;
+  height:10px;
+  background-color:rgb(250, 215, 155);
+  margin-bottom:10px;
+  border-radius: 10px 1px 10px 1px;
+}
+
+.footer-text {
+  color:#808080
+}
+
 
 
 /* TODO HELP ME ORGANIZE - ADD SUBCRUDDITS */
