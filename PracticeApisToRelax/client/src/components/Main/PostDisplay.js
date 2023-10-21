@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Post from '../Post/Post';
 import { formatDistance } from 'date-fns';
 import PostComments from '../Post/PostComments';
 import { BASE_API_URL } from "../../utils/constant";
+// import { ModContext } from '../../pages/Subcruddit';
 
 function PostDisplay({ postId }) {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
+
+  // Verifying mod status! Alex
+  // const [isMod, setIsMod] = useContext(ModContext);
 
   useEffect(() => {
     const fetchPost = async () => {

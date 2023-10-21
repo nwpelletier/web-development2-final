@@ -33,7 +33,10 @@ function Post(props) {
 
 
   return (
+    
     <div>
+
+{/* For Alex: viewing all posts per subcruddit */}
       <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''}`}>
         <div className="vote-and-type-container">
           <div className="vote-container">
@@ -54,6 +57,7 @@ function Post(props) {
           </div>
         </div>
 
+{/* Alex: Single post view */}
         <div className="post-content-container col-md-10 col-sm-5 row">
           <div className="post-title">
             <a href={`${currentPath}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>

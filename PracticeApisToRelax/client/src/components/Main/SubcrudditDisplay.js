@@ -39,7 +39,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
   }
 
 
-  // Verifying mod status!
+  // Verifying mod status! Alex
   const [isMod, setIsMod] = useContext(ModContext);
   console.log('Subcruddit Mod Status: ' + isMod);
   const [sortBy, setSortBy] = useState('')
