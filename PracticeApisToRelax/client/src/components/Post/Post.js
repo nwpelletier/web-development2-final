@@ -11,22 +11,32 @@ import CreateComment from './CreateComment';
 import Comments from './Comments';
 
 function Post(props) {
-  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count } = props;
+  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
   const userId = localStorage.getItem('userId');
+  const [isPostLocked, setIsPostLocked] = useState(isLocked)
+  const [isPostStickied, setIsPostStickied] = useState(isStickied)
+ 
 
 
   const [reply, setReply] = useState(false)
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
   const [newComment, setNewComment] = useState()
+ 
+  const isMod = useContext(ModContext)
+  const [isModerator, setIsModerator] = useState(isMod)
 
   //console.log(imgThumb);
 
 
   useEffect(() => {
+    console.log("ISMOD?!?!")
+    console.log(isModerator)
 
+    console.log("mooooooooooodddddd")
+    console.log(isModeratorSingle)
     let newPath = currentPath;
     if (currentPath.endsWith("/hot") || currentPath.endsWith("/new")) {
       newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
@@ -41,6 +51,7 @@ function Post(props) {
         console.log(error);
       })
     setPostLiked("nothing")
+
 
   }, [setPostLiked])
 
@@ -78,14 +89,14 @@ function Post(props) {
             </a>
           </div>
           {currentPath.includes('/c/all') ? (
-            <div className="post-submission-info"> {createdAt} by {username} to {SubcrudditName} </div>
+            <div className="post-submission-info"> {createdAt} by {username} to {SubcrudditName}  </div>
           ) : (
-            <div className="post-submission-info">Posted {createdAt} by {username}</div>
+            <div className="post-submission-info">PostedALEX {createdAt} by {username} {isPostStickied && <span className='stickied-true' >Stickied Post</span>}  </div>
           )}
 
           {content && (
             <>
-              <hr></hr>
+              <hr className={`stickied-${isPostStickied}`} />
               <div className="post-content col-10">
                 {postType === 'image' ? (
                   <a className="main-image-post" href={content}>
@@ -102,11 +113,22 @@ function Post(props) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span>report</span>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <span className="post-action-hover" onClick={()=>setReply(true)} >reply</span>
+            <span  >reply</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {isModeratorSingle === true && <span className='stickied-true'>sticky post</span>}
+            {isModerator && isModerator[0]  && <span className='stickied-true'>sticky post</span>}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {isModeratorSingle === true && !isPostLocked && <span className='locked-true'>lock post</span>}
+            {isModerator && isModerator[0]  && !isPostLocked && <span className='locked-true'>lock post</span>}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {isModeratorSingle === true && isPostLocked && <span className='locked-true'>unlock post</span>}
+            {isModerator && isModerator[0]  && isPostLocked && <span className='locked-true'>unlock post</span>}
+           
+            
           </div>
         </div>
       </div>
-{reply &&
+{content && !isPostLocked &&
       <CreateComment
       id={id}
       setReply={setReply}

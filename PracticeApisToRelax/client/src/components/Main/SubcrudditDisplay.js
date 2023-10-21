@@ -43,6 +43,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         createdAt={formatDistance(new Date(post.createdAt), new Date(), {
           addSuffix: true,
         })}
+        
      
       />
     ));

@@ -578,3 +578,13 @@ a {
 .comment-true {
   fill:  #ff6314;
 }
+
+.stickied-true{
+  color: green;
+  font-weight: 700;
+}
+
+.locked-true {
+  color: red;
+  font-weight: 700;
+}

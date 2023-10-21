@@ -9,6 +9,7 @@ import { BASE_API_URL } from "../../utils/constant";
 function PostDisplay({ postId}) {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
+  const [isModeratorSingle, setIsModeratorSingle] = useState(false)
 
   // Verifying mod status! Alex
   //  const [isMod, setIsMod] = useContext(ModContext);
@@ -18,6 +19,20 @@ function PostDisplay({ postId}) {
       try {
         const response = await axios.get(BASE_API_URL + `/api/posts/${parseInt(postId)}`);
         setPost(response.data);
+        console.log(response.data)
+        console.log(response.data.subcrudditName)
+        axios.get(
+          BASE_API_URL + `/api/moderators/ismod/${response.data.subcrudditName}`, {
+          headers: {
+            'x-access-token': localStorage.getItem('token')
+          }}).then((response)=> {
+            setIsModeratorSingle(response.data.auth)
+            console.log("PAGE MODERATOR: " + response.data.auth)
+          }).catch((error)=> {
+            console.log(error)
+            setIsModeratorSingle(false)
+          })
+
       } catch (error) {
         console.error('Error fetching post:', error);
         setError('Error fetching post');
@@ -55,6 +70,7 @@ function PostDisplay({ postId}) {
         children_count={post.children_count}
         isStickied={post.isStickied}
         isLocked={post.isLocked}
+        isModeratorSingle={isModeratorSingle}
        
       />
 
@@ -62,7 +78,8 @@ function PostDisplay({ postId}) {
       <PostComments
       // Hard coded for now. :)
         order='new'
-        postId={post.id} />
+        postId={post.id} 
+        isModeratorSingle={isModeratorSingle}/>
     </>
       
 

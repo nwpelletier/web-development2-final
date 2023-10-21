@@ -392,7 +392,10 @@ module.exports = {
                 include: [{
                     model: Users,
                     attributes: ['username', 'id'] 
-                  }] 
+                  }, {
+                    model: Subcruddits,
+                    attributes: ['subcrudditName'] 
+                  }]
             })
 
             if (!originalPost){
@@ -426,7 +429,8 @@ module.exports = {
                 points: originalPost.points,
                 isStickied: originalPost.isStickied,
                 createdAt: originalPost.createdAt,
-                username: originalPost.User.username
+                username: originalPost.User.username,
+                subcrudditName: originalPost.Subcruddit.subcrudditName
             }
 
 

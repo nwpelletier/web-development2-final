@@ -51,7 +51,7 @@ function Subcruddit() {
   return (
     <>
       <SubCrudditContext.Provider value={[subcrudName, setSubcrudName]}>
-        <ModContext.Provider value={[isMod, setIsMod]}>
+        <ModContext.Provider value={[isMod]}>
           <div>
             <Navbar />
           </div>
