@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-
+import { SubCrudditContext } from "../../pages/Subcruddit";
 function RightNavNotLoggedIn() {
+
+  const [subcrudName, setSubcrudName] = useContext(SubCrudditContext);
   
   return (
    
@@ -36,7 +38,7 @@ function RightNavNotLoggedIn() {
         </div>
       </div>
       <div className="sponsored-section mt-3">
-        <a className="sponsored-link" href="#">
+      <a className="sponsored-link" href={`/post/text/${subcrudName}`}>
           Submit a Post
         </a>
       </div>
