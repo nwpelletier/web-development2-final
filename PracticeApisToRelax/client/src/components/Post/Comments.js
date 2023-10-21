@@ -162,7 +162,7 @@ function Comments(props){
             </div>
             {reply && <div className="comment-block">
                 <CreateComment 
-                comment={comment} 
+                id={comment.id} 
                 setReply={setReply} 
                 order={order} 
                 setNewComment={setNewComment} 
@@ -191,6 +191,7 @@ function Comments(props){
             comment={newComment}
             order={order}
             points={1}
+            replyToComment={true}
         
         />
         </>}

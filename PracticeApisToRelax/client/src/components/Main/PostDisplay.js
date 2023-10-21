@@ -6,12 +6,12 @@ import PostComments from '../Post/PostComments';
 import { BASE_API_URL } from "../../utils/constant";
 // import { ModContext } from '../../pages/Subcruddit';
 
-function PostDisplay({ postId }) {
+function PostDisplay({ postId}) {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
 
   // Verifying mod status! Alex
-  // const [isMod, setIsMod] = useContext(ModContext);
+  //  const [isMod, setIsMod] = useContext(ModContext);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -37,6 +37,7 @@ function PostDisplay({ postId }) {
   }
 
   return (
+    
     <>
       <Post
         key={post.id}
@@ -51,13 +52,19 @@ function PostDisplay({ postId }) {
           addSuffix: true,
         })}
         SubcrudditName={post.subcrudditName}
+        children_count={post.children_count}
+        isStickied={post.isStickied}
+        isLocked={post.isLocked}
+       
       />
+
 
       <PostComments
       // Hard coded for now. :)
         order='new'
         postId={post.id} />
     </>
+      
 
   );
 }

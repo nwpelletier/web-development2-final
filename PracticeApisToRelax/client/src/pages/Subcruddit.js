@@ -14,7 +14,7 @@ function Subcruddit() {
   const { handle, sortingType } = useParams();
 
   // Moderator status (useContext in SubcrudditDisplay and RightNav)
-  const [isMod, setIsMod] = useState([]);
+  const [isMod, setIsMod] = useState(false);
   useEffect(() => {
     const getModStatus = async () => {
       try {
@@ -22,6 +22,10 @@ function Subcruddit() {
           return;
         } else {
           const userId = localStorage.getItem('userId');
+          if (!userId) {
+            setIsMod(false)
+            return;
+          }
           const response = await axios.get(
             BASE_API_URL + `/api/moderators/ismod/${handle}`, {
               headers: {
@@ -29,7 +33,7 @@ function Subcruddit() {
               }
             }
           );
-          const isMod = response.data;
+         const isMod = response.data.auth;
           setIsMod(isMod);
 
         }
@@ -51,11 +55,11 @@ function Subcruddit() {
         <div className="App">
           <div className="row">
             <div className="col-11">
-              <Main handle={handle} sortingType={sortingType} />
+              <Main handle={handle} sortingType={sortingType}  />
             </div>
             <div className="col-1 right-nav-pin">
               {/* ToDo: Props/params to get proper rightNav still needed */}
-              <RightNav margin={"0.1rem"} loc={"sub"} />
+              <RightNav margin={"0.1rem"} loc={"sub"}  />
             </div>
           </div>
         </div>

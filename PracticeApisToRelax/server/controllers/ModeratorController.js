@@ -92,15 +92,15 @@ exports.isModerator = async (req, res) => {
     })
 
     if (!mod) {
-      return res.status(200).send(false)
+      return res.status(200).send({auth: false})
     } else {
-      return res.status(200).send(true)
+      return res.status(200).send({auth: true})
     }
 
 
 
-  } catch {
-
+  } catch(error) {
+    return res.status(500).send({message: "Internal server error", error})
   }
 }
   

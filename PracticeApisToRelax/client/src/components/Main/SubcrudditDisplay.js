@@ -10,14 +10,19 @@ import { btnText } from '../CreatePost/textPostInit';
 export const SubcrudditContext = createContext();
 
 
-function SubcrudditDisplay({ subcrudditName, sortingType }) {
+function SubcrudditDisplay({ subcrudditName, sortingType,}) {
 
-  // Testing paginate
+  // Testing paginate   
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+    // const [isMod, setIsMod] = useContext(ModContext);
+
+
+
   const postsPerPage = 5; // Renamed to avoid conflict with the 'posts' state array
   const offset = pageNumber * postsPerPage;
-  const displayPosts = posts
+ 
+  const displayPosts = posts && posts
     .slice(offset, offset + postsPerPage)
     .map((post) => (
       <Post
@@ -28,11 +33,16 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
         postType={post.postType}
         username={post.username}
         SubcrudditName={post.SubcrudditName}
+        children_count={post.children_count}
+        isStickied={post.isStickied}
+        isLocked={post.isLocked}
         createdAt={formatDistance(new Date(post.createdAt), new Date(), {
           addSuffix: true,
         })}
+     
       />
     ));
+     
   const pageCount = Math.ceil(posts.length / postsPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
@@ -40,8 +50,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
 
 
   // Verifying mod status! Alex
-  const [isMod, setIsMod] = useContext(ModContext);
-  console.log('Subcruddit Mod Status: ' + isMod);
+
   const [sortBy, setSortBy] = useState('')
 
   // Default sorting type!
@@ -64,6 +73,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
             BASE_API_URL + `/api/posts/posts/${subcrudditName}/${sortingType}`
           );
         }
+        console.log(response.data)
         setPosts(response.data);
       } catch (error) {
         console.error('Error fetching posts:', error);
