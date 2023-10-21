@@ -102,7 +102,7 @@ function Post(props) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span>report</span>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={()=>setReply(true)} >reply</span>
+            <span className="post-action-hover" onClick={()=>setReply(true)} >reply</span>
           </div>
         </div>
       </div>

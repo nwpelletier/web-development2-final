@@ -129,14 +129,14 @@ function Comments(props){
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
                 } 
                 
-                {comment.isActive && <span onClick={replyToComment} className="comment-small ms-1 fw-bolder">reply</span>}
+                {comment.isActive && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
 
 
-                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small  ms-1">edit</span>}
+                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
 
 
                 {(comment.isActive && isUser && !isDeleted ) && 
-                    <span onClick={() => {setToBeDeleted(true)}} className="comment-small  ms-1">delete</span>}
+                    <span onClick={() => {setToBeDeleted(true)}} className="comment-small post-action-hover ms-1">delete</span>}
 
 
                 {isDeleted && <span className="comment-small text-danger  ms-1">deleted</span>}

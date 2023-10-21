@@ -308,7 +308,12 @@ RIGHTNAV
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
 
+.post-action-hover:hover {
+  cursor:pointer;
+  /* font-weight:bold; */
+  text-decoration:underline;
 }
 
 /* TESTING - REMOVE! */

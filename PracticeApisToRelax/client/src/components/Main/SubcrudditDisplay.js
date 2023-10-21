@@ -23,7 +23,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
 
 
 
-  const postsPerPage = 5; // Renamed to avoid conflict with the 'posts' state array
+  const postsPerPage = 7; // Renamed to avoid conflict with the 'posts' state array
   const offset = pageNumber * postsPerPage;
  
   const displayPosts = posts && posts
