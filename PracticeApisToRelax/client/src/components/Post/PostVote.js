@@ -1,35 +1,34 @@
-import { useEffect, useState } from 'react'
-import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
-import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import arrowUpImage from '../../assets/arrow-square-up-svgrepo-com.svg';
+import arrowDownImage from '../../assets/arrow-square-down-svgrepo-com.svg';
+import axios from 'axios';
 import { BASE_API_URL } from '../../utils/constant';
-
 
 function PostVote(props) {
   const { postLiked, setPostLiked, id, postPoints, setPostPoints } = props;
+
   const vote = (value) => {
     value.UserId = 1;
     axios
       .post(BASE_API_URL + `/api/votes/${id}`, value, {
         headers: {
-          'x-access-token': localStorage.getItem("token")
+          'x-access-token': localStorage.getItem('token')
         }
       })
       .then((response) => {
-        setPostLiked(response.data.vote)
-        setPostPoints(postPoints + response.data.points)
+        setPostLiked(response.data.vote);
+        setPostPoints(postPoints + response.data.points);
       })
       .catch((error) => {
         console.log(error);
-      })
-      console.log(postLiked)
-  }
-
+      });
+    console.log(postLiked);
+  };
 
   return (
     <div>
       <img
-        className={`upvote${postLiked ? '-color' : ''}`}
+        className={`upvote ${postLiked === true ? 'upvote-true' : ''}`}
         src={arrowUpImage}
         alt="upvote"
         width="40%"
@@ -38,7 +37,7 @@ function PostVote(props) {
       />
       <h6 className="vote-count">{postPoints}</h6>
       <img
-        className={`downvote${!postLiked ? '-color' : ''}`}
+        className={`downvote ${postLiked === false ? 'downvote-false' : ''}`}
         src={arrowDownImage}
         alt="downvote"
         width="40%"
@@ -46,7 +45,7 @@ function PostVote(props) {
         onClick={() => vote({ liked: false })}
       />
     </div>
-  )
+  );
 }
 
-export default PostVote
+export default PostVote;

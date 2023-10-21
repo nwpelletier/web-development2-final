@@ -240,17 +240,12 @@ RIGHTNAV
 
 /* POST */
 
-.upvote-color {
+.upvote-true{
   filter: invert(46%) sepia(20%) saturate(4388%) hue-rotate(350deg) brightness(99%) contrast(104%);
 }
 
-.downvote-color {
+.downvote-false{
   filter: invert(35%) sepia(24%) saturate(1117%) hue-rotate(199deg) brightness(103%) contrast(96%);
-}
-
-.upvote,
-.downvote {
-  filter:none
 }
 
 .upvote,
