@@ -95,18 +95,20 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
   // Display
   return (
     <div>
-      {displayPosts}
-      <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={btnText}
-        previousLinkClassName={btnText}
-        nextLinkClassName={btnText}
-        disabledClassName={btnText}
-        activeClassName={btnText}
-      />
+      <span>
+        {displayPosts}
+        <ReactPaginate
+          previousLabel={"< prev"}
+          nextLabel={"next >"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          renderOnZeroPageCount={null}
+          pageClassName="page-item-none"
+          previousClassName="previous-label"
+          nextClassName="next-label"
+          containerClassName="pagination-container"
+        />
+      </span>
     </div>
   );
 

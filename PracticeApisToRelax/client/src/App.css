@@ -348,10 +348,40 @@ a {
 
 /* MAIN */
 
+.page-item-none {
+  display:none
+}
+
+.previous-label, .next-label {
+  list-style-type:none;
+  height:22px;
+  width:45px;
+  font-size:12px;
+  font-weight:700;
+  /* padding:3px; */
+  padding-bottom:4px;
+  padding-left:3px;
+  margin:5px;
+  background-color:#e6edf1;
+  border-radius:4px;
+}
+
+.previous-label:hover,
+.next-label:hover {
+  border: 1px solid rgb(100, 141, 178);
+}
+
+.pagination-container {
+  list-style:none;
+  display:flex;
+}
+
+
 .main-image-post img {
   max-width: 40vh;
   max-height:60vh;
 }
+
 
 
 /* RIGHTNAV */
