@@ -27,9 +27,11 @@ router.get("/user/:id", controller.findAllByUser)
 
 
 router.delete("/:id", authUser, controller.deletePost)
+//ADMIN
 router.delete("/admin/:id", authAdmin, controller.deletePost)
 
 router.patch("/lock/:id", authUser, controller.toggleLock)
+//ADMIN
 router.patch("/admin/lock/:id", authAdmin, controller.toggleLock)
 
 router.patch("/sticky/:id", authUser, controller.toggleSticky)
