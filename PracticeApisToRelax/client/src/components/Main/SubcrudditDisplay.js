@@ -8,7 +8,7 @@ import { BASE_API_URL } from '../../utils/constant';
 
 import { ModContext } from '../../pages/Subcruddit';
 import { btnText } from '../CreatePost/textPostInit';
-export const SubcrudditContext = createContext();
+// export const SubcrudditContext = createContext();
 
 
 function SubcrudditDisplay({ subcrudditName, sortingType,}) {

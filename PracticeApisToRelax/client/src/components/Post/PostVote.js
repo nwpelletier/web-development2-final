@@ -29,7 +29,7 @@ function PostVote(props) {
   return (
     <div>
       <img
-        className={`upvote`}
+        className={`upvote${postLiked ? '-color' : ''}`}
         src={arrowUpImage}
         alt="upvote"
         width="40%"
@@ -38,7 +38,7 @@ function PostVote(props) {
       />
       <h6 className="vote-count">{postPoints}</h6>
       <img
-        className={`downvote`}
+        className={`downvote${!postLiked ? '-color' : ''}`}
         src={arrowDownImage}
         alt="downvote"
         width="40%"

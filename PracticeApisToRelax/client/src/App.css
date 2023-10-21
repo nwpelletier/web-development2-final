@@ -76,7 +76,7 @@ RIGHTNAV
   letter-spacing: 0.1em;
   font-size: 16px;
   font-weight:500;
-  color:#095c7a;
+  color:#115391;
   position: absolute;
   bottom: 0px;
   left: 12%;
@@ -240,8 +240,38 @@ RIGHTNAV
 
 /* POST */
 
-.voted {
-  color: green;
+.upvote-color {
+  filter: invert(46%) sepia(20%) saturate(4388%) hue-rotate(350deg) brightness(99%) contrast(104%);
+}
+
+.downvote-color {
+  filter: invert(35%) sepia(24%) saturate(1117%) hue-rotate(199deg) brightness(103%) contrast(96%);
+}
+
+.upvote,
+.downvote {
+  filter:none
+}
+
+.upvote,
+.downvote,
+.vote-count,
+.upvote-color,
+.downvote-color {
+  position: absolute;
+  
+}
+
+.upvote,
+.upvote-color {
+  top: 0;
+  left: 30%;
+}
+
+.downvote,
+.downvote-color {
+  top: 60%;
+  left: 30%;
 }
 
 .post-container {
@@ -293,21 +323,7 @@ RIGHTNAV
   max-height:50px;
 }
 
-.upvote,
-.downvote,
-.vote-count {
-  position: absolute;
-}
 
-.upvote {
-  top: 0;
-  left: 30%;
-}
-
-.downvote {
-  top: 60%;
-  left: 30%;
-}
 
 .vote-count {
   top: 50%;
