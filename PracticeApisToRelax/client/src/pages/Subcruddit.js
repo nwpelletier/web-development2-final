@@ -7,7 +7,7 @@ import React from 'react';
 import axios from 'axios';
 import { BASE_API_URL } from "../utils/constant";
 
-export const SubCrudditContext = React.createContext();
+export const SubCrudditContext = React.createContext('all');
 export const ModContext = React.createContext();
 
 function Subcruddit() {

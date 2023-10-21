@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { SubCrudditContext } from "../../pages/Subcruddit";
 
-function RightNavLoggedIn() {
+function RightNavLoggedIn({subcrudDefault}) {
   const [curma, setCurma] = useState(1);
   const [comment, setComment] = useState(0);
   const [subcrudName, setSubcrudName] = useContext(SubCrudditContext);
@@ -48,10 +48,10 @@ function RightNavLoggedIn() {
       </div>
       <div className="border-top border-dark"></div>
       <div className="sponsored-section mt-3">
-      <a className="sponsored-link" href={`/post/text/${subcrudName}`}>
+      {/* <a className="sponsored-link" href={`/post/text/${subcrudName}`}> */}
 
           Submit a Post
-        </a>
+        {/* </a> */}
       </div>
     </>
   );
