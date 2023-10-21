@@ -131,6 +131,11 @@ RIGHTNAV
 
 /* MODAL */
 
+.modal-failure-text {
+  color:red;
+  font-size:10px;
+}
+
 .modal-big-text, .modal-signup-text {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 600;
