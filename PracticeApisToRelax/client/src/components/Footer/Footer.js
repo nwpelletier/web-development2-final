@@ -16,7 +16,7 @@ const styles = {
 
 function Footer() {
   return (
-    <div style={styles.container}>
+    <div className="footer-div" style={styles.container}>
       <FooterObject text="" footObjClass="footer-box-low" />
       <FooterObject text="" footObjClass="footer-box-high" />
       <FooterObject text="" footObjClass="footer-box-low" />

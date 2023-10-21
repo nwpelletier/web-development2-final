@@ -407,22 +407,32 @@ a {
 
 /* FOOTER */
 .footer-box-low {
-  width:80px;
+  width:35px;
   height:10px;
   background-color:rgb(178, 214, 218);
   border-radius: 1px 10px 1px 10px;
 }
 
 .footer-box-high {
-  width:80px;
+  width:35px;
   height:10px;
   background-color:rgb(250, 215, 155);
   margin-bottom:10px;
   border-radius: 10px 1px 10px 1px;
 }
 
+.footer-box-low:hover,
+.footer-box-high:hover {
+  filter:brightness(93%)
+}
+
 .footer-text {
-  color:#808080
+  color:#808080;
+  font-size:12px;
+}
+
+.footer-div {
+  /* Style for full footer if needed */
 }
 
 
