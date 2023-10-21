@@ -72,6 +72,41 @@ RIGHTNAV
   border-bottom: 1px solid rgb(92, 106, 122);
 }
 
+.hot-new-tab {
+  letter-spacing: 0.1em;
+  font-size: 16px;
+  font-weight:500;
+  color:#095c7a;
+  position: absolute;
+  bottom: 0px;
+  left: 12%;
+  width: 175px;
+  height: 29px;
+  z-index: 0;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.tab-option1 {
+  padding-top:3px;
+  padding-left:7px;
+  margin-top:0px;
+  background-color:rgb(230, 243, 241);
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  box-shadow: -1px -2px 3px rgb(91, 120, 158);
+}
+
+.tab-option2 {
+  padding-top:3px;
+  padding-left:5px;
+  margin-top:0px;
+  background-color:rgb(230, 243, 241);
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  box-shadow: -1px -2px 3px rgb(91, 120, 158);
+}
+
 .login-box {
   letter-spacing: 0.1em;
   font-size: 11px;

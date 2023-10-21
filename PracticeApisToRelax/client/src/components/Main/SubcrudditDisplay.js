@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { formatDistance } from 'date-fns';
 import Post from '../Post/Post';
@@ -16,6 +17,9 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
     // const [isMod, setIsMod] = useContext(ModContext);
+
+  // Auto-navigate to /c/all upon visiting landing page
+  const navigateToAll = useNavigate();
 
 
 
@@ -61,10 +65,14 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
 
   // Get posts by sorting type!
   useEffect(() => {
+    console.log(subcrudditName)
+    if (!subcrudditName) {
+      navigateToAll("/c/all");
+    }
     const fetchPosts = async () => {
       try {
         let response;
-        if (subcrudditName === 'all') {
+        if (subcrudditName === 'all' || !subcrudditName) {
           response = await axios.get(
             BASE_API_URL + `/api/posts/posts/${sortingType}`
           );

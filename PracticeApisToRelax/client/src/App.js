@@ -40,7 +40,7 @@ function App() {
           <UserRoleContext.Provider value={[userRole, setUserRole]}>
             <Router>
               <Routes>
-                <Route path="/" element={<Home />}></Route>
+                <Route path="/" element={<Subcruddit />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
                 <Route path="/post/text/:subcruddit" element={<TextPost />}></Route>

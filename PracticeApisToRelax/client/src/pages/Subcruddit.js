@@ -18,7 +18,7 @@ function Subcruddit() {
   useEffect(() => {
     const getModStatus = async () => {
       try {
-        if (handle === 'all') {
+        if (handle === 'all' || handle === '') {
           return;
         } else {
           const userId = localStorage.getItem('userId');

@@ -26,6 +26,11 @@ function Post(props) {
 
 
   useEffect(() => {
+
+    let newPath = currentPath;
+    if (currentPath.endsWith("/hot") || currentPath.endsWith("/new")) {
+      newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
+    }
  
     axios
       .get(BASE_API_URL + `/api/votes/${id}/${userId}`)
@@ -68,7 +73,7 @@ function Post(props) {
 {/* Alex: Single post view */}
         <div className="post-content-container col-md-10 col-sm-5 row">
           <div className="post-title"> 
-            <a href={`${currentPath}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
+            <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
               {title}
             </a>
           </div>
