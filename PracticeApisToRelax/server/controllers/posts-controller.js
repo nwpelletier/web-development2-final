@@ -428,6 +428,7 @@ module.exports = {
                 children_count: originalPost.children_count,
                 points: originalPost.points,
                 isStickied: originalPost.isStickied,
+                isLocked: originalPost.isLocked,
                 createdAt: originalPost.createdAt,
                 username: originalPost.User.username,
                 subcrudditName: originalPost.Subcruddit.subcrudditName
@@ -836,6 +837,7 @@ module.exports = {
     },
     //TODO change when impl auth - comments
     toggleLock: async (req, res) => {
+        console.log("AM I HERE?")
         const postId = req.params.id;
         const requestId = req.UserId; 
         try {
@@ -857,6 +859,7 @@ module.exports = {
                     }
                 })
                 if (!mod) {
+                   
                     return res.status(401).send({message: "You do not have permission to delete this post"});
                 }
 
@@ -865,6 +868,7 @@ module.exports = {
             thePost.isLocked = !thePost.isLocked;
             thePost.save()
             .then(()=> {
+                console.log({id: thePost.id, isLocked: thePost.isLocked})
                 return res.status(200).send({id: thePost.id, isLocked: thePost.isLocked});
             }).catch((error)=> {
                 return res.status(500).send({message: "Could not lock post", error: error});

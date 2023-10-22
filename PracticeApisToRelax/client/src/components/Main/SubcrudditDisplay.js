@@ -16,11 +16,11 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
   // Testing paginate   
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-    // const [isMod, setIsMod] = useContext(ModContext);
+ // const isMod = useContext(ModContext);
+ const [isMod, setIsMod] = useState(false)
 
   // Auto-navigate to /c/all upon visiting landing page
   const navigateToAll = useNavigate();
-
 
 
   const postsPerPage = 7; // Renamed to avoid conflict with the 'posts' state array
@@ -43,6 +43,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         createdAt={formatDistance(new Date(post.createdAt), new Date(), {
           addSuffix: true,
         })}
+        isMod={true}
         
      
       />

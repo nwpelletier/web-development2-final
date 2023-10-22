@@ -66,6 +66,10 @@ isStickied: {
     allowNull: false,
     defaultValue: false
 
+}, isLocked: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
 }
   });
 
