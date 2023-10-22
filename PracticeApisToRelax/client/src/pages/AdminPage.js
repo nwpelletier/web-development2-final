@@ -6,6 +6,7 @@ function AdminPage() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
+  console.log("EHASN");
   useEffect(() => {
     axios
       .get(BASE_API_URL + `/api/admin`)
