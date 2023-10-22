@@ -15,6 +15,7 @@ function PostDisplay({ postId}) {
   //  const [isMod, setIsMod] = useContext(ModContext);
 
   useEffect(() => {
+    
     const fetchPost = async () => {
       try {
         const response = await axios.get(BASE_API_URL + `/api/posts/${parseInt(postId)}`);
@@ -75,11 +76,11 @@ function PostDisplay({ postId}) {
       />
 
 
-      <PostComments
+      {/* <PostComments
       // Hard coded for now. :)
         order='new'
         postId={post.id} 
-        isModeratorSingle={isModeratorSingle}/>
+        isModeratorSingle={isModeratorSingle}/> */}
     </>
       
 

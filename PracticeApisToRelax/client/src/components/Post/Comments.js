@@ -11,7 +11,7 @@ import { BASE_API_URL } from "../../utils/constant";
 
 
 function Comments(props){
-    const {comment, order, points,  } = props;
+    const {comment, order, points, isLocked } = props;
     const [loadMore, setLoadMore] = useState(false);
     const [reply, setReply] = useState(false)
     const [nestedReply, setNestedReply] = useState(false)
@@ -129,7 +129,7 @@ function Comments(props){
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
                 } 
                 
-                {comment.isActive && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
+                {comment.isActive && !isLocked && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
 
 
                 {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}

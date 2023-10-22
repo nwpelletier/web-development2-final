@@ -9,6 +9,7 @@ import { BASE_API_URL } from '../../utils/constant';
 import { ModContext } from '../../pages/Subcruddit';
 import CreateComment from './CreateComment';
 import Comments from './Comments';
+import PostComments  from './PostComments';
 
 function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle, isMod } = props;
@@ -18,6 +19,7 @@ function Post(props) {
   const [isPostLocked, setIsPostLocked] = useState(isLocked)
   const [isPostStickied, setIsPostStickied] = useState(isStickied)
   const userRole = localStorage.getItem('userRole');
+  const [commentOrder, setCommmentOrder] = useState("new")
   
  
 
@@ -226,14 +228,13 @@ function Post(props) {
 
 
 
-{newComment && <>
-            <Comments 
-            comment={newComment}
-            order={"new"}
-            points={1}
-            replyToComment={false}
-        
-        /></>}
+{content && <>
+  <PostComments
+        order={commentOrder}
+        postId={id}
+        isLocked={isLocked}
+       
+         /></>}
 
 {/* const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props */}
 

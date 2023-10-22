@@ -12,7 +12,7 @@ import { btnText } from '../CreatePost/textPostInit';
 
 
 function SubcrudditDisplay({ subcrudditName, sortingType,}) {
-  let { handle } = useParams();
+  
 
   // Testing paginate   
   const [posts, setPosts] = useState([]);
