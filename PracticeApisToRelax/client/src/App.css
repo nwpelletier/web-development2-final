@@ -461,7 +461,7 @@ a {
 }
 
 .moderator-container {
-  padding: 3px;
+  padding: 1px;
   border: 1px solid rgb(216, 222, 253);
   border-radius: 6px;
   background: repeating-linear-gradient(135deg,
@@ -485,6 +485,8 @@ a {
       #e5e8eb 2px,
       #fcf3f3 2px,
       #f2f2f2 4px);
+  overflow-y:auto;
+  max-height:35vh;
 }
 
 .rules-container,
@@ -507,6 +509,7 @@ a {
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin:0px;
 }
 
 .right-nav-rules-dropdown {
@@ -553,8 +556,8 @@ a {
 
 .right-nav-mod-list li {
   font-size: 14px;
-  margin-top: -2px;
-  margin-bottom: -2px;
+  margin-top: -8px;
+  margin-bottom: -8px;
   list-style: none;
   color: #2346a5;
   text-align: center;
