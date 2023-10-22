@@ -26,9 +26,9 @@ const upload = multer({ storage: storage })
 app.use(express.json({ limit: "50mb" }));
 app.use(
   cors({
-    origin: ["*"],
+    origin: ["https://sleepy-wave-79440-e840c0381b67.herokuapp.com"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
+    credentials: false,
   })
 );
 app.use(cookieParser());
