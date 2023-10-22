@@ -24,7 +24,7 @@ exports.findAllUsers = async (req, res) => {
 };
 
 exports.toggleActive = async (req, res) => {
-console.log("ADMIN CONTROLLER BODY",req.params)
+  //console.log("ADMIN CONTROLLER BODY",req.params)
 
   const user = await Users.findByPk(req.params.id);
 
@@ -32,8 +32,17 @@ console.log("ADMIN CONTROLLER BODY",req.params)
 
   user.isActive = !user.isActive;
 
-  user.save()
-    .then(() => {
-      return res.status(200).send({id: user.id, isActive: user.isActive});
-  })
+  user.save().then(() => {
+    return res.status(200).send({ id: user.id, isActive: user.isActive });
+  });
+};
+
+exports.findOneUser = async (req, res) => {
+  //console.log("ADMIN CONTROLLER BODY",req.params)
+
+  const user = await Users.findByPk(req.params.id);
+
+  if (!user) return res.status(404).send("User Not Found");
+
+  return user;
 };

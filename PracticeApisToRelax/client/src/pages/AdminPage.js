@@ -45,6 +45,21 @@ function AdminPage() {
       });
   };
 
+
+  const [userId, setUserId] = useState(0);
+
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUserId = localStorage.getItem("userId");
+    if (token) {
+      setUserId(storedUserId);
+      axios.get(BASE_API_URL + `/api/overview/${userId}`).then((response) => {
+        
+      });
+    }
+  }, []);
+
   return (
     <>
       <div className="alert alert-info">Admin Page</div>
