@@ -6,8 +6,9 @@
     top: 0;
     right: 0; 
     width:25rem; 
-    background-color: #f0f0f0;
-    border-left: 1px solid #ccc;
+    background-color:rgb(241, 248, 250);
+    border-left: 1px solid #b4d1e9;
+    box-shadow: -2px 0 8px rgb(216, 227, 243);
     z-index: 1000;
   }
   
