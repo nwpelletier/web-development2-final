@@ -11,12 +11,14 @@ import CreateComment from './CreateComment';
 import Comments from './Comments';
 
 function Post(props) {
-  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle } = props;
+  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle, isMod } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
   const userId = localStorage.getItem('userId');
   const [isPostLocked, setIsPostLocked] = useState(isLocked)
   const [isPostStickied, setIsPostStickied] = useState(isStickied)
+  const userRole = localStorage.getItem('userRole');
+  
  
 
 
@@ -25,18 +27,37 @@ function Post(props) {
   const [postPoints, setPostPoints] = useState(points);
   const [newComment, setNewComment] = useState()
  
-  const isMod = useContext(ModContext)
-  const [isModerator, setIsModerator] = useState(isMod)
+
+  const [isModerator, setIsModerator] = useState()
 
   //console.log(imgThumb);
 
 
   useEffect(() => {
-    console.log("ISMOD?!?!")
-    console.log(isModerator)
+   
+    if (isModeratorSingle  || isMod) {
+      setIsModerator(true)
+    } else {
+      const userId = localStorage.getItem('userId');
+      if (!userId || !SubcrudditName || SubcrudditName === "all") {
+        setIsModerator(false)
+        return;
+      }
+        axios.get(
+        BASE_API_URL + `/api/moderators/ismod/${SubcrudditName}`, {
+        headers: {
+          'x-access-token': localStorage.getItem('token')
+        }
+      }
+      ).then((response)=> {
+        const isMod = response.data.auth;
+        setIsModerator(isMod);
+      }).catch((error)=> {
+        console.log(error)
+      })
+    }
 
-    console.log("mooooooooooodddddd")
-    console.log(isModeratorSingle)
+  
     let newPath = currentPath;
     if (currentPath.endsWith("/hot") || currentPath.endsWith("/new")) {
       newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
@@ -56,12 +77,51 @@ function Post(props) {
   }, [setPostLiked])
 
 
+  const toggleLock = async () => {
+    console.log("locking?");
+    try {
+      console.log("in try")
+      const token = localStorage.getItem('token')
+      const response = await axios.patch(BASE_API_URL + "/api/posts/lock/" + id, null, {
+        headers: {
+          'x-access-token': token
+        }
+      });
+      console.log(response)
+      console.log(response.data.isLocked);
+      setIsPostLocked(response.data.isLocked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const toggleSticky = async () => {
+   
+    try {
+      console.log("in try")
+      const token = localStorage.getItem('token')
+      const response = await axios.patch(BASE_API_URL + "/api/posts/sticky/" + id, null, {
+        headers: {
+          'x-access-token': token
+        }
+      });
+      console.log(response)
+      console.log(response.data.isStickied);
+      setIsPostStickied(response.data.isStickied);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
   return (
     
     <div>
 
 {/* For Alex: viewing all posts per subcruddit */}
-      <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''}`}>
+      <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''} stickied-box-${isPostStickied} container-fluid`}>
         <div className="vote-and-type-container">
           <div className="vote-container">
             <PostVote
@@ -82,7 +142,7 @@ function Post(props) {
         </div>
 
 {/* Alex: Single post view */}
-        <div className="post-content-container col-md-10 col-sm-5 row">
+        <div className={`post-content-container col-md-10 col-sm-5 row `}>
           <div className="post-title"> 
             <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
               {title}
@@ -91,7 +151,7 @@ function Post(props) {
           {currentPath.includes('/c/all') ? (
             <div className="post-submission-info"> {createdAt} by {username} to {SubcrudditName}  </div>
           ) : (
-            <div className="post-submission-info">PostedALEX {createdAt} by {username} {isPostStickied && <span className='stickied-true' >Stickied Post</span>}  </div>
+            <div className="post-submission-info">Posted {createdAt} by {username} {isPostStickied && <span className='stickied-true' >Stickied Post</span>}  </div>
           )}
 
           {content && (
@@ -110,33 +170,59 @@ function Post(props) {
           )}
           <div className="post-links">
             <span>  {children_count} comment{children_count === 1 ? '' : 's'}</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <span>report</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <span  >reply</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            {isModeratorSingle === true && <span className='stickied-true'>sticky post</span>}
-            {isModerator && isModerator[0]  && <span className='stickied-true'>sticky post</span>}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            {isModeratorSingle === true && !isPostLocked && <span className='locked-true'>lock post</span>}
-            {isModerator && isModerator[0]  && !isPostLocked && <span className='locked-true'>lock post</span>}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            {isModeratorSingle === true && isPostLocked && <span className='locked-true'>unlock post</span>}
-            {isModerator && isModerator[0]  && isPostLocked && <span className='locked-true'>unlock post</span>}
+
+            
+            {isModerator === true && !isPostStickied && 
+            <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
+
+
+            {/* {isModerator && isModerator  && !isPostStickied && 
+             <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>} */}
+
+            {isModerator === true && isPostStickied && 
+             <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
+
+
+            {/* {isModerator && isModerator[0]  && isPostStickied && 
+             <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>} */}
+           
+            {isModerator === true && !isPostLocked && 
+             <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleLock()}  className='locked-true'>lock post</span></>}
+
+
+            {/* {isModerator && isModerator[0]  && !isPostLocked && 
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleLock()}  className='locked-true'>lock post</span></>} */}
+            
+            {isModerator === true && isPostLocked && 
+            <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleLock()}  className='locked-true'>unlock post</span></>}
+
+
+            {/* {isModerator && isModerator[0]  && isPostLocked && 
+            <> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span onClick={() => toggleLock()}  className='locked-true'>unlock post</span></>} */}
            
             
           </div>
         </div>
       </div>
-{content && !isPostLocked &&
-      <CreateComment
-      id={id}
-      setReply={setReply}
-      order={"new"}
-      
-      
-      />
-}
+      {content && !isPostLocked ? (
+        <CreateComment
+          id={id}
+          setReply={setReply}
+          order="new"
+          />
+) : <div className='ms-3' >Comments have been locked</div>}
+
+
+
+
 {newComment && <>
             <Comments 
             comment={newComment}

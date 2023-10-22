@@ -6,6 +6,7 @@ module.exports = {
         const token = req.headers["x-access-token"];
         if (!token) {
             res.send({auth: false});
+            console.log("no token?")
         } else {
             const jwtSecret = process.env.JWT_SECRET;
             jwt.verify(token, jwtSecret, (err, decoded) => {
@@ -17,6 +18,7 @@ module.exports = {
                     req.UserId = decoded.id;
                     req.role = decoded.role;
                     req.username = decoded.username;
+                    
                     next();
                 }
             })

@@ -623,3 +623,7 @@ a {
   color: red;
   font-weight: 700;
 }
+
+.stickied-box-true {
+  border: green solid 3px!important;
+}
