@@ -4,10 +4,7 @@ import { BASE_API_URL } from "../utils/constant";
 
 function AdminPage() {
   const [users, setUsers] = useState([]);
-  const [userId, setUserId] = useState();
   const [error, setError] = useState(null);
-
-  const [active, setActive] = useState(false);
 
   useEffect(() => {
     axios
@@ -18,36 +15,38 @@ function AdminPage() {
       .catch((error) => {
         if (error.response) {
           setError(error.response);
-          console.log("ERROR ADMIN", error.response);
         } else {
           setError("Unknown error occurred.");
         }
       });
   }, []);
 
- const handleActive= useEffect((userId) => {
+  const handleActive = (userId) => {
     axios
       .patch(BASE_API_URL + `/api/admin/${userId}`)
       .then((response) => {
-        setActive(response.data);
+        // Update the active status in the local state
+        const updatedUsers = users.map((user) => {
+          if (user.id === userId) {
+            // Toggle the active status
+            user.isActive = !user.isActive;
+          }
+          return user;
+        });
+        setUsers(updatedUsers);
       })
       .catch((error) => {
         if (error.response) {
           setError(error.response);
-          //console.log("ERROR ADMIN", error.response);
         } else {
           setError("Unknown error occurred.");
         }
       });
-    }, false);
-  
-  // const handleActive = (id) => {
-  //   console.log("INactive Function", id)
-  // }
+  };
 
   return (
     <>
-      <div className=" alert alert-info">Admin Page</div>
+      <div className="alert alert-info">Admin Page</div>
       <div className="container-fluid">
         {error ? (
           <>
@@ -86,7 +85,7 @@ function AdminPage() {
                   {users.map((user, index) => (
                     <tr
                       className="justify-content-center"
-                      onClick={() => console.log("USERID: ", user.id)}
+                      key={user.id}
                     >
                       <th scope="row">{index + 1}</th>
                       <td>{user.username}</td>
@@ -104,7 +103,7 @@ function AdminPage() {
                           <div className="col-md-4 d-flex justify-content-center">
                             <button
                               className="btn btn-success"
-                              onClick={handleActive(user.id)}
+                              onClick={() => handleActive(user.id)}
                             >
                               {user.isActive ? "Inactive" : "Active"}
                             </button>
