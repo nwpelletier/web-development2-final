@@ -6,6 +6,7 @@ const validator = require('validator');
 
 module.exports = {
     createNew: async (req, res) => {
+         try {
         newSubcruddit = req.body;
         userId = req.UserId;
         newSubcruddit.UserId = userId;
@@ -60,6 +61,10 @@ module.exports = {
             console.log(error)
             return res.status(500).send({message: "Internal server error"})
         }
+    }catch (error) {
+        console.log(error)
+        return res.status(500).send({message: "Internal server error"})
+    }
     }, 
     findSubcruddit: async (req, res) => {
     subName = req.params.subcruddit;

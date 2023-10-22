@@ -79,6 +79,9 @@ module.exports = {
             await Votes.create(vote)
             console.log(newPost)
             return res.status(201).send(newPost)
+
+
+
      
 
         } catch(error) {
@@ -448,6 +451,8 @@ module.exports = {
         const order = req.params.order
         const subName = req.params.subcruddit
         let activePosts;
+        try {
+
         const sub = await Subcruddits.findOne({
             where: {
                 subcrudditName: subName
@@ -526,6 +531,11 @@ module.exports = {
         }));
 
         res.status(200).send(returnObj);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"})    
+    }
     },
     findAllActivePostsUser: async(req, res) => {
         const userId = req.params.id

@@ -25,6 +25,7 @@ exports.findAllUsers = async (req, res) => {
 
 exports.toggleActive = async (req, res) => {
   //console.log("ADMIN CONTROLLER BODY",req.params)
+  try {
 
   const user = await Users.findByPk(req.params.id);
 
@@ -34,17 +35,26 @@ exports.toggleActive = async (req, res) => {
 
   user.save().then(() => {
     return res.status(200).send({ id: user.id, isActive: user.isActive });
-  });
+  })} catch (error) {
+    //console.log("ERROR: ", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 exports.findOneUser = async (req, res) => {
   //console.log("ADMIN CONTROLLER BODY",req.params)
+  try {
+    const user = await Users.findByPk(req.params.id);
 
-  const user = await Users.findByPk(req.params.id);
+    if (!user) return res.status(404).send("User Not Found");
+  
+    res.status(200).send(user);
+  } catch (error) {
+    //console.log("ERROR: ", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 
-  if (!user) return res.status(404).send("User Not Found");
 
-  res.status(200).send(user);
 };
 
 exports.changeRole = async (req, res) => {
