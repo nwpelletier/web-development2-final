@@ -15,43 +15,54 @@ function RNNotLoggedInPages(margin) {
   const location = useLocation();
   const navigate = useNavigate();
   const welcomeText = subcrudName === 'all' ? 'Welcome to cruddit!  Feel free to explore the many subcruddits we offer!  We welcome all types of communities, and are sure you will enjoy your stay :)' : `Welcome to /c/${subcrudName}`;
+  const currentPath = useLocation().pathname.split("/")[2];
+
 
   // Get list of mods! (Axios + filter by subcrudName)
   useEffect(() => {
-    const getModList = async () => {
-      try {
-        const response = await axios.get(BASE_API_URL + '/api/moderators');
-        if (response && response.data && Array.isArray(response.data.all)) {
-          const filteredData = response.data.all.filter(
-            item => item.Subcruddit && item.Subcruddit.subcrudditName === subcrudName
-          );
-          const usernames = filteredData.map(item => item.User.username);
-          setUsernames(usernames);
-        } else {
-          console.error('Invalid response format');
+    console.log("SUBCRUDNAME: " + subcrudName);
+    if (subcrudName !== 'all') {
+      const getModList = async () => {
+        try {
+          console.log('Making Axios request for moderators...');
+          const response = await axios.get(`${BASE_API_URL}/api/moderators`);
+          if (response && response.data && Array.isArray(response.data.all)) {
+            const filteredData = response.data.all.filter(
+              item => item.Subcruddit && item.Subcruddit.subcrudditName === subcrudName
+            );
+            const usernames = filteredData.map(item => item.User.username);
+            setUsernames(usernames);
+          } else {
+            console.error('Invalid response format');
+          }
+        } catch (error) {
+          console.error('Error finding moderator data', error);
         }
-      } catch (error) {
-        console.error('Error finding moderator data', error);
-      }
-    };
-    getModList();
-  }, []);
+      };
+      getModList();
+    }
+    return;
+  }, [subcrudName]);
 
   useEffect(() => {
-    const getWiki = async () => {
-      try {
-        const wikiResponse = await axios.get(`${BASE_API_URL}/api/subcruddits/${subcrudName}`);
-        setSubcrudWiki(wikiResponse.data.subcruddit.wiki);
-      } catch (error) {
-        console.error('Error retrieving wiki', error);
-      }
-    };
-    getWiki(); // Call the getWiki function here
+    if (subcrudName !== 'all') {
+      const getWiki = async () => {
+        try {
+          console.log('Making wiki Axios request...');
+          const wikiResponse = await axios.get(`${BASE_API_URL}/api/subcruddits/${subcrudName}`);
+          const subcrudWiki = wikiResponse.data.subcruddit.wiki;
+        } catch (error) {
+          console.error('Error retrieving wiki', error);
+        }
+      };
+      getWiki();
+    }
+    return;
   }, [subcrudName]);
 
 
   //console.log("RIGHTNAV POSITION: ",margin.margin)
-  const currentPath = useLocation().pathname.split("/")[2];
+  
   const rules = [
     "Friendly discussion only - this is a positive forum",
     "Do not post harmful information - it's bad",
@@ -109,7 +120,7 @@ function RNNotLoggedInPages(margin) {
               {usernames.length > 0 && <p>==================</p>}
             </div>
           </div>
-          
+
           <div className="wiki-container">
             <span className="wiki-title">/c/{subcrudName} wiki</span>
             <hr></hr>

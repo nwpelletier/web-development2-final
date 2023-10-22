@@ -65,7 +65,9 @@ function Post(props) {
       console.log(error)
     })
 
-    axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
+    // Skip this if we are on /c/all
+    if (currentPath !== '/c/all') {
+      axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
       .then((response) => {
         let modObj = response.data
         const modArray = [];
@@ -77,6 +79,7 @@ function Post(props) {
       }).catch((error) => {
         console.log(error)
       })
+    }
     //GOT MODERATOR NAMES 
 
 

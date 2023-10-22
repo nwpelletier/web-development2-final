@@ -68,7 +68,6 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
 
   // Get posts by sorting type!
   useEffect(() => {
-    console.log(subcrudditName)
     if (!subcrudditName) {
       navigateToAll("/c/all");
     }
@@ -84,7 +83,6 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
             BASE_API_URL + `/api/posts/posts/${subcrudditName}/${sortingType}`
           );
         }
-        console.log(response.data)
         setPosts(response.data);
       } catch (error) {
         

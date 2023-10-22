@@ -13,7 +13,6 @@ function LowerHalf() {
   const currentPath = useLocation().pathname.split('/')[2];
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
-  console.log("current path    " + currentPath)
 
   // Testing w/ userId localStorage
   const getKarma = async () => {
