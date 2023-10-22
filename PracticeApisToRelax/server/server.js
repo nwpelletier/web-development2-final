@@ -16,6 +16,7 @@ const moderatorRoutes = require("./routes/ModeratorRoutes");
 const subcrudditRoutes = require("./routes/subcruddit-routes");
 
 const userpage = require("./routes/PostUserRoutes");
+const admin = require("./routes/AdminRoutes");
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -51,6 +52,7 @@ app.use("/api/votes", voteRoutes);
 app.use("/api/moderators", moderatorRoutes);
 app.use("/api/subcruddits", subcrudditRoutes);
 app.use("/api/overview", userpage);
+app.use("/api/admin", admin);
 
 const db = require("./models");
 

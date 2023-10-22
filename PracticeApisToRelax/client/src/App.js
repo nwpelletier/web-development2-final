@@ -23,6 +23,7 @@ import SinglePost from "./pages/SinglePost";
 import PostComments from "./components/Post/PostComments"
 import CommentPlay from "./components/Post/CommentPlay";
 import Footer from "./components/Footer/Footer";
+import AdminPage from "./pages/AdminPage";
 
 
 export const AuthContext = React.createContext();
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/c/:handle/:sortingType" element={<Subcruddit />} />
                 <Route path="/comments" element={<CommentPlay />} />
                 <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
+                <Route path="/admin" element={<AdminPage />} />
 
               </Routes>
             </Router>

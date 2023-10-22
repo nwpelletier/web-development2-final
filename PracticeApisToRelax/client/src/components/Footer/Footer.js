@@ -21,7 +21,7 @@ function Footer() {
       <FooterObject text="" footObjClass="footer-box-high" />
       <FooterObject text="" footObjClass="footer-box-low" />
       <FooterObject text="" footObjClass="footer-box-high" />
-      <FooterObject text="(o__0) welcome in (0__o)" footObjClass="footer-text" />
+      <FooterObject text="Q(o__0Q) welcome in (0__o)" footObjClass="footer-text" />
       <FooterObject text="" footObjClass="footer-box-high" />
       <FooterObject text="" footObjClass="footer-box-low" />
       <FooterObject text="" footObjClass="footer-box-high" />
