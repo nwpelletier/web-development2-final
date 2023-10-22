@@ -6,7 +6,6 @@ function AdminPage() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
-  
   useEffect(() => {
     axios
       .get(BASE_API_URL + `/api/admin`)
@@ -45,18 +44,20 @@ function AdminPage() {
       });
   };
 
-
   const [userId, setUserId] = useState(0);
 
-  
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedUserId = localStorage.getItem("userId");
     if (token) {
       setUserId(storedUserId);
-      axios.get(BASE_API_URL + `/api/admin/${userId}`).then((response) => {
-        console.log("USER ADMIN PAGE: ",response.data)
+      axios
+        .get(BASE_API_URL + `/api/admin/${userId}`)
+        .then((response) => {
+        console.log("USER ADMIN PAGE: ", response.data);
       });
+    } else {
+      console.log("USER ADMIN PAGE: NO DATA");
     }
   }, []);
 
@@ -99,10 +100,7 @@ function AdminPage() {
                 </thead>
                 <tbody>
                   {users.map((user, index) => (
-                    <tr
-                      className="justify-content-center"
-                      key={user.id}
-                    >
+                    <tr className="justify-content-center" key={user.id}>
                       <th scope="row">{index + 1}</th>
                       <td>{user.username}</td>
                       <td>{user.email}</td>
