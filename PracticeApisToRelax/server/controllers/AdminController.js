@@ -46,3 +46,17 @@ exports.findOneUser = async (req, res) => {
 
   res.status(200).send(user);
 };
+
+exports.changeRole = async (req, res) => {
+  const user = await Users.findByPk(req.params.id);
+
+  if (!user) return res.status(404).send("User Not Found");
+
+  user.role = user.role === "admin" ? "user" : "admin";
+
+  user.save().then(() => {
+    return res.status(200).send({ id: user.id, role: user.role });
+  });
+
+  res.status(200).send(user);
+};

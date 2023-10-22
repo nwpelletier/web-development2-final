@@ -4,7 +4,8 @@ const controller = require("../controllers/AdminController");
 
 
 router.get("/", controller.findAllUsers);
-router.patch("/:id", controller.toggleActive);
+router.patch("/active/:id", controller.toggleActive);
+router.patch("/role/:id", controller.changeRole);
 router.get("/:id", controller.findOneUser);
 
 module.exports = router; 

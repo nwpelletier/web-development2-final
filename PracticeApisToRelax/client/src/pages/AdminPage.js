@@ -23,7 +23,7 @@ function AdminPage() {
 
   const handleActive = (userId) => {
     axios
-      .patch(BASE_API_URL + `/api/admin/${userId}`)
+      .patch(BASE_API_URL + `/api/admin/active/${userId}`)
       .then((response) => {
         // Update the active status in the local state
         const updatedUsers = users.map((user) => {
@@ -59,7 +59,7 @@ function AdminPage() {
         axios
           .get(BASE_API_URL + `/api/admin/${storedUserId}`)
           .then((response) => {
-            console.log("USER ADMIN PAGE: ", response.data);
+            //console.log("USER ADMIN PAGE: ", response.data);
             setRole(response.data.role);
             setUsername(response.data.username);
           });
@@ -69,7 +69,30 @@ function AdminPage() {
     } catch (error) {
       console.log("ERROR", error);
     }
-  }, "");
+  }, []);
+
+  const handleRole = (userId) => {
+    axios
+      .patch(BASE_API_URL + `/api/admin/admin/${userId}`)
+      .then((response) => {
+        // Update the active status in the local state
+        const updatedUsers = users.map((user) => {
+          if (user.id === userId) {
+            // Toggle the active status
+            user.role = !user.role;
+          }
+          return user;
+        });
+        setUsers(updatedUsers);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setError(error.response);
+        } else {
+          setError("Unknown error occurred.");
+        }
+      });
+  };
 
   return (
     <>
@@ -124,7 +147,7 @@ function AdminPage() {
                       <td>{user.role}</td>
                       <td>
                         <div className="row">
-                          <div className="col-md-4 d-flex justify-content-center">
+                          <div className="col-md-3 d-flex justify-content-center">
                             <button
                               className="btn btn-success"
                               onClick={() => handleActive(user.id)}
@@ -133,9 +156,17 @@ function AdminPage() {
                             </button>
                           </div>
 
-                          <div className="col-md-4 d-flex justify-content-center">
-                            <button className="btn btn-warning">
-                              Make Admin
+                          <div className="col-md-5 d-flex justify-content-center">
+                            <button
+                              className={
+                                user.role === "admin"
+                                  ? "btn btn-info"
+                                  : "btn btn-warning"
+                              }
+                              onClick={() => handleRole(user.id)}
+                            >
+                              Switch to{" "}
+                              {user.role === "admin" ? "User" : "Admin"}
                             </button>
                           </div>
 
