@@ -406,8 +406,43 @@ a {
 
 
 /* RIGHTNAV */
+.right-panel {
+  height:100%;
+  box-shadow: -2px 3px 2px rgb(205, 215, 221);
+}
+
+#right-panel-rnnot {
+  height: 100%;
+}
+
 .right-nav-pin {
   position: relative;
+}
+
+.right-nav-rules {
+  list-style: none;
+  font-size: 12px;
+  line-height:0.6em;
+  margin-left:0;
+  padding-left:3px;
+  margin-bottom:10px;
+}
+
+.rules-box {
+  background-color:rgb(238, 201, 201);
+  padding:5px;
+  padding-top:10px;
+  border-radius:4px;
+}
+
+.right-nav-rules:hover {
+  color:brown;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.right-nav-mod-list {
+  
 }
 
 .right-nav-container {
