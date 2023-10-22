@@ -11,14 +11,13 @@ import { btnText } from '../CreatePost/textPostInit';
 // export const SubcrudditContext = createContext();
 
 
-function SubcrudditDisplay({ subcrudditName, sortingType,}) {
-  
+function SubcrudditDisplay({ subcrudditName, sortingType, }) {
+
 
   // Testing paginate   
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
- // const isMod = useContext(ModContext);
- const [isMod, setIsMod] = useState(false)
+  const [isMod, setIsMod] = useState(false)
 
   // Auto-navigate to /c/all upon visiting landing page
   const navigateToAll = useNavigate();
@@ -26,7 +25,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
 
   const postsPerPage = 7; // Renamed to avoid conflict with the 'posts' state array
   const offset = pageNumber * postsPerPage;
- 
+
   const displayPosts = posts && posts
     .slice(offset, offset + postsPerPage)
     .map((post) => (
@@ -45,11 +44,11 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
           addSuffix: true,
         })}
         isMod={isMod}
-        
-      
+
+
       />
     ));
-     
+
   const pageCount = Math.ceil(posts.length / postsPerPage);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
@@ -85,8 +84,8 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         }
         setPosts(response.data);
       } catch (error) {
-        
-        console.error('Error fetching posts:', error);
+
+        console.error('Error fetching posts: ', error);
       }
     };
 

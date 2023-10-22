@@ -9,6 +9,10 @@ RIGHTNAV
 ====================================
 */
 
+.userSubmitted {
+  min-height:1000px;;
+}
+
 
 /* NAVBAR */
 #temp-for-icon {
@@ -272,6 +276,7 @@ RIGHTNAV
 }
 
 .post-container {
+  min-height:80px;
   margin-left: 1%;
   margin-bottom: 1%;
   border: 1px solid rgb(183, 195, 209);
