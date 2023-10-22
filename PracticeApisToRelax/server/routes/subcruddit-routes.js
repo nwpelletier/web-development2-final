@@ -10,6 +10,6 @@ router.get("/:subcruddit", controller.findSubcruddit);
 router.get("/exists/:subcruddit", controller.doesExist)
 
 router.patch("/toggle/:id", authAdmin, controller.toggleActive);
-router.put("/wiki/:id", authUser, controller.editWiki);
+router.put("/wiki/:subcrudditname", authUser, controller.editWiki);
 
 module.exports = router;

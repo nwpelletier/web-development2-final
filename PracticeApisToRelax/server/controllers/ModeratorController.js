@@ -68,6 +68,39 @@ exports.findAll = async (req, res) => {
       res.status(500).json({ error: "Internal Error" });
     }
   }
+
+  exports.findAllBySubcruddit = async (req, res) => {
+   
+    const subname = req.params.subcrudditname
+    try {
+      const subcruddit = await Subcruddits.findOne({
+        where: {
+          subcrudditName: subname
+        }
+      })
+      if (!subcruddit) {
+        return res.status(400).send({message: "could not find subcruddit"})
+      }
+      const all = await Moderators.findAll({
+        where: {
+          SubcrudditId: subcruddit.id
+        },
+        include:  [{
+          model: Users,
+          attributes: ['username'] 
+        }] 
+      });
+   
+      const returnObj = all.map((mod) => ({
+        username: mod.User.username
+    }));
+      return res.status(200).send(returnObj)
+    } 
+      catch (error) {
+        console.error("Error retrieving moderator ", error);
+        res.status(500).json({ error: "Internal Error" });
+      }
+    }
   
 
 exports.isModerator = async (req, res) => {

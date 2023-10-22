@@ -144,26 +144,35 @@ module.exports = {
     editWiki: async (req, res) => {
        const modId = req.UserId
        const wiki = req.body.wiki
-       const subId = req.params.id
+       const subname = req.params.subcrudditname
 
         try {
             if (!validator.isLength(wiki, {min: 10, max:10000})) {
                 return res.status(400).send({message: "Subcruddit wikis must be between 10 and 10,000 characters."})
             }
+            sub = await Subcruddits.findOne({
+                where: {
+                    subcrudditName: subname
+                }
+            })
+            if (!sub) {
+                return res.status(400).send({message: "that subcruddit does not exist"})
+            }
+
             modExists = await Moderators.findOne({
                 where: {
                     UserId: modId, 
-                    SubcrudditId: subId
+                    SubcrudditId: sub.id
                 }
             })
-            if (modExists) {
+            if (!modExists) {
                 return res.status(400).send({message: "You are not authorized to edit this subreddit's wiki"})
             }
-            subcruddit = await Subcruddits.findByPk(subId)
-            subcruddit.wiki = wiki
-            subcruddit.save()
+           
+            sub.wiki = wiki
+            sub.save()
             .then(()=> {
-                res.status(200).send({message: "Success", subcruddit: subcruddit}) 
+                res.status(200).send({message: "Success", subcruddit: sub}) 
             }).catch((error)=> {
                 res.status(500).send({message: "Internal Server Error", error: error}) 
             })

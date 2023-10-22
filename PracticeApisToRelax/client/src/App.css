@@ -628,3 +628,8 @@ a {
   border: green solid 3px!important;
   background-color: rgb(0, 128, 0, 10%);
 }
+
+.moderator-true {
+  color: green!important;
+  font-weight: 700!important;
+}

@@ -23,6 +23,7 @@ function Post(props) {
   const [toBeDeleted, setToBeDeleted] = useState(false)
   const user = localStorage.getItem("username");
   const role = localStorage.getItem("userRole");
+  const [moderators, setModerators] = useState();
   
 
   
@@ -63,7 +64,20 @@ function Post(props) {
       }).catch((error)=> {
         console.log(error)
       })
-   // }
+
+      axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
+      .then((response)=> {
+        let modObj = response.data
+        const modArray = [];
+        for (let mod of modObj) {
+          modArray.push(mod.username);
+        }
+        setModerators(modArray)
+        console.log(moderators[0])
+      }).catch((error)=> {
+        console.log(error)
+      })
+   //GOT MODERATOR NAMES 
 
   
     let newPath = currentPath;

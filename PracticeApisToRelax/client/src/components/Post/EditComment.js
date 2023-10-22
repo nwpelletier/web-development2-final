@@ -3,11 +3,14 @@ import {Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import Comments from './Comments';
 import PostComments from './PostComments';
+// initialise
+//yup 
+// search default value 
 
 function EditComment(props) {
     const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit, setCommentContent} = props
     const formInitValues = {
-        UserId: 1,
+      
         content: value,
     }
     
@@ -40,13 +43,20 @@ function EditComment(props) {
             <Form>
             <ErrorMessage name={"content"} component="div" className="text-danger " />
             <Field
+                            //CSS 
                             className={"form-comment custom-form"}
                             id={"formId"}
+                            // SHOULD BE WIKI  
                             name={"content"}
                              as={"textarea"}
+                             // size 
                             rows={6}
                             style={{ lineHeight: 1 }}
+                            // very important, send defaultValue={wiki} 
                             defaultValue={value}
+                            //        const wiki = req.body.wiki
+      //                                const subId = req.params.id
+      //router.put("/wiki/:subcrudditname", authUser, controller.editWiki);
                          
                             
                         />
