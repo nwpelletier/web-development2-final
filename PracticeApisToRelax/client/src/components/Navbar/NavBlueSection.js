@@ -6,12 +6,14 @@ import { BASE_API_URL } from '../../utils/constant';
 
 
 function LowerHalf() {
+  
   const [modalContent, setModalContent] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userKarma, setUserKarma] = useState('');
   const currentPath = useLocation().pathname.split('/')[2];
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
+  console.log("current path    " + currentPath)
 
   // Testing w/ userId localStorage
   const getKarma = async () => {
@@ -47,6 +49,10 @@ function LowerHalf() {
     navigate(`/c/all`);
   }
 
+  const navigateSubcrudRoot = () => {
+    navigate(`/c/${currentPath}`);
+  };
+
   const handleNavigation = () => {
     navigate('/userpage');
   }
@@ -74,7 +80,7 @@ function LowerHalf() {
 
     // Temp formatting! Fix after functionality
     <div className="lower-half row ">
-      <div className="current-subcruddit my-3 mx-3 col-3">
+      <div className="current-subcruddit my-3 mx-3 col-3" onClick={navigateSubcrudRoot}>
         {currentPath}
       </div>
       <div className="hot-new-tab row">

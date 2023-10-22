@@ -80,40 +80,45 @@ function RNNotLoggedInPages(margin) {
             </p>
           </div>
         )}
-        <div className="rules-container">
-          <details><summary className="right-nav-rules-dropdown">click to read our rules</summary>
-            <div className="rules-box">
-              {rules.map((rule, index) => (
-                <ul className="right-nav-rules" key={index}>
-                  <div>{rule}</div>
-                </ul>
-              ))}
-            </div>
-          </details>
-        </div>
-        <div className="moderator-container">
-          <div className="right-nav-mod-list align-items-center">
-            {usernames.length > 0 && <p>====MODERATORS====</p>}
-            {usernames.length > 0 && (
-              <div className="col-5">
-                <ul>
-                  {usernames.map((username, index) => (
-                    <li key={index}>{username}</li>
-                  ))}
-                </ul>
+
+
+        <div className="right-nav-big-container">
+          <div className="rules-container">
+            <details><summary className="right-nav-rules-dropdown">click to read our rules</summary>
+              <div className="rules-box">
+                {rules.map((rule, index) => (
+                  <ul className="right-nav-rules" key={index}>
+                    <div>{rule}</div>
+                  </ul>
+                ))}
               </div>
-            )}
-            {usernames.length > 0 && <p>==================</p>}
+            </details>
           </div>
-        </div>
-        <div className="wiki-container">
-          <span className="wiki-title">/c/{subcrudName} wiki</span>
-          <hr></hr>
-          {subcrudWiki ? (
-            subcrudWiki
-          ) : (
-            <p>{welcomeText}</p>
-          )}
+          <div className="moderator-container">
+            <div className="right-nav-mod-list align-items-center">
+              {usernames.length > 0 && <p>====MODERATORS====</p>}
+              {usernames.length > 0 && (
+                <div className="col-5">
+                  <ul>
+                    {usernames.map((username, index) => (
+                      <li key={index}>{username}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {usernames.length > 0 && <p>==================</p>}
+            </div>
+          </div>
+          
+          <div className="wiki-container">
+            <span className="wiki-title">/c/{subcrudName} wiki</span>
+            <hr></hr>
+            {subcrudWiki ? (
+              subcrudWiki
+            ) : (
+              <p>{welcomeText}</p>
+            )}
+          </div>
         </div>
       </div>
     </>

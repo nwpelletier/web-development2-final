@@ -9,7 +9,7 @@ import { BASE_API_URL } from '../../utils/constant';
 import { ModContext } from '../../pages/Subcruddit';
 import CreateComment from './CreateComment';
 import Comments from './Comments';
-import PostComments  from './PostComments';
+import PostComments from './PostComments';
 
 function Post(props) {
   const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle, isMod } = props;
@@ -24,19 +24,19 @@ function Post(props) {
   const user = localStorage.getItem("username");
   const role = localStorage.getItem("userRole");
   const [moderators, setModerators] = useState();
-  
 
-  
+
+
   const [postContent, setPostContent] = useState(content)
-  
- 
+
+
 
 
   const [reply, setReply] = useState(false)
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
   const [newComment, setNewComment] = useState()
- 
+
   let { handle } = useParams();
   const [isModerator, setIsModerator] = useState()
 
@@ -44,29 +44,29 @@ function Post(props) {
 
 
   useEffect(() => {
-  
-    const subName = handle ? handle : SubcrudditName;
-  
-      const userId = localStorage.getItem('userId');
-      if (!userId) {
-        setIsModerator(false)
-        return;
-      }
-        axios.get(
-        BASE_API_URL + `/api/moderators/ismod/${subName}`, {
-        headers: {
-          'x-access-token': localStorage.getItem('token')
-        }
-      }
-      ).then((response)=> {
-        const isMod = response.data.auth;
-        setIsModerator(isMod);
-      }).catch((error)=> {
-        console.log(error)
-      })
 
-      axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
-      .then((response)=> {
+    const subName = handle ? handle : SubcrudditName;
+
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      setIsModerator(false)
+      return;
+    }
+    axios.get(
+      BASE_API_URL + `/api/moderators/ismod/${subName}`, {
+      headers: {
+        'x-access-token': localStorage.getItem('token')
+      }
+    }
+    ).then((response) => {
+      const isMod = response.data.auth;
+      setIsModerator(isMod);
+    }).catch((error) => {
+      console.log(error)
+    })
+
+    axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
+      .then((response) => {
         let modObj = response.data
         const modArray = [];
         for (let mod of modObj) {
@@ -74,17 +74,17 @@ function Post(props) {
         }
         setModerators(modArray)
         console.log(moderators[0])
-      }).catch((error)=> {
+      }).catch((error) => {
         console.log(error)
       })
-   //GOT MODERATOR NAMES 
+    //GOT MODERATOR NAMES 
 
-  
+
     let newPath = currentPath;
     if (currentPath.endsWith("/hot") || currentPath.endsWith("/new")) {
       newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
     }
- 
+
     axios
       .get(BASE_API_URL + `/api/votes/${id}/${userId}`)
       .then((response) => {
@@ -116,9 +116,9 @@ function Post(props) {
       console.log(error);
     }
   };
-  
+
   const toggleSticky = async () => {
-   
+
     try {
       console.log("in try")
       const token = localStorage.getItem('token')
@@ -138,21 +138,21 @@ function Post(props) {
   const destroy = () => {
     const token = localStorage.getItem('token');
     axios
-    .delete(BASE_API_URL + "/api/posts/" + id, {
-      headers: {
-        'x-access-token': token
-      }
-    })
-    .then((response)=> {
-      console.log(response.data.isActive)
-      if (!response.data.isActive) {
-        setToBeDeleted(false)
-        setPostContent("deleted content")
-      }
-     
-    }).catch((error)=> {
-      console.log(error)
-    })
+      .delete(BASE_API_URL + "/api/posts/" + id, {
+        headers: {
+          'x-access-token': token
+        }
+      })
+      .then((response) => {
+        console.log(response.data.isActive)
+        if (!response.data.isActive) {
+          setToBeDeleted(false)
+          setPostContent("deleted content")
+        }
+
+      }).catch((error) => {
+        console.log(error)
+      })
 
   }
 
@@ -160,10 +160,10 @@ function Post(props) {
 
 
   return (
-    
+
     <div>
 
-{/* For Alex: viewing all posts per subcruddit */}
+      {/* For Alex: viewing all posts per subcruddit */}
       <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''} stickied-box-${isPostStickied} container-fluid`}>
         <div className="vote-and-type-container">
           <div className="vote-container">
@@ -184,9 +184,9 @@ function Post(props) {
           </div>
         </div>
 
-{/* Alex: Single post view */}
+        {/* Alex: Single post view */}
         <div className={`post-content-container col-md-10 col-sm-5 row `}>
-          <div className="post-title"> 
+          <div className="post-title">
             <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
               {title}
             </a>
@@ -212,73 +212,75 @@ function Post(props) {
             </>
           )}
           <div className="post-links">
-            <span>  {children_count} comment{children_count === 1 ? '' : 's'}</span>
-
-            
-            {isModerator === true && !isPostStickied && 
-            <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
+            <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
+              {children_count} comment{children_count === 1 ? '' : 's'}
+            </a>
 
 
-            {isModerator === true && isPostStickied && 
-             <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
+            {isModerator === true && !isPostStickied &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
 
 
-           
-            {isModerator === true && !isPostLocked && 
-             <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleLock()}  className='locked-true'>lock post</span></>}
+            {isModerator === true && isPostStickied &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
 
 
-            
-            {isModerator === true && isPostLocked && 
-            <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleLock()}  className='locked-true'>unlock post</span></>}
+
+            {isModerator === true && !isPostLocked &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleLock()} className='locked-true'>lock post</span></>}
+
+
+
+            {isModerator === true && isPostLocked &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
 
             {(isModerator || user === username || role === "admin") &&
-                        <> &nbsp;&nbsp;&nbsp;&nbsp;
-                         <span onClick={() => {setToBeDeleted(true)}} className="">delete</span></>
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => { setToBeDeleted(true) }} className="">delete</span></>
             }
 
             {toBeDeleted &&
-                <>
+              <>
                 <span className="text-danger ms-2">Are you sure?</span>
                 <span onClick={destroy} className="fw-bolder ms-1">Yes</span>
                 <span className="text-danger ms-1">/</span>
                 <span onClick={() => setToBeDeleted(false)} className="fw-bolder ms-1">No</span>
-                </>
-                }
+              </>
+            }
 
 
-            
+
           </div>
         </div>
       </div>
       {content && !isPostLocked ? (
-  <CreateComment
-    id={id}
-    setReply={setReply}
-    order="new"
-    setNewComment={setNewComment}
-  />
-) : null}
-{content && isPostLocked && (
-  <div className='ms-3'>Comments have been locked</div>
-)}
+        <CreateComment
+          id={id}
+          setReply={setReply}
+          order="new"
+          setNewComment={setNewComment}
+        />
+      ) : null}
+      {content && isPostLocked && (
+        <div className='ms-3'>Comments have been locked</div>
+      )}
 
-{newComment && <>
-<Comments
-comment={newComment}
-order={commentOrder}
-points={1}
-isLocked={isPostLocked}
-isModerator={isModerator}
+      {newComment && <>
+        <Comments
+          comment={newComment}
+          order={commentOrder}
+          points={1}
+          isLocked={isPostLocked}
+          isModerator={isModerator}
 
-/> 
-</>}
+        />
+      </>}
 
-{/* <Comments 
+      {/* <Comments 
             comment={newComment}
             order={order}
             points={1}
@@ -288,16 +290,16 @@ isModerator={isModerator}
 
 
 
-{content && <>
-  <PostComments
-        order={commentOrder}
-        postId={id}
-        isLocked={isPostLocked}
-        isModerator={isModerator}
-       
-         /></>}
+      {content && <>
+        <PostComments
+          order={commentOrder}
+          postId={id}
+          isLocked={isPostLocked}
+          isModerator={isModerator}
 
-{/* const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props */}
+        /></>}
+
+      {/* const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props */}
 
 
     </div>

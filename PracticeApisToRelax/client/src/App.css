@@ -51,6 +51,7 @@ RIGHTNAV
 }
 
 .current-subcruddit {
+  cursor:pointer;
   padding-left: 25px;
   text-shadow: -1px 1px 1px rgb(26, 32, 61), -2px 2px 2px rgb(33, 52, 135);
   font-size: 32px;
@@ -368,6 +369,11 @@ a {
   font-weight: 600;
 }
 
+.post-links a {
+  color:black;
+  font-weight:400;
+}
+
 /* MAIN */
 
 .page-item-none {
@@ -415,6 +421,14 @@ a {
 
 .right-nav-pin {
   position: relative;
+}
+
+.right-nav-big-container {
+  margin-top:1em;
+  box-shadow: 1px 1px 4px grey;
+  border-radius:6px;
+  background-color:#fdfdfd;
+  padding:5px;
 }
 
 .right-nav-rules {
@@ -729,8 +743,14 @@ a {
 }
 
 .stickied-box-true {
-  border: green solid 3px !important;
-  background-color: rgb(0, 128, 0, 10%);
+  /* border: green solid 3px !important; */
+  border:none;
+  box-shadow: -2px 2px 3px green, -1px 1px 2px rgb(17, 36, 21), 0 -2px 4px rgb(55, 134, 55);
+  background-color: rgba(33, 94, 33, 0.1);
+}
+
+.stickied-box-true:hover {
+  background-color: rgba(33, 94, 33, 0.1);
 }
 
 .moderator-true {
