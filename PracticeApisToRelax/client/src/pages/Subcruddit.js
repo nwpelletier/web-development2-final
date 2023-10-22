@@ -7,6 +7,7 @@ import React from 'react';
 import axios from 'axios';
 import { BASE_API_URL } from "../utils/constant";
 
+export const SubCrudditContext = React.createContext('all');
 export const ModContext = React.createContext();
 
 function Subcruddit() {
@@ -14,22 +15,27 @@ function Subcruddit() {
   const { handle, sortingType } = useParams();
 
   // Moderator status (useContext in SubcrudditDisplay and RightNav)
-  const [isMod, setIsMod] = useState([]);
+  const [subcrudName, setSubcrudName] = useState(handle);
+  const [isMod, setIsMod] = useState(false);
   useEffect(() => {
     const getModStatus = async () => {
       try {
-        if (handle === 'all') {
+        if (handle === 'all' || handle === '') {
           return;
         } else {
           const userId = localStorage.getItem('userId');
+          if (!userId) {
+            setIsMod(false)
+            return;
+          }
           const response = await axios.get(
             BASE_API_URL + `/api/moderators/ismod/${handle}`, {
-              headers: {
-                'x-access-token' : localStorage.getItem('token')
-              }
+            headers: {
+              'x-access-token': localStorage.getItem('token')
             }
+          }
           );
-          const isMod = response.data;
+          const isMod = response.data.auth;
           setIsMod(isMod);
 
         }
@@ -44,22 +50,24 @@ function Subcruddit() {
 
   return (
     <>
-      <ModContext.Provider value={[isMod, setIsMod]}>
-        <div>
-          <Navbar />
-        </div>
-        <div className="App">
-          <div className="row">
-            <div className="col-11">
-              <Main handle={handle} sortingType={sortingType} />
-            </div>
-            <div className="col-1 right-nav-pin">
-              {/* ToDo: Props/params to get proper rightNav still needed */}
-              <RightNav margin={"0.1rem"} loc={"sub"} />
+      <SubCrudditContext.Provider value={[subcrudName, setSubcrudName]}>
+        <ModContext.Provider value={[isMod]}>
+          <div>
+            <Navbar />
+          </div>
+          <div className="App">
+            <div className="row">
+              <div className="col-11">
+                <Main handle={handle} sortingType={sortingType} />
+              </div>
+              <div className="col-1 right-nav-pin">
+                {/* ToDo: Props/params to get proper rightNav still needed */}
+                <RightNav margin={"0.1rem"} loc={"sub"} />
+              </div>
             </div>
           </div>
-        </div>
-      </ModContext.Provider>
+        </ModContext.Provider>
+      </SubCrudditContext.Provider>
     </>
   );
 }

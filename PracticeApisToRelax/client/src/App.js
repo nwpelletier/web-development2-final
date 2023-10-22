@@ -14,7 +14,7 @@ import "./App.css";
 import UserPage from "./pages/UserPage";
 import UserProfile from "./pages/UserProfile";
 import AddSubcruddit from "./pages/AddSubcruddit"
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import Subcruddit from './pages/Subcruddit'
 import TextPost from "./pages/TextPost";
 import ImgPost from "./pages/ImgPost";
@@ -22,6 +22,7 @@ import SubcrudditPost from "./pages/SubcrudditPost";
 import SinglePost from "./pages/SinglePost";
 import PostComments from "./components/Post/PostComments"
 import CommentPlay from "./components/Post/CommentPlay";
+import Footer from "./components/Footer/Footer";
 
 
 export const AuthContext = React.createContext();
@@ -40,7 +41,7 @@ function App() {
           <UserRoleContext.Provider value={[userRole, setUserRole]}>
             <Router>
               <Routes>
-                <Route path="/" element={<Home />}></Route>
+                <Route path="/" element={<Subcruddit />}></Route>
                 <Route path="/userpage" element={<UserPage />}></Route>
                 <Route path="/userprofile" element={<UserProfile />}></Route>
                 <Route path="/post/text/:subcruddit" element={<TextPost />}></Route>
@@ -64,6 +65,7 @@ function App() {
       {/* <Route path="/register" exact Component={Register} /> */}
       {/* </Routes>
         </Router> */}
+        <Footer></Footer>
     </div>
   );
 }

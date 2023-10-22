@@ -6,7 +6,7 @@ import PostComments from './PostComments';
 import { BASE_API_URL } from '../../utils/constant';
 
 function CreateComment(props) {
-    const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props
+    const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, replyToComment} = props
     const formInitValues = {
         UserId: 1,
         content: "",
@@ -18,7 +18,7 @@ function CreateComment(props) {
         } else {
         console.log(data)
         axios
-        .post(BASE_API_URL + `/api/posts/comment/${comment.id}`, data, {
+        .post(BASE_API_URL + `/api/posts/comment/${id}`, data, {
             headers: {
               'x-access-token': localStorage.getItem("token")
             }
@@ -26,8 +26,11 @@ function CreateComment(props) {
         .then((response) => {
             setReply(false)
             setNewComment(response.data)
-            setNestedReply(true)
-            setCommentReplies(commentReplies + 1)
+            if(replyToComment) {
+                setNestedReply(true)
+                setCommentReplies(commentReplies + 1)
+            }
+ 
            
         })
         .catch((error) => {

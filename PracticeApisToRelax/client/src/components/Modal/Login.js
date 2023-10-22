@@ -1,13 +1,18 @@
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { AuthContext, UsernameContext, UserRoleContext } from '../../App';
 import { BASE_API_URL } from '../../utils/constant';
 
 // Login form & ability to setModalContent
 function Login({ setModalContent, closeModal }) {
+
+
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+
 
   axios.defaults.withCredentials = true;
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -25,7 +30,7 @@ function Login({ setModalContent, closeModal }) {
   })
 
 
-  const login = (data) => {
+  const login = (data, { resetForm }) => {
     axios.post(BASE_API_URL + `/api/users/login`, data)
       .then((response) => {
         if (response.data.auth === true) {
@@ -44,6 +49,7 @@ function Login({ setModalContent, closeModal }) {
       })
       .catch((error) => {
         console.log(error)
+        setShowErrorModal(true);
       })
   }
 
@@ -51,48 +57,55 @@ function Login({ setModalContent, closeModal }) {
 
   return (
     <>
-        <div className="modal-big-text col-10">Sign in for your very own personalized Cruddit experience!</div>
-        <p className="modal-info-text">By having a Cruddit account, you can join, vote and comment on all of your favorite content!</p>
-        <Formik
-          initialValues={initialLogin}
-          onSubmit={login}
-          validationSchema={loginSchema} >
-          <Form>
-            <label className="modal-label" htmlFor="usernameInput">LOGIN </label>
-            <ErrorMessage
-              name='username'
-              component="div"
-              className='modal-danger-text' />
-            <Field
-              className="modal-text-input form-control mx-1"
-              placeholder="username"
-              id="usernameInput"
-              name="username"
-            />
-            <label className="modal-label" htmlFor="passwordInput">Password: </label>
-            <ErrorMessage
-              name='password'
-              component="div"
-              className='modal-danger-text' />
-            <Field
-              className="modal-text-input form-control mx-1"
-              id="passwordInput"
-              placeholder="password"
-              name="password"
-              type="password"
-            />
-            <div className="modal-signup-reminder mx-1">
-              <span>Don't have an account? </span>
-              <a className="modal-signup-prompt" onClick={() => setModalContent('signup')}> Sign Up</a>
-              <span> | </span><span className="modal-signup-prompt">Reset password</span>
-            </div>
-            <div class="button-container">
-              <button
-                className='btn btn-primary mt-4'
-                type='submit'>LOG IN</button>
-            </div>
-          </Form>
-        </Formik>
+
+      {showErrorModal && (
+        <div className="error-modal">
+          <p className="modal-failure-text">failed - check username/password</p>
+          <button className="btn btn-danger mt-0" onClick={() => setShowErrorModal(false)}>:(</button>
+        </div>
+      )}
+      <div className="modal-big-text col-10">Sign in for your very own personalized Cruddit experience!</div>
+      <p className="modal-info-text">By having a Cruddit account, you can join, vote and comment on all of your favorite content!</p>
+      <Formik
+        initialValues={initialLogin}
+        onSubmit={login}
+        validationSchema={loginSchema} >
+        <Form>
+          <label className="modal-label" htmlFor="usernameInput">LOGIN </label>
+          <ErrorMessage
+            name='username'
+            component="div"
+            className='modal-danger-text' />
+          <Field
+            className="modal-text-input form-control mx-1"
+            placeholder="username"
+            id="usernameInput"
+            name="username"
+          />
+          <label className="modal-label" htmlFor="passwordInput">Password: </label>
+          <ErrorMessage
+            name='password'
+            component="div"
+            className='modal-danger-text' />
+          <Field
+            className="modal-text-input form-control mx-1"
+            id="passwordInput"
+            placeholder="password"
+            name="password"
+            type="password"
+          />
+          <div className="modal-signup-reminder mx-1">
+            <span>Don't have an account? </span>
+            <a className="modal-signup-prompt" onClick={() => setModalContent('signup')}> Sign Up</a>
+            <span> | </span><span className="modal-signup-prompt">Reset password</span>
+          </div>
+          <div class="button-container">
+            <button
+              className='btn btn-primary mt-4'
+              type='submit'>LOG IN</button>
+          </div>
+        </Form>
+      </Formik>
     </>
   );
 }

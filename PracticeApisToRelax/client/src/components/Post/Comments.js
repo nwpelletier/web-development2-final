@@ -129,14 +129,14 @@ function Comments(props){
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
                 } 
                 
-                {comment.isActive && <span onClick={replyToComment} className="comment-small ms-1 fw-bolder">reply</span>}
+                {comment.isActive && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
 
 
-                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small  ms-1">edit</span>}
+                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
 
 
                 {(comment.isActive && isUser && !isDeleted ) && 
-                    <span onClick={() => {setToBeDeleted(true)}} className="comment-small  ms-1">delete</span>}
+                    <span onClick={() => {setToBeDeleted(true)}} className="comment-small post-action-hover ms-1">delete</span>}
 
 
                 {isDeleted && <span className="comment-small text-danger  ms-1">deleted</span>}
@@ -150,7 +150,7 @@ function Comments(props){
                 </>
                 }
                 </>}
-
+ 
 
                 {!show &&  <span className="ms-3 mt-1 comment-small" >{commentReplies} children</span> }
                 </div>
@@ -162,7 +162,7 @@ function Comments(props){
             </div>
             {reply && <div className="comment-block">
                 <CreateComment 
-                comment={comment} 
+                id={comment.id} 
                 setReply={setReply} 
                 order={order} 
                 setNewComment={setNewComment} 
@@ -191,6 +191,7 @@ function Comments(props){
             comment={newComment}
             order={order}
             points={1}
+            replyToComment={true}
         
         />
         </>}

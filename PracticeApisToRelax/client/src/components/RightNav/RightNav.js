@@ -4,7 +4,7 @@ import RNNotLoggedInPage from "./RNNotLoggedInPages";
 import RightNavLoggedIn from "./RightNavLoggedIn";
 function RightNav(params) {
 
-
+//isMod={isMod} = ALEX dont remove
   // console.log("RIGHTNAV MARGIN Value: ", params.margin);
   // console.log("RIGHTNAV LOC Value: ", params.loc);
 

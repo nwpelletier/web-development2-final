@@ -393,34 +393,33 @@ module.exports = {
         createdAt: comment.createdAt,
       }));
 
-      res.status(200).send(returnObj);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  },
-  findActivePost: async (req, res) => {
-    const postId = req.params.id;
-    try {
-      const originalPost = await Posts.findOne({
-        where: {
-          id: postId,
-          isActive: true,
-          parentId: null,
-        },
-        include: [
-          {
-            model: Users,
-            attributes: ["username", "id"],
-          },
-        ],
-      });
+        res.status(200).send(returnObj);
+     
+        } catch (error){
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"})  
+        }
+    }, 
+    findActivePost: async(req, res) => {
+        const postId = req.params.id;
+        try {
+            const originalPost = await Posts.findOne({
+                where: {
+                    id: postId,
+                    isActive: true,
+                    parentId: null
+                },
+                include: [{
+                    model: Users,
+                    attributes: ['username', 'id'] 
+                  }] 
+            })
 
-      if (!originalPost) {
-        return res.status(400).send({
-          message: "Please select a valid post.",
-        });
-      }
+            if (!originalPost){
+                return res.status(400).send({
+                    message:  "Please select a valid post."
+                });
+            }
 
       if (originalPost.postType === "image") {
         const imgParams = {
@@ -432,19 +431,21 @@ module.exports = {
         originalPost.content = url;
       }
 
-      const responseObj = {
-        id: originalPost.id,
-        UserId: originalPost.UserId,
-        title: originalPost.title,
-        postType: originalPost.postType,
-        content: originalPost.content,
-        caption: originalPost.caption,
-        children_count: originalPost.children_count,
-        points: originalPost.points,
-        isStickied: originalPost.isStickied,
-        createdAt: originalPost.createdAt,
-        username: originalPost.User.username,
-      };
+            const responseObj = {
+                id: originalPost.id,
+                UserId: originalPost.UserId,
+                title: originalPost.title,
+                postType: originalPost.postType,
+                content: originalPost.content,
+                caption: originalPost.caption, 
+                children_count: originalPost.children_count,
+                points: originalPost.points,
+                isStickied: originalPost.isStickied,
+                createdAt: originalPost.createdAt,
+                username: originalPost.User.username
+            }
+
+
 
       return res.status(200).send(responseObj);
     } catch (error) {
@@ -708,32 +709,31 @@ module.exports = {
     } catch (error) {
       res.status(500).send({ message: "Internal Server Error", error: error });
     }
-  },
-  editPost: async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const editedPost = req.body;
-      userId = req.UserId;
+        
+    },
+    editPost: async (req, res) => {
+        try {
+            const postId = req.params.id
+            const editedPost = req.body
+            userId = req.UserId
 
-      if (!validator.isLength(editedPost.content, { min: 2, max: 50000 })) {
-        res
-          .status(400)
-          .json({ message: "Posts must be between 2 and 50, 000 characters" });
-      }
-      if (editedPost.postType === "image") {
-        res.status(400).json({ message: "You cannot edit image posts" });
-      }
-      const post = await Posts.findOne({
-        where: {
-          id: postId,
-          layer: 0,
-          isActive: true,
-          UserId: userId,
-        },
-      });
-      if (!post) {
-        res.status(400).json({ message: "Please select a valid post" });
-      }
+             if (!validator.isLength(editedPost.content, {min: 2, max:50000})){
+                 res.status(400).json({message: "Posts must be between 2 and 50, 000 characters"}) 
+             }
+             if (editedPost.postType === "image"){
+                res.status(400).json({message: "You cannot edit image posts"}) 
+             }
+             const post = await Posts.findOne({
+                 where: {
+                     id: postId,
+                     layer: 0,
+                     isActive: true,
+                     UserId: userId
+                 }
+             })
+             if (!post) {
+                 res.status(400).json({message: "Please select a valid post"}) 
+             }
 
       post.content = editedPost.content;
       post

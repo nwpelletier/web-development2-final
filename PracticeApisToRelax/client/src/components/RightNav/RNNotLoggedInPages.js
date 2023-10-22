@@ -2,12 +2,14 @@ import React, { useContext } from "react";
 import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
 import { useLocation } from "react-router-dom";
 import { ModContext } from '../../pages/Subcruddit';
-
+import { SubCrudditContext } from "../../pages/Subcruddit";
 function RNNotLoggedInPages(margin) {
 
   // Verifying mod status!
   const [isMod, setIsMod] = useContext(ModContext);
   console.log('RightNav Mod Status: ' + isMod);
+
+  const [subcrudName, setSubcrudName] = useContext(SubCrudditContext);
 
 
   //console.log("RIGHTNAV POSITION: ",margin.margin)

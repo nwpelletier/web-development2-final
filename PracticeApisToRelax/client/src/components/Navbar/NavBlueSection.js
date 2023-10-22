@@ -77,8 +77,10 @@ function LowerHalf() {
       <div className="current-subcruddit my-3 mx-3 col-3">
         {currentPath}
       </div>
-      <span className= "hot-new-sorting col-3" onClick={navigateHot}>HOT</span>
-      <span className= "hot-new-sorting col-3" onClick={navigateNew}>NEW</span>
+      <div className="hot-new-tab row">
+        <span className= "col-4 gx-2 tab-option1" onClick={navigateHot}>hot</span>
+        <span className= "col-4 gx-2 offset-1 tab-option2" onClick={navigateNew}>new</span>
+      </div>
       <div className="login-box">
         {isAuthenticated ? (
           <>
