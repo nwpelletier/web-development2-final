@@ -433,10 +433,58 @@ a {
   border-radius: 4px;
 }
 
+.rules-container {
+  padding: 3px;
+  border: 1px solid rgb(255, 191, 191);
+  border-radius: 6px;
+  background-color: #f7d9d9;
+}
+
 .right-nav-rules:hover {
   color: brown;
   font-size: 12px;
   font-weight: bold;
+}
+
+.moderator-container {
+  padding: 3px;
+  border: 1px solid rgb(216, 222, 253);
+  border-radius: 6px;
+  background: repeating-linear-gradient(135deg,
+  #eef6ff,
+  #e5e8eb 2px,
+  #dbf1ff 7px,
+  #f2f2f2 4px);
+}
+
+.wiki-container {
+  padding: 3px;
+  border: 1px solid rgb(216, 222, 253);
+  border-radius: 6px;
+  background-color: #e2f5ff;
+  padding: 3px;
+  text-align: justify;
+  font-size: 14px;
+  line-height: 20px;
+  background: repeating-linear-gradient(45deg,
+      #eef6ff,
+      #e5e8eb 2px,
+      #fcf3f3 2px,
+      #f2f2f2 4px);
+}
+
+.rules-container,
+.moderator-container,
+.wiki-container {
+  margin-top: 1em;
+}
+
+.wiki-title {
+  font-size: 22px;
+  font-weight: bolder;
+  display: block;
+  text-align: center;
+  margin-top: 8px;
 }
 
 .right-nav-mod-list {
@@ -447,27 +495,39 @@ a {
   height: 100%;
 }
 
-.right-nav-mod-list p {
-  color: #69727a;
-  font-weight: 500;
-  text-shadow: 2px 2px 3px rgb(40, 88, 161);
+.right-nav-rules-dropdown {
+  color: rgb(192, 70, 70);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
 }
 
-.right-nav-create-submit{
+.right-nav-rules-dropdown::marker {
+  /* content: ""; */
+  color: rgb(136, 62, 62);
+}
+
+.right-nav-mod-list p {
+  color: #3f454b;
+  font-weight: 500;
+  text-shadow: 2px 1px 2px rgb(40, 88, 161);
+}
+
+.right-nav-create-submit {
   border: 1px solid rgb(174, 196, 235);
   color: rgb(41, 74, 124);
   font-weight: bolder;
   font-size: 18px;
   background: linear-gradient(to bottom, white, rgb(209, 229, 255));
   margin: 0 20px 0 20px;
-  padding:0;
+  padding: 0;
   text-align: center;
 }
 
 .right-nav-create-submit:hover {
   color: #ffffff;
   background: linear-gradient(to bottom, rgb(174, 214, 243), rgb(82, 106, 151));
-  cursor:pointer;
+  cursor: pointer;
 }
 
 
@@ -669,13 +729,13 @@ a {
 }
 
 .stickied-box-true {
-  border: green solid 3px!important;
+  border: green solid 3px !important;
   background-color: rgb(0, 128, 0, 10%);
 }
 
 .moderator-true {
-  color: green!important;
-  font-weight: 700!important;
+  color: green !important;
+  font-weight: 700 !important;
   border: green solid 3px !important;
-background-color: rgb(0, 128, 0, 10%);
+  background-color: rgb(0, 128, 0, 10%);
 }
