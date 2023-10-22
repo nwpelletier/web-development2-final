@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
 import txtThumb from '../../assets/comment-svgrepo-com.svg'
@@ -27,24 +27,23 @@ function Post(props) {
   const [postPoints, setPostPoints] = useState(points);
   const [newComment, setNewComment] = useState()
  
-
+  let { handle } = useParams();
   const [isModerator, setIsModerator] = useState()
 
   //console.log(imgThumb);
 
 
   useEffect(() => {
-   
-    if (isModeratorSingle  || isMod) {
-      setIsModerator(true)
-    } else {
+  
+    const subName = handle ? handle : SubcrudditName;
+  
       const userId = localStorage.getItem('userId');
-      if (!userId || !SubcrudditName || SubcrudditName === "all") {
+      if (!userId) {
         setIsModerator(false)
         return;
       }
         axios.get(
-        BASE_API_URL + `/api/moderators/ismod/${SubcrudditName}`, {
+        BASE_API_URL + `/api/moderators/ismod/${subName}`, {
         headers: {
           'x-access-token': localStorage.getItem('token')
         }
@@ -55,7 +54,7 @@ function Post(props) {
       }).catch((error)=> {
         console.log(error)
       })
-    }
+   // }
 
   
     let newPath = currentPath;
@@ -213,12 +212,16 @@ function Post(props) {
         </div>
       </div>
       {content && !isPostLocked ? (
-        <CreateComment
-          id={id}
-          setReply={setReply}
-          order="new"
-          />
-) : <div className='ms-3' >Comments have been locked</div>}
+  <CreateComment
+    id={id}
+    setReply={setReply}
+    order="new"
+  />
+) : null}
+{content && isPostLocked && (
+  <div className='ms-3'>Comments have been locked</div>
+)}
+
 
 
 

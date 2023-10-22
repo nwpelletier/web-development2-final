@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { formatDistance } from 'date-fns';
 import Post from '../Post/Post';
@@ -12,6 +12,7 @@ import { btnText } from '../CreatePost/textPostInit';
 
 
 function SubcrudditDisplay({ subcrudditName, sortingType,}) {
+  let { handle } = useParams();
 
   // Testing paginate   
   const [posts, setPosts] = useState([]);
@@ -43,7 +44,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         createdAt={formatDistance(new Date(post.createdAt), new Date(), {
           addSuffix: true,
         })}
-        isMod={true}
+        isMod={isMod}
         
       
       />

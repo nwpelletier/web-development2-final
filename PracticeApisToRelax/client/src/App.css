@@ -626,4 +626,5 @@ a {
 
 .stickied-box-true {
   border: green solid 3px!important;
+  background-color: rgb(0, 128, 0, 10%);
 }
