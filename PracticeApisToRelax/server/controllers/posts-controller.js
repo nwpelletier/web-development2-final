@@ -77,7 +77,8 @@ module.exports = {
                 liked: true
             }
             await Votes.create(vote)
-            return res.status(201).send(post)
+            console.log(newPost)
+            return res.status(201).send(newPost)
      
 
         } catch(error) {
