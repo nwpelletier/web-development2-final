@@ -44,34 +44,44 @@ function AdminPage() {
       });
   };
 
-  const [userId, setUserId] = useState(0);
+  const [userId, setUserId] = useState(localStorage.getItem("token"));
+  const [role, setRole] = useState("user");
+  const [username, setUsername] = useState("user");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUserId = localStorage.getItem("userId");
-    if (token) {
-      setUserId(storedUserId);
-      axios
-        .get(BASE_API_URL + `/api/admin/${userId}`)
-        .then((response) => {
-        console.log("USER ADMIN PAGE: ", response.data);
-      });
-    } else {
-      console.log("USER ADMIN PAGE: NO DATA");
+    try {
+      const token = localStorage.getItem("token");
+      const storedUserId = localStorage.getItem("userId");
+      if (token) {
+        setUserId(storedUserId);
+        // console.log("USER ADMIN PAGE: ", BASE_API_URL + `/api/admin/${storedUserId}`);
+        // console.log("USER ADMIN PAGE: ",userId);
+        axios
+          .get(BASE_API_URL + `/api/admin/${storedUserId}`)
+          .then((response) => {
+            console.log("USER ADMIN PAGE: ", response.data);
+            setRole(response.data.role);
+            setUsername(response.data.username);
+          });
+      } else {
+        console.log("USER ADMIN PAGE: NO DATA");
+      }
+    } catch (error) {
+      console.log("ERROR", error);
     }
-  }, []);
+  }, "");
 
   return (
     <>
       <div className="alert alert-info">Admin Page</div>
       <div className="container-fluid">
-        {error ? (
+        {role !== "admin" ? (
           <>
             <div
               className="alert alert-warning alert-dismissible fade show"
               role="alert"
             >
-              <strong>{error.statusText}</strong>
+              <strong>Access Denied</strong>
               <button
                 type="button"
                 className="close"
