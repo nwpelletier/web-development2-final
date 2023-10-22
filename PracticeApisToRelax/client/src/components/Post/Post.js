@@ -46,55 +46,61 @@ function Post(props) {
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
   const [newComment, setNewComment] = useState();
+  const [subName, setSubName] = useState('');
 
   let { handle } = useParams();
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
-    const subName = handle ? handle : SubcrudditName;
+    setSubName(handle ? handle : SubcrudditName)
+
 
     const userId = localStorage.getItem('userId');
     if (!userId) {
       setIsModerator(false);
       return;
     }
-    if (currentPath !== '/c/all') {
-      axios
-        .get(BASE_API_URL + `/api/moderators/ismod/${subName}`, {
-          headers: {
-            'x-access-token': localStorage.getItem('token')
-          }
-        })
-        .then((response) => {
-          const isMod = response.data.auth;
-          setIsModerator(isMod);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (subName) {
+      if (currentPath !== '/c/all') {
+        axios
+          .get(BASE_API_URL + `/api/moderators/ismod/${subName}`, {
+            headers: {
+              'x-access-token': localStorage.getItem('token')
+            }
+          })
+          .then((response) => {
+            const isMod = response.data.auth;
+            setIsModerator(isMod);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
 
     // Skip this if we are on /c/all
-    if (currentPath !== '/c/all') {
-      axios
-        .get(BASE_API_URL + '/api/moderators/sub/' + subName)
-        .then((response) => {
-          let modObj = response.data;
-          const modArray = [];
-          for (let mod of modObj) {
-            modArray.push(mod.username);
-          }
-          setModerators(modArray);
-          console.log(moderators[0]);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (subName) {
+      if (currentPath !== '/c/all' || subName) {
+        axios
+          .get(BASE_API_URL + '/api/moderators/sub/' + subName)
+          .then((response) => {
+            let modObj = response.data;
+            const modArray = [];
+            for (let mod of modObj) {
+              modArray.push(mod.username);
+            }
+            setModerators(modArray);
+            console.log(moderators[0]);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
     //GOT MODERATOR NAMES
 
     let newPath = currentPath;
-    if (currentPath.endsWith('/hot') || currentPath.endsWith('/new')) {
+    if (currentPath.endsWith('/hot')) {
       newPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
     }
 
@@ -171,8 +177,6 @@ function Post(props) {
         console.log(error);
       });
   };
-
-  console.log('CURRENT PATH: ' + currentPath);
 
   return (
     <div>
@@ -323,7 +327,7 @@ function Post(props) {
         </>
       )}
 
-      {content && (
+      {content && currentPath !== '/userpage' && (
         <>
           <PostComments
             order={commentOrder}

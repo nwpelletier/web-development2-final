@@ -16,15 +16,13 @@ function UserSubmitted(user) {
       axios
         .get(BASE_API_URL + `/api/overview/${userId}`)
         .then((response) => {
-          setPosts(response.data);
+          const filteredPosts = response.data.filter((post) => post.postType !== "comment");
+          setPosts(filteredPosts);
         });
     } catch (error) {
       console.log('Error fetching posts: ', error);
     }
   }, []);
-
-
-
 
 
 
@@ -80,18 +78,18 @@ function UserSubmitted(user) {
   return (
     <div>
 
-        {displayPosts}
-        <ReactPaginate
-          previousLabel={"< prev"}
-          nextLabel={"next >"}
-          pageCount={pageCount}
-          onPageChange={changePage}
-          renderOnZeroPageCount={null}
-          pageClassName="page-item-none"
-          previousClassName="previous-label"
-          nextClassName="next-label"
-          containerClassName="pagination-container"
-        />
+      {displayPosts}
+      <ReactPaginate
+        previousLabel={"< prev"}
+        nextLabel={"next >"}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        renderOnZeroPageCount={null}
+        pageClassName="page-item-none"
+        previousClassName="previous-label"
+        nextClassName="next-label"
+        containerClassName="pagination-container"
+      />
 
     </div>
   );

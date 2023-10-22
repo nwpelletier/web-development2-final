@@ -2,129 +2,105 @@ import axios from "axios";
 import arrowUpImage from "../../assets/arrow-square-up-svgrepo-com.svg";
 import arrowDownImage from "../../assets/arrow-square-down-svgrepo-com.svg";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { BASE_API_URL } from "../../utils/constant";
+import Post from "../Post/Post";
+import formatDistance from "date-fns/formatDistance";
+import ReactPaginate from "react-paginate";
 
 function UserOverview(user) {
-  const navigate = useNavigate();
   let userId = user.UserID;
- // console.log("USERID OVERVIE", userId);
-  // console.log(BASE_API_URL + `/api/overview/${userId}`);
-  const [voteStatus, setVoteStatus] = useState("none");
-  const [localPoints, setLocalPoints] = useState("");
-  const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    try {
-      if (userId == 0) {
-        navigate("/c/all");
-      } else {
-        axios
-          .get(BASE_API_URL + `/api/overview/${userId}`)
-          .then((response) => {
-           // console.log("POSTS IN OVERVIEW", response.data);
-            // if(!response)
-            setPosts(response.data);
-          });
-      }
-    } catch (error) {
-      console.log("SHOW ERROR", error);
-    }
-  }, []);
 
-  //  I think "localPoints" could make sense for instant feedback
-  //  On an upvote/downvote, without having to refresh the posts every time
-  //  The database patch will be made, so refreshing the whole page
-  //  Will still show updated; but localPoints could be what
-  //  affects the orange uparrow, blue downarrow + immediate points change
-  //UserId = 2;
-  const handleVote = (liked) => {
-    // This case: it has already been upvoted, and you click upvote again
-    if (voteStatus === liked) {
-      axios
-        .delete(`/api/votes/${posts.id}`)
-        .then(() => {
-          setLocalPoints(localPoints - (liked === "upvote" ? 1 : -1));
-          setVoteStatus("none");
-        })
-        .catch((error) => {
-          console.error("Error in handleVote:", error);
-        });
+// MOVE THIS BLOCK BACK----------------------
+
+useEffect(() => {
+  try {
+    if (userId == 0) {
+      // navigate("/c/all");
     } else {
-      // Here is where I'm having issues with the endpoint for "posting a new vote"
-      // When is the vote entry actually made?  Should a "new" vote not go to
-      // /api/votes  ?
       axios
-        .post(`/api/votes/${posts.id}`, { liked })
+        .get(BASE_API_URL + `/api/overview/${userId}`)
         .then((response) => {
-          setLocalPoints(localPoints + (liked === "upvote" ? 1 : -1));
-          setVoteStatus(liked);
-        })
-        .catch((error) => {
-          console.error("Error in handleVote:", error);
+         // console.log("POSTS IN OVERVIEW", response.data);
+          // if(!response)
+          setPosts(response.data);
         });
     }
-  };
+  } catch (error) {
+    console.log("SHOW ERROR", error);
+  }
+}, []);
+
+// -----------------------------
+
+
+
+  // Testing paginate   
+  const [posts, setPosts] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [isMod, setIsMod] = useState(false)
+
+
+  const postsPerPage = 7; // Renamed to avoid conflict with the 'posts' state array
+  const offset = pageNumber * postsPerPage;
+
+  const displayPosts = posts && posts
+    .slice(offset, offset + postsPerPage)
+    .map((post) => (
+      <Post
+        key={post.id}
+        id={post.id}
+        points={post.points}
+        title={post.title}
+        content={post.content}
+        postType={post.postType}
+        username={post.username}
+        SubcrudditName={post.SubcrudditName}
+        children_count={post.children_count}
+        isStickied={post.isStickied}
+        isLocked={post.isLocked}
+        createdAt={formatDistance(new Date(post.createdAt), new Date(), {
+          addSuffix: true,
+        })}
+        isMod={isMod}
+
+
+      />
+    ));
+
+  const pageCount = Math.ceil(posts.length / postsPerPage);
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div>
-      {posts.map((post, index) => (
-        <div className="row my-2" key={index}>
-          <div className="post-container row">
-            <div className="col-md-2 d-flex flex-column">
-              <div className="row">
-                <div className="col-md-2">
-                  <img
-                    className=""
-                    src={arrowUpImage}
-                    alt="upvote"
-                    width="20px"
-                    // onClick={() => handleVote(true)}
-                  />
-                  <h6 className="mx-1">{localPoints}</h6>
-                  <img
-                    className="mb-5"
-                    src={arrowDownImage}
-                    alt="downvote"
-                    width="20px"
-                    // onClick={() => handleVote(false)}
-                  />
-                </div>
-                <div className="col-md-4">
-                  <div className=" pt-4 ">
-                    <p>{post.postType}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-10">
-              <div>
-                {post.postType === "comment" ? (
-                  <div>
-                    <p>{post.content}</p>
-                  </div>
-                ) : (
-                  <div className="post-title">
-                    <h3>{post.title}</h3>
-                  </div>
-                )}
-              </div>
-              <div className="post-submission-info">
-                Posted {format(new Date(post.createdAt), "MM/dd/yyyy")} by{" "}
-                {post.UserName} to {"  "}
-                {post.subcrudditName}
-              </div>
-              <div className="post-links">
-                <span># of child comments</span>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span>report</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
+
+        {displayPosts}
+        <ReactPaginate
+          previousLabel={"< prev"}
+          nextLabel={"next >"}
+          pageCount={pageCount}
+          onPageChange={changePage}
+          renderOnZeroPageCount={null}
+          pageClassName="page-item-none"
+          previousClassName="previous-label"
+          nextClassName="next-label"
+          containerClassName="pagination-container"
+        />
+
     </div>
   );
 }
-
 export default UserOverview;
