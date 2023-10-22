@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ModContext } from '../../pages/Subcruddit';
 import { SubCrudditContext } from "../../pages/Subcruddit";
 import { BASE_API_URL } from "../../utils/constant";
+import Modal from "../Modal/Modal";
 
 
 function RNNotLoggedInPages(margin) {
@@ -15,6 +16,11 @@ function RNNotLoggedInPages(margin) {
   const location = useLocation();
   const navigate = useNavigate();
   const welcomeText = subcrudName === 'all' ? 'Welcome to cruddit!  Feel free to explore the many subcruddits we offer!  We welcome all types of communities, and are sure you will enjoy your stay :)' : `Welcome to /c/${subcrudName}`;
+  const [modalContent, setModalContent] = useState('');
+
+  const openModal = (content) => {
+    setModalContent(content);
+  };
 
   // Get list of mods! (Axios + filter by subcrudName)
   useEffect(() => {

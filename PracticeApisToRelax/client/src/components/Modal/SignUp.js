@@ -70,7 +70,7 @@ function Register({ setModalContent, closeModal }) {
           <></>
           <Field
             className="modal-text-input form-control mx-1"
-            id="usernameInput"
+            // id="usernameInput"
             placeholder="username"
             name="username"
           />
@@ -82,7 +82,7 @@ function Register({ setModalContent, closeModal }) {
             className='modal-danger-text' />
           <Field
             className="modal-text-input form-control mx-1"
-            id="passwordInput"
+            // id="passwordInput"
             placeholder="password"
             name="password"
             type="password"
@@ -96,7 +96,7 @@ function Register({ setModalContent, closeModal }) {
           <></>
           <Field
             className="modal-text-input form-control mx-1"
-            id="emailInput"
+            // id="emailInput"
             placeholder="email"
             name="email"
           />

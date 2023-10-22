@@ -52,33 +52,35 @@ function Post(props) {
       setIsModerator(false)
       return;
     }
-    axios.get(
-      BASE_API_URL + `/api/moderators/ismod/${subName}`, {
-      headers: {
-        'x-access-token': localStorage.getItem('token')
+    if (currentPath !== '/c/all') {
+      axios.get(
+        BASE_API_URL + `/api/moderators/ismod/${subName}`, {
+        headers: {
+          'x-access-token': localStorage.getItem('token')
+        }
       }
+      ).then((response) => {
+        const isMod = response.data.auth;
+        setIsModerator(isMod);
+      }).catch((error) => {
+        console.log(error)
+      })
     }
-    ).then((response) => {
-      const isMod = response.data.auth;
-      setIsModerator(isMod);
-    }).catch((error) => {
-      console.log(error)
-    })
 
     // Skip this if we are on /c/all
     if (currentPath !== '/c/all') {
       axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
-      .then((response) => {
-        let modObj = response.data
-        const modArray = [];
-        for (let mod of modObj) {
-          modArray.push(mod.username);
-        }
-        setModerators(modArray)
-        console.log(moderators[0])
-      }).catch((error) => {
-        console.log(error)
-      })
+        .then((response) => {
+          let modObj = response.data
+          const modArray = [];
+          for (let mod of modObj) {
+            modArray.push(mod.username);
+          }
+          setModerators(modArray)
+          console.log(moderators[0])
+        }).catch((error) => {
+          console.log(error)
+        })
     }
     //GOT MODERATOR NAMES 
 
