@@ -45,7 +45,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         })}
         isMod={true}
         
-     
+      
       />
     ));
      
@@ -86,6 +86,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType,}) {
         console.log(response.data)
         setPosts(response.data);
       } catch (error) {
+        
         console.error('Error fetching posts:', error);
       }
     };
