@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ContentTypeContext } from '../Main/Main';
 import PostVote from './PostVote';
-import txtThumb from '../../assets/comment-svgrepo-com.svg'
-import imgThumb from '../../assets/imageclr-svgrepo-com.svg'
+import txtThumb from '../../assets/comment-svgrepo-com.svg';
+import imgThumb from '../../assets/imageclr-svgrepo-com.svg';
 import { BASE_API_URL } from '../../utils/constant';
 import { ModContext } from '../../pages/Subcruddit';
 import CreateComment from './CreateComment';
@@ -12,82 +12,90 @@ import Comments from './Comments';
 import PostComments from './PostComments';
 
 function Post(props) {
-  const { id, points, title, postType, username, SubcrudditId, SubcrudditName, createdAt, content, children_count, isStickied, isLocked, isModeratorSingle, isMod } = props;
+  const {
+    id,
+    points,
+    title,
+    postType,
+    username,
+    SubcrudditId,
+    SubcrudditName,
+    createdAt,
+    content,
+    children_count,
+    isStickied,
+    isLocked,
+    isModeratorSingle,
+    isMod
+  } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
   const userId = localStorage.getItem('userId');
-  const [isPostLocked, setIsPostLocked] = useState(isLocked)
-  const [isPostStickied, setIsPostStickied] = useState(isStickied)
+  const [isPostLocked, setIsPostLocked] = useState(isLocked);
+  const [isPostStickied, setIsPostStickied] = useState(isStickied);
   const userRole = localStorage.getItem('userRole');
-  const [commentOrder, setCommmentOrder] = useState("new")
-  const [toBeDeleted, setToBeDeleted] = useState(false)
-  const user = localStorage.getItem("username");
-  const role = localStorage.getItem("userRole");
+  const [commentOrder, setCommmentOrder] = useState('new');
+  const [toBeDeleted, setToBeDeleted] = useState(false);
+  const user = localStorage.getItem('username');
+  const role = localStorage.getItem('userRole');
   const [moderators, setModerators] = useState();
 
+  const [postContent, setPostContent] = useState(content);
 
-
-  const [postContent, setPostContent] = useState(content)
-
-
-
-
-  const [reply, setReply] = useState(false)
+  const [reply, setReply] = useState(false);
   const [postLiked, setPostLiked] = useState();
   const [postPoints, setPostPoints] = useState(points);
-  const [newComment, setNewComment] = useState()
+  const [newComment, setNewComment] = useState();
 
   let { handle } = useParams();
-  const [isModerator, setIsModerator] = useState()
-
-  //console.log(imgThumb);
-
+  const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
-
     const subName = handle ? handle : SubcrudditName;
 
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      setIsModerator(false)
+      setIsModerator(false);
       return;
     }
     if (currentPath !== '/c/all') {
-      axios.get(
-        BASE_API_URL + `/api/moderators/ismod/${subName}`, {
-        headers: {
-          'x-access-token': localStorage.getItem('token')
-        }
-      }
-      ).then((response) => {
-        const isMod = response.data.auth;
-        setIsModerator(isMod);
-      }).catch((error) => {
-        console.log(error)
-      })
+      axios
+        .get(BASE_API_URL + `/api/moderators/ismod/${subName}`, {
+          headers: {
+            'x-access-token': localStorage.getItem('token')
+          }
+        })
+        .then((response) => {
+          const isMod = response.data.auth;
+          setIsModerator(isMod);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     // Skip this if we are on /c/all
     if (currentPath !== '/c/all') {
-      axios.get(BASE_API_URL + "/api/moderators/sub/" + subName)
+      axios
+        .get(BASE_API_URL + '/api/moderators/sub/' + subName)
         .then((response) => {
-          let modObj = response.data
+          let modObj = response.data;
           const modArray = [];
           for (let mod of modObj) {
             modArray.push(mod.username);
           }
-          setModerators(modArray)
-          console.log(moderators[0])
-        }).catch((error) => {
-          console.log(error)
+          setModerators(modArray);
+          console.log(moderators[0]);
         })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    //GOT MODERATOR NAMES 
-
+    //GOT MODERATOR NAMES
 
     let newPath = currentPath;
-    if (currentPath.endsWith("/hot") || currentPath.endsWith("/new")) {
-      newPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
+    if (currentPath.endsWith('/hot') || currentPath.endsWith('/new')) {
+      newPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
     }
 
     axios
@@ -97,24 +105,25 @@ function Post(props) {
       })
       .catch((error) => {
         console.log(error);
-      })
-    setPostLiked("nothing")
-
-
-  }, [setPostLiked])
-
+      });
+    setPostLiked('nothing');
+  }, [setPostLiked]);
 
   const toggleLock = async () => {
-    console.log("locking?");
+    console.log('locking?');
     try {
-      console.log("in try")
-      const token = localStorage.getItem('token')
-      const response = await axios.patch(BASE_API_URL + "/api/posts/lock/" + id, null, {
-        headers: {
-          'x-access-token': token
+      console.log('in try');
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(
+        BASE_API_URL + '/api/posts/lock/' + id,
+        null,
+        {
+          headers: {
+            'x-access-token': token
+          }
         }
-      });
-      console.log(response)
+      );
+      console.log(response);
       console.log(response.data.isLocked);
       setIsPostLocked(response.data.isLocked);
     } catch (error) {
@@ -123,53 +132,55 @@ function Post(props) {
   };
 
   const toggleSticky = async () => {
-
     try {
-      console.log("in try")
-      const token = localStorage.getItem('token')
-      const response = await axios.patch(BASE_API_URL + "/api/posts/sticky/" + id, null, {
-        headers: {
-          'x-access-token': token
+      console.log('in try');
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(
+        BASE_API_URL + '/api/posts/sticky/' + id,
+        null,
+        {
+          headers: {
+            'x-access-token': token
+          }
         }
-      });
-      console.log(response)
+      );
+      console.log(response);
       console.log(response.data.isStickied);
       setIsPostStickied(response.data.isStickied);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const destroy = () => {
     const token = localStorage.getItem('token');
     axios
-      .delete(BASE_API_URL + "/api/posts/" + id, {
+      .delete(BASE_API_URL + '/api/posts/' + id, {
         headers: {
           'x-access-token': token
         }
       })
       .then((response) => {
-        console.log(response.data.isActive)
+        console.log(response.data.isActive);
         if (!response.data.isActive) {
-          setToBeDeleted(false)
-          setPostContent("deleted content")
+          setToBeDeleted(false);
+          setPostContent('deleted content');
         }
-
-      }).catch((error) => {
-        console.log(error)
       })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  }
-
-
-
+  console.log('CURRENT PATH: ' + currentPath);
 
   return (
-
     <div>
-
       {/* For Alex: viewing all posts per subcruddit */}
-      <div className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''} stickied-box-${isPostStickied} container-fluid`}>
+      <div
+        className={`post-container row ${contentType === 'subcruddit' ? 'post-subcruddit-height' : ''
+          } stickied-box-${isPostStickied} container-fluid`}
+      >
         <div className="vote-and-type-container">
           <div className="vote-container">
             <PostVote
@@ -182,85 +193,111 @@ function Post(props) {
           </div>
           <div className="post-type-container">
             {postType === 'image' ? (
-              <img src={imgThumb}></img>
+              <img src={imgThumb} />
             ) : (
-              <img src={txtThumb}></img>
+              <img src={txtThumb} />
             )}
           </div>
         </div>
 
         {/* Alex: Single post view */}
-        <div className={`post-content-container col-md-10 col-sm-5 row `}>
-          <div className="post-title">
-            <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
-              {title}
-            </a>
-          </div>
-          {currentPath.includes('/c/all') ? (
-            <div className="post-submission-info"> {createdAt} by {username} to {SubcrudditName}  </div>
-          ) : (
-            <div className="post-submission-info">Posted {createdAt} by {username} {isPostStickied && <span className='stickied-true' >Stickied Post</span>}  </div>
-          )}
-
-          {content && (
-            <>
-              <hr className={`stickied-${isPostStickied}`} />
-              <div className="post-content col-10">
-                {postType === 'image' ? (
-                  <a className="main-image-post" href={content}>
-                    <img src={content} alt="Image Content" />
-                  </a>
-                ) : (
-                  <p>{postContent}</p>
-                )}
+        {currentPath !== '/userpage' && (
+          <div className={`post-content-container col-md-10 col-sm-5 row `}>
+            <div className="post-title">
+              <a
+                href={`${currentPath.replace(
+                  '/hot',
+                  ''
+                ).replace('/new', '')}/${id}/${title
+                  .replace(/[\s-]+/g, '_')
+                  .replace(/["']/g, '')
+                  .substring(0, 50)
+                  .toLowerCase()}`}
+              >
+                {title}
+              </a>
+            </div>
+            {currentPath.includes('/c/all') ? (
+              <div className="post-submission-info">
+                {' '}
+                {createdAt} by {username} to {SubcrudditName}{' '}
               </div>
-            </>
-          )}
-          <div className="post-links">
-            <a href={`${currentPath.replace('/hot', '').replace('/new', '')}/${id}/${title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`}>
-              {children_count} comment{children_count === 1 ? '' : 's'}
-            </a>
+            ) : (
+              <div className="post-submission-info">
+                Posted {createdAt} by {username}{' '}
+                {isPostStickied && (
+                  <span className="stickied-true">Stickied Post</span>
+                )}{' '}
+              </div>
+            )}
 
-
-            {isModerator === true && !isPostStickied &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
-
-
-            {isModerator === true && isPostStickied &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
-
-
-
-            {isModerator === true && !isPostLocked &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleLock()} className='locked-true'>lock post</span></>}
-
-
-
-            {isModerator === true && isPostLocked &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
-
-            {(isModerator || user === username || role === "admin") &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => { setToBeDeleted(true) }} className="">delete</span></>
-            }
-
-            {toBeDeleted &&
+            {content && (
               <>
-                <span className="text-danger ms-2">Are you sure?</span>
-                <span onClick={destroy} className="fw-bolder ms-1">Yes</span>
-                <span className="text-danger ms-1">/</span>
-                <span onClick={() => setToBeDeleted(false)} className="fw-bolder ms-1">No</span>
+                <hr className={`stickied-${isPostStickied}`} />
+                <div className="post-content col-10">
+                  {postType === 'image' ? (
+                    <a className="main-image-post" href={content}>
+                      <img src={content} alt="Image Content" />
+                    </a>
+                  ) : (
+                    <p>{postContent}</p>
+                  )}
+                </div>
               </>
-            }
+            )}
+            <div className="post-links">
+              <a
+                href={`${currentPath.replace(
+                  '/hot',
+                  ''
+                ).replace('/new', '')}/${id}/${title
+                  .replace(/[\s-]+/g, '_')
+                  .replace(/["']/g, '')
+                  .substring(0, 50)
+                  .toLowerCase()}`}
+              >
+                {children_count} comment{children_count === 1 ? '' : 's'}
+              </a>
 
-
-
+              {/* Rest of the code */}
+            </div>
           </div>
-        </div>
+        )}
+        {currentPath === '/userpage' && (
+          <div className={`post-content-container col-md-10 col-sm-5 row `}>
+            <div className="post-title">
+              {title}
+            </div>
+            {currentPath.includes('/c/all') ? (
+              <div className="post-submission-info">
+                {createdAt} by {username} to {SubcrudditName}
+              </div>
+            ) : (
+              <div className="post-submission-info">
+                Posted {createdAt} by {username}{' '}
+                {isPostStickied && (
+                  <span className="stickied-true">Stickied Post</span>
+                )}{' '}
+              </div>
+            )}
+
+            {content && (
+              <>
+                <hr className={`stickied-${isPostStickied}`} />
+                <div className="post-content col-10">
+                  {postType === 'image' ? (
+                    <img src={content} alt="Image Content" />
+                  ) : (
+                    <p>{postContent}</p>
+                  )}
+                </div>
+              </>
+            )}
+            <div className="post-links">
+              {children_count} comment{children_count === 1 ? '' : 's'}
+            </div>
+          </div>
+        )}
       </div>
       {content && !isPostLocked ? (
         <CreateComment
@@ -271,42 +308,33 @@ function Post(props) {
         />
       ) : null}
       {content && isPostLocked && (
-        <div className='ms-3'>Comments have been locked</div>
+        <div className="ms-3">Comments have been locked</div>
       )}
 
-      {newComment && <>
-        <Comments
-          comment={newComment}
-          order={commentOrder}
-          points={1}
-          isLocked={isPostLocked}
-          isModerator={isModerator}
-
-        />
-      </>}
-
-      {/* <Comments 
+      {newComment && (
+        <>
+          <Comments
             comment={newComment}
-            order={order}
+            order={commentOrder}
             points={1}
-            replyToComment={true}
-            isLocked={isLocked}
-            isModerator={isModerator} /> */}
+            isLocked={isPostLocked}
+            isModerator={isModerator}
+          />
+        </>
+      )}
 
-
-
-      {content && <>
-        <PostComments
-          order={commentOrder}
-          postId={id}
-          isLocked={isPostLocked}
-          isModerator={isModerator}
-
-        /></>}
+      {content && (
+        <>
+          <PostComments
+            order={commentOrder}
+            postId={id}
+            isLocked={isPostLocked}
+            isModerator={isModerator}
+          />
+        </>
+      )}
 
       {/* const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies} = props */}
-
-
     </div>
   );
 }
