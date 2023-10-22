@@ -27,8 +27,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(
   cors({
     origin: ["https://sleepy-wave-79440-e840c0381b67.herokuapp.com"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: false,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE","OPTION"],
+    credentials: true,
   })
 );
 app.use(cookieParser());
