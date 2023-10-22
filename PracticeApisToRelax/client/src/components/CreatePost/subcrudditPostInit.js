@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 import { BASE_API_URL } from "../../utils/constant";
 export const postType = "subcruddit"
 export const btnText = "Create Subcruddit"
-export const redirect = ""
-export const redirectTxt = "Create Image Post"
+export const redirect = null
+export const redirectTxt = null
 
 
 
@@ -26,9 +26,11 @@ export const postForm = (data) => {
     })
     .then((response) => {
       console.log(response)
+      return response
     })
     .catch((error) => {
       console.log(error);
+      throw error
     });
 }
 

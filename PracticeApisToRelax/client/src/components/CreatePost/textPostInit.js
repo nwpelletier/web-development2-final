@@ -1,14 +1,15 @@
 import * as Yup from 'yup';
 import axios from 'axios';
 import { BASE_API_URL } from "../../utils/constant";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
    export const postType = "text"
    export const  btnText = "Create Post"
-   export const  redirect = "redirect"
+   export const redirect = "img";
    export const  redirectTxt = "Create Image Post"
-   
    export const formInitValues = {
     subcrudditName: "",
        title: "",
@@ -19,17 +20,22 @@ import { BASE_API_URL } from "../../utils/constant";
    
    export const  postForm = (data) => {
     console.log(data)
-    axios
+    return axios
     .post(BASE_API_URL + `/api/posts/text`, data, {
       headers: {
         'x-access-token': localStorage.getItem("token")
       }
       })
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
+      // const navigate = useNavigate();
+      // const url = `/c/${data.subcrudditName}/${response.data.id}/${response.data.title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`
+      // navigate(url)
+      return response.data
     })
     .catch((error) => {
       console.log(error);
+      throw error;
     });
    }
 
