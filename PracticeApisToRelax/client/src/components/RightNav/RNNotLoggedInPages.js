@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import RightNavNotLoggedIn from "./RightNavNotLoggedIn";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ModContext } from '../../pages/Subcruddit';
 import { SubCrudditContext } from "../../pages/Subcruddit";
 import { BASE_API_URL } from "../../utils/constant";
@@ -11,14 +11,14 @@ function RNNotLoggedInPages(margin) {
   const [isMod, setIsMod] = useContext(ModContext);
   const [usernames, setUsernames] = useState([]);
   const [subcrudName, setSubcrudName] = useContext(SubCrudditContext);
-
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Get list of mods! (Axios + filter by subcrudName)
   useEffect(() => {
     const getModList = async () => {
       try {
         const response = await axios.get(BASE_API_URL + '/api/moderators');
-        console.log(response.data);
         if (response && response.data && Array.isArray(response.data.all)) {
           const filteredData = response.data.all.filter(
             item => item.Subcruddit && item.Subcruddit.subcrudditName === subcrudName
@@ -51,9 +51,20 @@ function RNNotLoggedInPages(margin) {
   return (
     <>
       <div id="right-panel-rnnot" style={{ marginTop: margin.margin }}>
-        <RightNavNotLoggedIn />
+        <div className="text-center right-nav-create-submit mt-3">
+          <p className="mt-3 " onClick={() => navigate(`/post/text/${subcrudName}`)}>
+            Submit a post
+          </p>
+        </div>
+        {(location.pathname.includes('/c/all') || location.pathname.includes('/userpage')) && (
+        <div className="text-center right-nav-create-submit mt-3">
+          <p className="mt-3 " onClick={() => navigate(`/c/new`)}>
+            Create a subcruddit
+          </p>
+        </div>
+        )}
         <p>
-          <strong> {currentPath} </strong>
+          <strong className="right-nav-subcruddit-name"> /c/{currentPath} </strong>
         </p>
         <p><small className="text-danger">Please read our rules in their entirety before participating.</small></p>
         <div className="rules-box">
@@ -63,15 +74,19 @@ function RNNotLoggedInPages(margin) {
             </ul>
           ))}
         </div>
-        <div className="right-nav-mod-list">
-          {usernames.length > 0 && <p>Moderators of /c/{subcrudName}</p>}
+        <div className="right-nav-mod-list align-items-center">
+          {usernames.length > 0 && <p>====MODERATORS====</p>}
           {usernames.length > 0 && (
-            <ul>
-              {usernames.map((username, index) => (
-                <li key={index}>{username}</li>
-              ))}
-            </ul>
+            <div className="right-nav-mod-container col-5">
+              <ul>
+                {usernames.map((username, index) => (
+                  <li key={index}>{username}</li>
+                ))}
+              </ul>
+
+            </div>
           )}
+          {usernames.length > 0 && <p>==================</p>}
         </div>
       </div>
     </>
