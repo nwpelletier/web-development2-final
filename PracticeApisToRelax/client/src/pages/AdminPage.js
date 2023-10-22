@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../utils/constant";
 
-
 function AdminPage() {
   const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState();
   const [error, setError] = useState(null);
+
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     axios
@@ -23,28 +25,46 @@ function AdminPage() {
       });
   }, []);
 
-  return (
+ const handleActive= useEffect((userId) => {
+    axios
+      .patch(BASE_API_URL + `/api/admin/${userId}`)
+      .then((response) => {
+        setActive(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setError(error.response);
+          //console.log("ERROR ADMIN", error.response);
+        } else {
+          setError("Unknown error occurred.");
+        }
+      });
+    }, false);
+  
+  // const handleActive = (id) => {
+  //   console.log("INactive Function", id)
+  // }
 
+  return (
     <>
       <div className=" alert alert-info">Admin Page</div>
       <div className="container-fluid">
         {error ? (
           <>
             <div
-              class="alert alert-warning alert-dismissible fade show"
+              className="alert alert-warning alert-dismissible fade show"
               role="alert"
             >
-              <strong>{error.statusText}</strong> 
+              <strong>{error.statusText}</strong>
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="alert"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-          
           </>
         ) : (
           <div className="row justify-content-center">
@@ -81,16 +101,19 @@ function AdminPage() {
                       <td>{user.role}</td>
                       <td>
                         <div className="row">
-                          
-                         
                           <div className="col-md-4 d-flex justify-content-center">
-                            <button className="btn btn-success">
+                            <button
+                              className="btn btn-success"
+                              onClick={handleActive(user.id)}
+                            >
                               {user.isActive ? "Inactive" : "Active"}
                             </button>
                           </div>
-                          
+
                           <div className="col-md-4 d-flex justify-content-center">
-                            <button className="btn btn-warning">Make Admin</button>
+                            <button className="btn btn-warning">
+                              Make Admin
+                            </button>
                           </div>
 
                           <div className="col-md-4 d-flex justify-content-center">
