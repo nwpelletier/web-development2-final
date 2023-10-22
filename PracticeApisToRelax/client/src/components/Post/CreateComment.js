@@ -4,41 +4,45 @@ import axios from 'axios';
 import Comments from './Comments';
 import PostComments from './PostComments';
 import { BASE_API_URL } from '../../utils/constant';
+import React, { useState, useContext, useEffect } from 'react';
 
 function CreateComment(props) {
     const {id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, replyToComment} = props
+    
+
     const formInitValues = {
         UserId: 1,
         content: "",
     }
-    
-    const postForm = (data) => {
+    const [defaultVal, setDefaultVal] = useState("")
+    const postForm = (data, { resetForm }) => {
         if (value) {
-
+          // Handle the case when 'value' is truthy (if needed)
         } else {
-        console.log(data)
-        axios
-        .post(BASE_API_URL + `/api/posts/comment/${id}`, data, {
-            headers: {
-              'x-access-token': localStorage.getItem("token")
-            }
+          console.log(data);
+          axios
+            .post(BASE_API_URL + `/api/posts/comment/${id}`, data, {
+              headers: {
+                'x-access-token': localStorage.getItem("token")
+              }
             })
-        .then((response) => {
-            setReply(false)
-            setNewComment(response.data)
-            if(replyToComment) {
-                setNestedReply(true)
-                setCommentReplies(commentReplies + 1)
-            }
- 
-           
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-        
-    }
+            .then((response) => {
+              setReply(false);
+              setNewComment(response.data);
+              if (replyToComment) {
+                setNestedReply(true);
+                setCommentReplies(commentReplies + 1);
+              }
+      
+              // After successful submission, reset the form
+              resetForm({values: ""});
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      };
+      
 
     
     
@@ -69,11 +73,12 @@ function CreateComment(props) {
                              as={"textarea"}
                             rows={6}
                             style={{ lineHeight: 1 }}
+                            defaultValue={defaultVal}
                          
                             
                         />
                         <br></br>
-                        <button className='comment-btn m-1 ' type='submit'>{"submit"}</button>
+                        <button  className='comment-btn m-1 ' type='submit'>{"submit"}</button>
                         <button onClick={cancel} className='comment-btn m-1 ' >{"cancel"}</button>
             </Form>
         </Formik>

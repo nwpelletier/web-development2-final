@@ -11,11 +11,11 @@ import { BASE_API_URL } from "../../utils/constant";
 
 
 function Comments(props){
-    const {comment, order, points, isLocked } = props;
+    const {comment, order, points, isLocked, isModerator } = props;
     const [loadMore, setLoadMore] = useState(false);
     const [reply, setReply] = useState(false)
     const [nestedReply, setNestedReply] = useState(false)
-    const [newComment, setNewComment] = useState({})
+    const [newComment, setNewComment] = useState()
     const [commentReplies, setCommentReplies] = useState(comment.children_count)
     const [commentContent, setCommentContent] = useState(comment.content)
     const [userLiked, setUserLiked] = useState()
@@ -24,7 +24,7 @@ function Comments(props){
     const [isUser, setIsUser] = useState();
     const [show, setShow] = useState(true)
     const [showModal, setShowModal] = useState(false)
-
+    const role = localStorage.getItem("userRole");
     const [toBeDeleted, setToBeDeleted] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
  
@@ -83,10 +83,27 @@ function Comments(props){
 
 
     const destroy = () => {
-        setIsDeleted(true)
-        setToBeDeleted(false)
-        console.log("DELETE")
-    }
+        const token = localStorage.getItem('token');
+        axios
+        .delete(BASE_API_URL + "/api/posts/" + comment.id, {
+          headers: {
+            'x-access-token': token
+          }
+        })
+        .then((response)=> {
+          console.log(response.data.isActive)
+          if (!response.data.isActive) {
+            setIsDeleted(true)
+            setToBeDeleted(false)
+          }
+         
+        }).catch((error)=> {
+          console.log(error)
+        })
+    
+      }
+
+
     const deleteRequest = () => {
         setToBeDeleted(!toBeDeleted)
         console.log(toBeDeleted)
@@ -135,7 +152,7 @@ function Comments(props){
                 {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
 
 
-                {(comment.isActive && isUser && !isDeleted ) && 
+                {(comment.isActive && (isUser || isModerator || role==='admin' ) && !isDeleted ) && 
                     <span onClick={() => {setToBeDeleted(true)}} className="comment-small post-action-hover ms-1">delete</span>}
 
 
@@ -185,13 +202,16 @@ function Comments(props){
 
 
 
-            {nestedReply && <>
+            {newComment && <>
             
             <Comments 
             comment={newComment}
             order={order}
             points={1}
-            replyToComment={true}
+            isLocked={isLocked}
+            isModerator={isModerator}
+
+            
         
         />
         </>}
@@ -201,6 +221,8 @@ function Comments(props){
                 order={order}
                 postId={comment.id}
                 display={show}
+                isLocked={isLocked}
+                isModerator={isModerator}
                 
                 />
                 </div>

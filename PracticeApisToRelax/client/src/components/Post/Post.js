@@ -20,6 +20,13 @@ function Post(props) {
   const [isPostStickied, setIsPostStickied] = useState(isStickied)
   const userRole = localStorage.getItem('userRole');
   const [commentOrder, setCommmentOrder] = useState("new")
+  const [toBeDeleted, setToBeDeleted] = useState(false)
+  const user = localStorage.getItem("username");
+  const role = localStorage.getItem("userRole");
+  
+
+  
+  const [postContent, setPostContent] = useState(content)
   
  
 
@@ -112,7 +119,28 @@ function Post(props) {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+  const destroy = () => {
+    const token = localStorage.getItem('token');
+    axios
+    .delete(BASE_API_URL + "/api/posts/" + id, {
+      headers: {
+        'x-access-token': token
+      }
+    })
+    .then((response)=> {
+      console.log(response.data.isActive)
+      if (!response.data.isActive) {
+        setToBeDeleted(false)
+        setPostContent("deleted content")
+      }
+     
+    }).catch((error)=> {
+      console.log(error)
+    })
+
+  }
 
 
 
@@ -164,7 +192,7 @@ function Post(props) {
                     <img src={content} alt="Image Content" />
                   </a>
                 ) : (
-                  <p>{content}</p>
+                  <p>{postContent}</p>
                 )}
               </div>
             </>
@@ -178,37 +206,37 @@ function Post(props) {
             <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
 
 
-            {/* {isModerator && isModerator  && !isPostStickied && 
-             <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>} */}
-
             {isModerator === true && isPostStickied && 
              <> &nbsp;&nbsp;&nbsp;&nbsp;
             <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
 
 
-            {/* {isModerator && isModerator[0]  && isPostStickied && 
-             <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>} */}
            
             {isModerator === true && !isPostLocked && 
              <> &nbsp;&nbsp;&nbsp;&nbsp;
             <span onClick={() => toggleLock()}  className='locked-true'>lock post</span></>}
 
 
-            {/* {isModerator && isModerator[0]  && !isPostLocked && 
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleLock()}  className='locked-true'>lock post</span></>} */}
             
             {isModerator === true && isPostLocked && 
             <> &nbsp;&nbsp;&nbsp;&nbsp;
             <span onClick={() => toggleLock()}  className='locked-true'>unlock post</span></>}
 
+            {(isModerator || user === username || role === "admin") &&
+                        <> &nbsp;&nbsp;&nbsp;&nbsp;
+                         <span onClick={() => {setToBeDeleted(true)}} className="">delete</span></>
+            }
 
-            {/* {isModerator && isModerator[0]  && isPostLocked && 
-            <> &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => toggleLock()}  className='locked-true'>unlock post</span></>} */}
-           
+            {toBeDeleted &&
+                <>
+                <span className="text-danger ms-2">Are you sure?</span>
+                <span onClick={destroy} className="fw-bolder ms-1">Yes</span>
+                <span className="text-danger ms-1">/</span>
+                <span onClick={() => setToBeDeleted(false)} className="fw-bolder ms-1">No</span>
+                </>
+                }
+
+
             
           </div>
         </div>
@@ -218,13 +246,31 @@ function Post(props) {
     id={id}
     setReply={setReply}
     order="new"
+    setNewComment={setNewComment}
   />
 ) : null}
 {content && isPostLocked && (
   <div className='ms-3'>Comments have been locked</div>
 )}
 
+{newComment && <>
+<Comments
+comment={newComment}
+order={commentOrder}
+points={1}
+isLocked={isPostLocked}
+isModerator={isModerator}
 
+/> 
+</>}
+
+{/* <Comments 
+            comment={newComment}
+            order={order}
+            points={1}
+            replyToComment={true}
+            isLocked={isLocked}
+            isModerator={isModerator} /> */}
 
 
 
@@ -232,7 +278,8 @@ function Post(props) {
   <PostComments
         order={commentOrder}
         postId={id}
-        isLocked={isLocked}
+        isLocked={isPostLocked}
+        isModerator={isModerator}
        
          /></>}
 

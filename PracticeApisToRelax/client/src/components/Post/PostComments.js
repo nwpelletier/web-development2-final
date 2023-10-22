@@ -3,7 +3,7 @@ import axios from 'axios';
 import Comments from './Comments';
 import { BASE_API_URL } from '../../utils/constant';
 
-function PostComments({ order, postId, isLocked }) {
+function PostComments({ order, postId, isLocked, isModerator }) {
   const [comments, setComments] = useState([]);
 
 
@@ -37,6 +37,7 @@ function PostComments({ order, postId, isLocked }) {
             points={comment.points}
             children={comment.children_count}
             isLocked={isLocked}
+            isModerator={isModerator}
  
               />
           );
