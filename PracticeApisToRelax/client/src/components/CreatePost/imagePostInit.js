@@ -1,14 +1,19 @@
 import axios from 'axios';
 import * as Yup from 'yup';
+import { BASE_API_URL } from "../../utils/constant";
+import { useNavigate } from "react-router-dom";
+
 const FormData = require('form-data');
+
 
 
 
 
 export const postType = "image"
 export const btnText = "Create Post"
-export const redirect = ""
+export const redirect = "text"
 export const redirectTxt = "Create Text Post"
+
 
 
 
@@ -53,13 +58,15 @@ export const postForm = (data) => {
         'x-access-token': localStorage.getItem("token")
       };
   
-    axios
-      .post(`http://localhost:8080/api/posts/image`, formData, {headers:headers})
+    return axios
+      .post(`${BASE_API_URL}/api/posts/image`, formData, {headers:headers})
       .then((response) => {
         console.log(response.data);
+        return response.data
       })
       .catch((error) => {
         console.log(error);
+        throw error;
       });
   };
   
@@ -69,15 +76,15 @@ export const postForm = (data) => {
 
 
 const onBlurCheck =  (data) => {
-    console.log(data + " my data")
-    return axios
-    .get(`http://localhost:8080/api/subcruddits/exists/` + data)
-    .then((response) => {
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  console.log(data + " my data")
+  return axios
+  .get(BASE_API_URL + `/api/subcruddits/exists/` + data)
+  .then((response) => {
+    return response.data
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 }
   
