@@ -6,7 +6,7 @@ function AdminPage() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
-  console.log("EHASN");
+  
   useEffect(() => {
     axios
       .get(BASE_API_URL + `/api/admin`)
@@ -54,8 +54,8 @@ function AdminPage() {
     const storedUserId = localStorage.getItem("userId");
     if (token) {
       setUserId(storedUserId);
-      axios.get(BASE_API_URL + `/api/overview/${userId}`).then((response) => {
-        
+      axios.get(BASE_API_URL + `/api/admin/${userId}`).then((response) => {
+        console.log("USER ADMIN PAGE: ",response.data)
       });
     }
   }, []);
