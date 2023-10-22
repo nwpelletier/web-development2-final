@@ -66,6 +66,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType }) {
         }
         setPosts(response.data);
       } catch (error) {
+        
         console.error('Error fetching posts:', error);
       }
     };
