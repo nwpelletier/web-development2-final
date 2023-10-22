@@ -1,1 +1,1 @@
-export const BASE_API_URL = 'http://localhost:8080';
+export const BASE_API_URL = 'https://protected-woodland-69602-f6e674a5ee3b.herokuapp.com';

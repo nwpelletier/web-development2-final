@@ -54,10 +54,10 @@ app.use("/api/subcruddits", subcrudditRoutes);
 app.use("/api/overview", userpage);
 app.use("/api/admin", admin);
 
-const db = require("./models");
+const db = require("./models"); 
 
 db.sequelize.sync().then(() => {
-  app.listen(process.env.DEV_PORT, () => {
+  app.listen(process.env.PORT || 3000, () => {
     console.log("server running on port " + process.env.DEV_PORT);
   });
 });
