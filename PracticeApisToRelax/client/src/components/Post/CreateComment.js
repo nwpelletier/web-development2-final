@@ -14,7 +14,9 @@ function CreateComment(props) {
     content: "",
   }
   const [defaultVal, setDefaultVal] = useState("")
+  
   const postForm = (data, { resetForm }) => {
+    console.log(data)
       if (value) {
         // Handle the case when 'value' is truthy (if needed)
       } else {

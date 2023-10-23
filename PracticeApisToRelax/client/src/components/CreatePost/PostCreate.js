@@ -55,7 +55,6 @@ const navigate = useNavigate();
       if (postedItem.type === "subcruddit") {
         navigate("/c/" + postedItem.subcruddit.subcrudditName) 
       } else {
-        
         const url = `/c/${data.subcrudditName}/${postedItem.id}/${postedItem.title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`
         navigate(url);
       }

@@ -423,6 +423,7 @@ function Post(props) {
             isLocked={isPostLocked}
             isModerator={isModerator}
             mmoderators={moderators}
+            commentOrder={commentOrder}
           />
         </>
       )}

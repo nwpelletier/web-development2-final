@@ -143,7 +143,7 @@ function Comments(props){
                             <span className="comment-info mx-1 comment-links" ></span>
                             {moderators && moderators.includes(comment.username, 0) && <span className='mx-1 stickied-true' >* moderator *</span>}
                             <span className="comment-info mx-1" >{commentPoints > 0 ? commentPoints : 0} points</span>
-                            <span className="comment-info mx-1" >{format(new Date(comment.createdAt), "MM/dd/yyyy")}</span>
+                            {/* <span className="comment-info mx-1" >{format(new Date(comment.createdAt), "MM/dd/yyyy")}</span> */}
                     
                         </div>
                     </div>
@@ -192,7 +192,8 @@ function Comments(props){
                 setNewComment={setNewComment} 
                 setNestedReply={setNestedReply}
                 setCommentReplies={setCommentReplies}
-                commentReplies={commentReplies}/>
+                commentReplies={commentReplies}
+                commentOrder={commentOrder}/>
                 </div>
                 
                 }
@@ -203,7 +204,8 @@ function Comments(props){
                                 comment={comment} 
                                 order={order} 
                                 setEdit={setEdit}
-                                value={commentContent}/>
+                                value={commentContent}
+                                commentOrder={commentOrder}/>
 
                 }
 
@@ -218,6 +220,7 @@ function Comments(props){
             isLocked={isLocked}
             isModerator={isModerator}
             moderators={moderators}
+            commentOrder={commentOrder}
 
             
         
