@@ -8,7 +8,7 @@ function PostComments({ order, postId, isLocked, isModerator, moderators, commen
   
 
 
- 
+  
 
   useEffect(() => {
 console.log(commentOrder)
@@ -41,6 +41,7 @@ setComments([]);
             isLocked={isLocked}
             isModerator={isModerator}
             moderators={moderators}
+            commentOrder={commentOrder}
             
  
               />
