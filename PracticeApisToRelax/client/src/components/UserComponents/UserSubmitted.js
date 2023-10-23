@@ -48,7 +48,6 @@ function UserSubmitted(user) {
         content={post.postType === 'image' ? 'imgThumb' : post.content}
         postType={post.postType}
         username={post.username}
-        SubcrudditName={post.SubcrudditName}
         children_count={post.children_count}
         isStickied={post.isStickied}
         isLocked={post.isLocked}
@@ -56,6 +55,7 @@ function UserSubmitted(user) {
           addSuffix: true,
         })}
         isMod={isMod}
+        isUserPage={true}
 
 
       />

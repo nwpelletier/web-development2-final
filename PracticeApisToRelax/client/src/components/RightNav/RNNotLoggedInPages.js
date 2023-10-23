@@ -6,6 +6,7 @@ import { ModContext } from '../../pages/Subcruddit';
 import { SubCrudditContext } from "../../pages/Subcruddit";
 import { BASE_API_URL } from "../../utils/constant";
 import Modal from "../Modal/Modal";
+import LogoSide from "../../assets/cruddit-logo.png"
 
 
 function RNNotLoggedInPages(margin) {
@@ -74,9 +75,11 @@ function RNNotLoggedInPages(margin) {
   return (
     <>
       <div id="right-panel-rnnot" style={{ marginTop: margin.margin }}>
-        <p>
-          <strong className="right-nav-subcruddit-name"> /c/{currentPath} </strong>
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <p>
+            <strong className="right-nav-subcruddit-name"> /c/{currentPath} </strong>
+          </p>
+        </div>
         <div className="text-center right-nav-create-submit mt-3">
           <p
             className="mt-3"
@@ -153,8 +156,13 @@ function RNNotLoggedInPages(margin) {
               <p>{welcomeText}</p>
             )}
           </div>
+
         </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <img src={LogoSide} width='60px' />
+          </div>
       </div>
+
     </>
   );
 }
