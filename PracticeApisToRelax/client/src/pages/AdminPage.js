@@ -4,8 +4,10 @@ import { BASE_API_URL } from "../utils/constant";
 
 function AdminPage() {
   const [users, setUsers] = useState([]);
+  const [userRole, setUserRole] = useState([]);
   const [error, setError] = useState(null);
 
+  // fetch all users
   useEffect(() => {
     axios
       .get(BASE_API_URL + `/api/admin`)
@@ -23,7 +25,7 @@ function AdminPage() {
 
   const handleActive = (userId) => {
     axios
-      .patch(BASE_API_URL + `/api/admin/${userId}`)
+      .patch(BASE_API_URL + `/api/admin/active/${userId}`)
       .then((response) => {
         // Update the active status in the local state
         const updatedUsers = users.map((user) => {
@@ -59,7 +61,7 @@ function AdminPage() {
         axios
           .get(BASE_API_URL + `/api/admin/${storedUserId}`)
           .then((response) => {
-            console.log("USER ADMIN PAGE: ", response.data);
+            //console.log("USER ADMIN PAGE: ", response.data);
             setRole(response.data.role);
             setUsername(response.data.username);
           });
@@ -69,11 +71,34 @@ function AdminPage() {
     } catch (error) {
       console.log("ERROR", error);
     }
-  }, "");
+  }, []);
+
+  const handleRole = async (userId) => {
+    axios
+    .patch(BASE_API_URL + `/api/admin/role/${userId}`)
+    .then((response) => {
+      // Update the active status in the local state
+      const updatedUsers = users.map((user) => {
+        if (user.id === userId) {
+          // Toggle the active status
+          user.role = user.role === "admin" ? "user" : "admin";
+        }
+        return user;
+      });
+      setUserRole(updatedUsers);
+    })
+    .catch((error) => {
+      if (error.response) {
+        setError(error.response);
+      } else {
+        setError("Unknown error occurred.");
+      }
+    });
+  };
 
   return (
     <>
-      <div className="alert alert-info">Admin Page</div>
+      <div className="alert alert-info">Admin Page --- <strong className="fs-4">{ username }</strong></div>
       <div className="container-fluid">
         {role !== "admin" ? (
           <>
@@ -95,9 +120,9 @@ function AdminPage() {
         ) : (
           <div className="row justify-content-center">
             <div className="col-md-8">
-              <table className="table table-hover table-light">
+              <table className="table table-responsive table-hover table-light">
                 <thead className="thead-dark">
-                  <tr>
+                  <tr className="col-md-8">
                     <th scope="col">#</th>
                     <th scope="col">USERNAME</th>
                     <th scope="col">EMAIL</th>
@@ -124,24 +149,32 @@ function AdminPage() {
                       <td>{user.role}</td>
                       <td>
                         <div className="row">
-                          <div className="col-md-4 d-flex justify-content-center">
+                          <div className="col-md-6  d-flex justify-content-center">
                             <button
-                              className="btn btn-success"
+                              className={user.isActive ? "btn btn-success": "btn btn-danger"}
                               onClick={() => handleActive(user.id)}
                             >
-                              {user.isActive ? "Inactive" : "Active"}
+                              {user.isActive ? "Delete" : "Restore"}
                             </button>
                           </div>
 
-                          <div className="col-md-4 d-flex justify-content-center">
-                            <button className="btn btn-warning">
-                              Make Admin
+                          <div className="col-md-6 col-sm-12 d-flex justify-content-center">
+                            <button
+                              className={
+                                user.role === "admin"
+                                  ? "btn btn-info"
+                                  : "btn btn-warning"
+                              }
+                              onClick={() => handleRole(user.id)}
+                            >
+                              {" "}
+                              {user.role === "admin" ? "User" : "Admin"}
                             </button>
                           </div>
 
-                          <div className="col-md-4 d-flex justify-content-center">
+                          {/* <div className="col-md-4 d-flex justify-content-center">
                             <button className="btn btn-danger">Delete</button>
-                          </div>
+                          </div> */}
                         </div>
                       </td>
                     </tr>

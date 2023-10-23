@@ -20,8 +20,8 @@ const admin = require("./routes/AdminRoutes");
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-
-
+ 
+   
 
 app.use(express.json({ limit: "50mb" }));
 app.use(
@@ -58,7 +58,7 @@ const db = require("./models");
 
 db.sequelize.sync().then(() => {
   app.listen(process.env.PORT || 3000, () => {
-    console.log("server running on port " + process.env.DEV_PORT);
+    console.log("server running on port " + process.env.PORT);
   });
 });
 
