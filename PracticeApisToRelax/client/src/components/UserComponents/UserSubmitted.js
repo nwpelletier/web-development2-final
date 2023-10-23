@@ -25,6 +25,8 @@ function UserSubmitted(user) {
   }, []);
 
 
+  
+
 
   // Testing paginate   
   const [posts, setPosts] = useState([]);
@@ -43,7 +45,7 @@ function UserSubmitted(user) {
         id={post.id}
         points={post.points}
         title={post.title}
-        content={post.content}
+        content={post.postType === 'image' ? 'imgThumb' : post.content}
         postType={post.postType}
         username={post.username}
         SubcrudditName={post.SubcrudditName}
@@ -54,7 +56,6 @@ function UserSubmitted(user) {
           addSuffix: true,
         })}
         isMod={isMod}
-        isUserPage={true}
 
 
       />
