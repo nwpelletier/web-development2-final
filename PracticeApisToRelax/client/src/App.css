@@ -780,4 +780,9 @@ a {
 
 .edit-post {
   width: 60%;
+  margin-left: -38px;
+}
+
+.edit-btn{
+  margin-left: -38px;
 }
