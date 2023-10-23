@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../utils/constant";
+import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -75,30 +76,63 @@ function AdminPage() {
 
   const handleRole = async (userId) => {
     axios
-    .patch(BASE_API_URL + `/api/admin/role/${userId}`)
-    .then((response) => {
-      // Update the active status in the local state
-      const updatedUsers = users.map((user) => {
-        if (user.id === userId) {
-          // Toggle the active status
-          user.role = user.role === "admin" ? "user" : "admin";
+      .patch(BASE_API_URL + `/api/admin/role/${userId}`)
+      .then((response) => {
+        // Update the active status in the local state
+        const updatedUsers = users.map((user) => {
+          if (user.id === userId) {
+            // Toggle the active status
+            user.role = user.role === "admin" ? "user" : "admin";
+          }
+          return user;
+        });
+        setUserRole(updatedUsers);
+      })
+      .catch((error) => {
+        if (error.response) {
+          setError(error.response);
+        } else {
+          setError("Unknown error occurred.");
         }
-        return user;
       });
-      setUserRole(updatedUsers);
-    })
-    .catch((error) => {
-      if (error.response) {
-        setError(error.response);
-      } else {
-        setError("Unknown error occurred.");
-      }
-    });
+  };
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const navigate = useNavigate();
+
+  const userLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate(`/c/all`);
+  };
+
+  const navHome = () => {
+    navigate(`/c/all`);
   };
 
   return (
     <>
-      <div className="alert alert-info">Admin Page --- <strong className="fs-4">{ username }</strong></div>
+      <div className="alert alert-info">
+        <div className="row">
+          <div className="col-md-6">
+            Admin Page ---{" "}
+            <strong className="fs-4">{username.toUpperCase()}</strong>
+          </div>
+          <div className="col-md-6">
+            <div className="d-flex justify-content-end">
+              <button className="fs-6 btn float-end" onClick={userLogout}>
+                log out
+              </button>
+              <button className="fs-6 btn float-end" onClick={navHome}>
+                HOME
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container-fluid">
         {role !== "admin" ? (
           <>
@@ -151,7 +185,11 @@ function AdminPage() {
                         <div className="row">
                           <div className="col-md-6  d-flex justify-content-center">
                             <button
-                              className={user.isActive ? "btn btn-success": "btn btn-danger"}
+                              className={
+                                user.isActive
+                                  ? "btn btn-danger"
+                                  : "btn btn-success"
+                              }
                               onClick={() => handleActive(user.id)}
                             >
                               {user.isActive ? "Delete" : "Restore"}
