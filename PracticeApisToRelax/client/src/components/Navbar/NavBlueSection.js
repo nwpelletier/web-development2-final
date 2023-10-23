@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Modal from '../Modal/Modal';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { BASE_API_URL } from '../../utils/constant';
-
+import { CrudditUserPageContext } from '../../pages/UserPage';
 
 function LowerHalf() {
-  
+
   const [modalContent, setModalContent] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userKarma, setUserKarma] = useState('');
   const currentPath = useLocation().pathname.split('/')[2];
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
+  const crudditUserPage = useContext(CrudditUserPageContext);
 
   // Testing w/ userId localStorage
   const getKarma = async () => {
     try {
-      
+
       const response = await fetch(BASE_API_URL + `/api/users/karma/${userId}`);
       const data = await response.json();
       const postKarma = parseInt(data.postKarma, 10);
@@ -59,7 +60,7 @@ function LowerHalf() {
   const navigateNew = () => {
     navigate(`/c/${currentPath}/new`);
   };
-  
+
   const navigateHot = () => {
     navigate(`/c/${currentPath}/hot`);
   };
@@ -78,14 +79,19 @@ function LowerHalf() {
   return (
 
     // Temp formatting! Fix after functionality
-    <div className="lower-half row ">
+    <div className="lower-half row">
       <div className="current-subcruddit my-3 mx-3 col-3" onClick={navigateSubcrudRoot}>
-        {currentPath}
       </div>
-      <div className="hot-new-tab row">
-        <span className= "col-4 gx-2 tab-option1" onClick={navigateHot}>hot</span>
-        <span className= "col-4 gx-2 offset-1 tab-option2" onClick={navigateNew}>new</span>
-      </div>
+      {crudditUserPage ? null : (
+        <div className="hot-new-tab row">
+          <span className="col-4 gx-2 tab-option1" onClick={navigateHot}>
+            hot
+          </span>
+          <span className="col-4 gx-2 offset-1 tab-option2" onClick={navigateNew}>
+            new
+          </span>
+        </div>
+      )}
       <div className="login-box">
         {isAuthenticated ? (
           <>
