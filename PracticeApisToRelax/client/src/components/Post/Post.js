@@ -56,6 +56,7 @@ function Post(props) {
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
+    setPostContent(content);
 
 
 
@@ -183,8 +184,21 @@ function Post(props) {
   };
 
   const editPost = (data) => {
-    console.log(data)
-    
+    console.log(data.content)
+    axios.put(BASE_API_URL + "/api/posts/post/" + id, data, {
+      headers: {
+        'x-access-token': localStorage.getItem("token")
+      }
+      })
+     .then((response)=> {
+      setPostContent(response.data.comment.content)
+      
+      setSetToEdit(false)
+     })
+     .catch((error)=> {
+      console.log(error)
+     })
+
   }
 
   return (
@@ -249,7 +263,7 @@ function Post(props) {
               </div>
             )}
 
-{content && (
+{content &&  (
   <>
     <hr className={`stickied-${isPostStickied}`} />
     <div className="post-content col-10">
@@ -258,7 +272,12 @@ function Post(props) {
           <img src={content} alt="Image Content" />
         </a>
       ) : setToEdit ? (
-        <p>editing</p>
+        <EditPost 
+        editPost={editPost}
+        value={postContent}
+        setSetToEdit={setSetToEdit}
+        
+        />
       ) : (
         <p>{postContent}</p>
       )}
