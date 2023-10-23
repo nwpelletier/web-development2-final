@@ -44,8 +44,8 @@ function PostVote(props) {
             className={`upvote ${postLiked === true ? 'upvote-true' : ''}`}
             src={arrowUpImage}
             alt="upvote"
-            width="40%"
-            height="40%"
+            width="50%"
+            height="50%"
             onClick={() => vote({ liked: true })}
           />
           <h6 className="vote-count">{postPoints}</h6>
@@ -53,8 +53,8 @@ function PostVote(props) {
             className={`downvote ${postLiked === false ? 'downvote-false' : ''}`}
             src={arrowDownImage}
             alt="downvote"
-            width="40%"
-            height="40%"
+            width="50%"
+            height="50%"
             onClick={() => vote({ liked: false })}
           />
         </div>
@@ -64,8 +64,8 @@ function PostVote(props) {
             className={`upvote ${postLiked === true ? 'upvote-true' : ''}`}
             src={arrowUpImage}
             alt="upvote"
-            width="40%"
-            height="40%"
+            width="50%"
+            height="50%"
             onClick={() => openModal('login')}
             data-bs-toggle="modal"
             data-bs-target="#defaultModal"
@@ -75,8 +75,8 @@ function PostVote(props) {
             className={`downvote ${postLiked === false ? 'downvote-false' : ''}`}
             src={arrowDownImage}
             alt="downvote"
-            width="40%"
-            height="40%"
+            width="50%"
+            height="50%"
             onClick={() => openModal('login')}
             data-bs-toggle="modal"
             data-bs-target="#defaultModal"
