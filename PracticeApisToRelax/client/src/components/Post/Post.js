@@ -56,24 +56,13 @@ function Post(props) {
   useEffect(() => {
     setSubName(handle ? handle : SubcrudditName)
     const sub = handle ? handle : SubcrudditName;
-    console.log(handle + " HANDLE")
-    console.log(SubcrudditName + " subcrudditname")
-    console.log(1 + "SUBNAME: " + sub)
-    console.log(isUserPage)
-
 
     const userId = localStorage.getItem('userId');
-    console.log(userId + "userId")
-    if (!userId || isUserPage ) {
-      
+    if (!userId || isUserPage || sub ==="all" ) {
       setIsModerator(false);
-      return;
     }
-    if (!isUserPage) {
-      
-      console.log("WHYYYYY")
-      console.log(2)
-      if (currentPath !== '/c/all') {
+    else { 
+    
         axios
           .get(BASE_API_URL + `/api/moderators/ismod/${sub}`, {
             headers: {
@@ -87,29 +76,31 @@ function Post(props) {
           .catch((error) => {
             console.log(error);
           });
-      }
+      
     }
 
     // Skip this if we are on /c/all
-    // if (isUserPage) {
-    //   if (currentPath !== '/c/all' || subName) {
-    //     axios
-    //       .get(BASE_API_URL + '/api/moderators/sub/' + subName)
-    //       .then((response) => {
-    //         let modObj = response.data;
-    //         const modArray = [];
-    //         for (let mod of modObj) {
-    //           modArray.push(mod.username);
-    //         }
-    //         setModerators(modArray);
-    //         console.log(moderators[0]);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    //   }
-    // }
-    //GOT MODERATOR NAMES
+
+
+    if (!isUserPage || sub === "all") {
+        axios
+          .get(BASE_API_URL + '/api/moderators/sub/' + sub)
+          .then((response) => {
+            let modObj = response.data;
+            const modArray = [];
+            for (let mod of modObj) {
+              modArray.push(mod.username);
+              console.log(mod.username)
+            }
+            setModerators(modArray);
+            
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      
+    }
+   // GOT MODERATOR NAMES
 
     let newPath = currentPath;
     if (currentPath.endsWith('/hot')) {
@@ -240,6 +231,7 @@ function Post(props) {
             ) : (
               <div className="post-submission-info">
                 Posted {createdAt} by {username}{' '}
+                {moderators && moderators.includes(username, 0) && <span className='mx-2 stickied-true' >* moderator *</span>}
                 {isPostStickied && (
                   <span className="stickied-true">Stickied Post</span>
                 )}{' '}
