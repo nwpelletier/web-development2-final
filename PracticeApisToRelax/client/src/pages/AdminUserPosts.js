@@ -2,252 +2,80 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function AdminUserPosts() {
-  const [users, setUsers] = useState([]);
-  const [userRole, setUserRole] = useState([]);
-  const [error, setError] = useState(null);
-
-  // fetch all users
-  useEffect(() => {
-    axios
-      .get(BASE_API_URL + `/api/admin`)
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        if (error.response) {
-          setError(error.response);
-        } else {
-          setError("Unknown error occurred.");
-        }
-      });
-  }, []);
-
-  const handleActive = (userId) => {
-    axios
-      .patch(BASE_API_URL + `/api/admin/active/${userId}`)
-      .then((response) => {
-        // Update the active status in the local state
-        const updatedUsers = users.map((user) => {
-          if (user.id === userId) {
-            // Toggle the active status
-            user.isActive = !user.isActive;
-          }
-          return user;
-        });
-        setUsers(updatedUsers);
-      })
-      .catch((error) => {
-        if (error.response) {
-          setError(error.response);
-        } else {
-          setError("Unknown error occurred.");
-        }
-      });
-  };
-
-  const [userId, setUserId] = useState(localStorage.getItem("token"));
-  const [role, setRole] = useState("user");
-  const [username, setUsername] = useState("user");
-
-  useEffect(() => {
-    try {
-      const token = localStorage.getItem("token");
-      const storedUserId = localStorage.getItem("userId");
-      if (token) {
-        setUserId(storedUserId);
-        // console.log("USER ADMIN PAGE: ", BASE_API_URL + `/api/admin/${storedUserId}`);
-        // console.log("USER ADMIN PAGE: ",userId);
-        axios
-          .get(BASE_API_URL + `/api/admin/${storedUserId}`)
-          .then((response) => {
-            //console.log("USER ADMIN PAGE: ", response.data);
-            setRole(response.data.role);
-            setUsername(response.data.username);
-          });
-      } else {
-        console.log("USER ADMIN PAGE: NO DATA");
-      }
-    } catch (error) {
-      console.log("ERROR", error);
-    }
-  }, []);
-
-  const handleRole = async (userId) => {
-    axios
-      .patch(BASE_API_URL + `/api/admin/role/${userId}`)
-      .then((response) => {
-        // Update the active status in the local state
-        const updatedUsers = users.map((user) => {
-          if (user.id === userId) {
-            // Toggle the active status
-            user.role = user.role === "admin" ? "user" : "admin";
-          }
-          return user;
-        });
-        setUserRole(updatedUsers);
-      })
-      .catch((error) => {
-        if (error.response) {
-          setError(error.response);
-        } else {
-          setError("Unknown error occurred.");
-        }
-      });
-  };
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const navigate = useNavigate();
-
-  const userLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    navigate(`/c/all`);
-  };
-
-  const navHome = () => {
-    navigate(`/c/all`);
-  };
-
+  const { userId } = useParams();
   const [posts, setPosts] = useState([]);
-
-  const handleLinks = (userIdLink) => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(true);
+  let lengthData = 0;
+  useEffect(() => {
     try {
       if (userId == 0) {
-        // navigate("/c/all");
+        navigate("/admin");
       } else {
-        axios.get(BASE_API_URL + `/api/overview/${userIdLink}`).then((response) => {
+        axios.get(BASE_API_URL + `/api/overview/${userId}`).then((response) => {
+          lengthData = response.data.length;
           setPosts(response.data);
+          setUsername(lengthData > 0 ? response.data[0].UserName : "");
+          setLoading(false);
         });
       }
     } catch (error) {
       console.log("SHOW ERROR", error);
     }
-    console.log("LINKS ADMIN", userIdLink);
-  };
+  }, [userId]);
+
+
+  const navAdmin = () => {
+    navigate("/admin");
+  }
 
   return (
-    <>
-      <div className="alert alert-info">
-        <div className="row">
-          <div className="col-md-6">
-            Admin Page ---{" "}
-            <strong className="fs-4">{username.toUpperCase()}</strong>
-          </div>
-          <div className="col-md-6">
-            <div className="d-flex justify-content-end">
-              <button className="fs-6 btn float-end" onClick={userLogout}>
-                log out
-              </button>
-              <button className="fs-6 btn float-end" onClick={navHome}>
-                HOME
-              </button>
+    <div className="container">
+      {lengthData < 0 ? (
+        <p>Loading...</p>
+      ) : username ? (
+        <>
+          <h1>{username}'s Posts</h1>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Active</th>
+                <th>Locked</th>
+                <th>Stickied</th>
+                <th>Type</th>
+                <th>Content</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post, index) => (
+                <tr key={post.id}>
+                  <td>{post.isActive ? "Yes" : "No"}</td>
+                  <td>{post.isLocked ? "Yes" : "No"}</td>
+                  <td>{post.isStickied ? "Yes" : "No"}</td>
+                  <td>{post.postType}</td>
+                  <td>{post.content}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <div className="container">
+          <div className="row d-flex align-items-center">
+            <div className="col-md-6 mt-4">
+              <div className="alert alert-danger">NO DATA to display</div>
+            </div>
+            <div className="col-md-6">
+              <a role="button" className="alert alert-info" onClick={navAdmin}>back to admin page</a>
             </div>
           </div>
         </div>
-      </div>
-      <div className="container-fluid">
-        {role !== "admin" ? (
-          <>
-            <div
-              className="alert alert-warning alert-dismissible fade show"
-              role="alert"
-            >
-              <strong>Access Denied</strong>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </>
-        ) : (
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <table className="table table-responsive table-hover table-light">
-                <thead className="thead-dark">
-                  <tr className="col-md-8">
-                    <th scope="col">#</th>
-                    <th scope="col">USERNAME</th>
-                    <th scope="col">EMAIL</th>
-                    <th scope="col">ACTIVE</th>
-                    <th scope="col">ROLE</th>
-                    <th scope="col" className="justify-content-center d-flex">
-                      ACTIONS
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user, index) => (
-                    
-                      <tr
-                      onClick={
-                        ()=>handleLinks(user.id)
-                        }
-                        className="justify-content-center"
-                        key={user.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{user.username}</td>
-                        <td>{user.email}</td>
-                        <td
-                          className={
-                            user.isActive ? "text-success" : "text-danger"
-                          }
-                        >
-                          {user.isActive ? "Active" : "Inactive"}
-                        </td>
-                        <td>{user.role}</td>
-                        <td>
-                          <div className="row">
-                            <div className="col-md-6  d-flex justify-content-center">
-                              <button
-                                className={
-                                  user.isActive
-                                    ? "btn btn-danger"
-                                    : "btn btn-success"
-                                }
-                                onClick={() => handleActive(user.id)}
-                              >
-                                {user.isActive ? "Delete" : "Restore"}
-                              </button>
-                            </div>
-
-                            <div className="col-md-6 col-sm-12 d-flex justify-content-center">
-                              <button
-                                className={
-                                  user.role === "admin"
-                                    ? "btn btn-info"
-                                    : "btn btn-warning"
-                                }
-                                onClick={() => handleRole(user.id)}
-                              >
-                                {" "}
-                                {user.role === "admin" ? "User" : "Admin"}
-                              </button>
-                            </div>
-
-                            {/* <div className="col-md-4 d-flex justify-content-center">
-                            <button className="btn btn-danger">Delete</button>
-                          </div> */}
-                          </div>
-                        </td>
-                      </tr>
-                    
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }
 

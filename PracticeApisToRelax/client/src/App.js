@@ -54,7 +54,7 @@ function App() {
                 <Route path="/comments" element={<CommentPlay />} />
                 <Route path="/c/:subcruddit/:postId/:postTitle" element={<SinglePost />} />
                 <Route path="/admin" element={<AdminPage />} />
-                <Route path="/admin/posts" element={<AdminUserPosts />} />
+                <Route path="/admin/posts/:userId" element={<AdminUserPosts />} />
 
               </Routes>
             </Router>

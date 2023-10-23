@@ -47,6 +47,8 @@ function AdminPage() {
       });
   };
 
+// authenticate
+
   const [userId, setUserId] = useState(localStorage.getItem("token"));
   const [role, setRole] = useState("user");
   const [username, setUsername] = useState("user");
@@ -116,20 +118,10 @@ function AdminPage() {
   const [posts, setPosts] = useState([]);
 
   const handleLinks = (userIdLink) => {
-    try {
-      if (userId == 0) {
-        // navigate("/c/all");
-      } else {
-        axios.get(BASE_API_URL + `/api/overview/${userIdLink}`).then((response) => {
-          setPosts(response.data);
-        });
-
-        navigate("/admin/userposts")
-      }
-    } catch (error) {
-      console.log("SHOW ERROR", error);
-    }
+    
     console.log("LINKS ADMIN", userIdLink);
+
+    navigate(`/admin/posts/${userIdLink}`);
   };
 
   return (
