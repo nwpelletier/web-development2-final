@@ -40,7 +40,7 @@ function Post(props) {
   const user = localStorage.getItem('username');
   const role = localStorage.getItem('userRole');
   const [moderators, setModerators] = useState();
-  
+
 
   const [postContent, setPostContent] = useState(content);
 
@@ -54,6 +54,11 @@ function Post(props) {
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
+
+
+
+
+
     setSubName(handle ? handle : SubcrudditName)
     const sub = handle ? handle : SubcrudditName;
 
@@ -210,18 +215,22 @@ function Post(props) {
         {currentPath !== '/userpage' && (
           <div className={`post-content-container col-md-10 col-sm-5 row `}>
             <div className="post-title">
-              <a
-                href={`${currentPath.replace(
-                  '/hot',
-                  ''
-                ).replace('/new', '')}/${id}/${title
-                  .replace(/[\s-]+/g, '_')
-                  .replace(/["']/g, '')
-                  .substring(0, 50)
-                  .toLowerCase()}`}
-              >
-                {title}
-              </a>
+              {currentPath==(`/c/${subName}`) ? (
+                <a
+                  href={`${currentPath.replace(
+                    '/hot',
+                    ''
+                  ).replace('/new', '')}/${id}/${title
+                    .replace(/[\s-]+/g, '_')
+                    .replace(/["']/g, '')
+                    .substring(0, 50)
+                    .toLowerCase()}`}
+                >
+                  {title}
+                </a>
+              ) : (
+                <span>{title}</span>
+              )}
             </div>
             {currentPath.includes('/c/all') ? (
               <div className="post-submission-info">
@@ -267,31 +276,31 @@ function Post(props) {
               </a>
 
               {isModerator && !isPostStickied &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
 
 
-            {isModerator && isPostStickied &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
-
-
-
-            {isModerator === true && !isPostLocked &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleLock()} className='locked-true'>lock post</span></>}
+              {isModerator && isPostStickied &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
 
 
 
-            {isModerator === true && isPostLocked &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
+              {isModerator === true && !isPostLocked &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => toggleLock()} className='locked-true'>lock post</span></>}
 
-            {(isModerator || user === username || role === "admin") &&
-              <> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => { setToBeDeleted(true) }} className="">delete</span></>
-            }
-            { toBeDeleted &&            <>   <span className="text-danger ms-2">Are you sure?</span>
+
+
+              {isModerator === true && isPostLocked &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
+
+              {(isModerator || user === username || role === "admin") &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => { setToBeDeleted(true) }} className="">delete</span></>
+              }
+              {toBeDeleted && <>   <span className="text-danger ms-2">Are you sure?</span>
                 <span onClick={destroy} className="fw-bolder ms-1">Yes</span>
                 <span className="text-danger ms-1">/</span>
                 <span onClick={() => setToBeDeleted(false)} className="fw-bolder ms-1">No</span></>}
@@ -317,11 +326,17 @@ function Post(props) {
             )}
 
             {content && (
-              <> 
+              <>
                 <hr className={`stickied-${isPostStickied}`} />
                 <div className="post-content col-10">
                   {postType === 'image' ? (
-                    <img src={content} alt="Image Content" />
+                    currentPath === '/userpage' ? (
+                      <img src={imgThumb} alt="Image Content" />
+                    ) : (
+                      <a className="main-image-post" href={content}>
+                        <img src={content} alt="Image Content" />
+                      </a>
+                    )
                   ) : (
                     <p>{postContent}</p>
                   )}
@@ -330,13 +345,13 @@ function Post(props) {
             )}
 
             <div className="post-links">
-            comment{children_count === 1 ? '' : 's'} 
-           
+              comment{children_count === 1 ? '' : 's'}
 
-          
-          
-          
-          </div>
+
+
+
+
+            </div>
           </div>
         )}
       </div>

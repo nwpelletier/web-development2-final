@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_API_URL } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
 
-function AdminPage() {
+function AdminUserPosts() {
   const [users, setUsers] = useState([]);
   const [userRole, setUserRole] = useState([]);
   const [error, setError] = useState(null);
@@ -123,8 +123,6 @@ function AdminPage() {
         axios.get(BASE_API_URL + `/api/overview/${userIdLink}`).then((response) => {
           setPosts(response.data);
         });
-
-        navigate("/admin/userposts")
       }
     } catch (error) {
       console.log("SHOW ERROR", error);
@@ -253,4 +251,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default AdminUserPosts;
