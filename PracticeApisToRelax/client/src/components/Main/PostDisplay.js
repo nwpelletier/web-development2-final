@@ -72,6 +72,7 @@ function PostDisplay({ postId}) {
         isStickied={post.isStickied}
         isLocked={post.isLocked}
         isModeratorSingle={isModeratorSingle}
+        isUserPage={false}
        
       />
 

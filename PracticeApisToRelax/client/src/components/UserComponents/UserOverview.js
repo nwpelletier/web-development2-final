@@ -63,6 +63,7 @@ useEffect(() => {
           addSuffix: true,
         })}
         isMod={isMod}
+        isUserPage={true}
 
 
       />
