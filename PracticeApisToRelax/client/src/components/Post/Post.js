@@ -123,7 +123,7 @@ function Post(props) {
         console.log(error);
       });
     setPostLiked('nothing');
-  }, [setPostLiked]);
+  }, [setPostLiked], [subName]);
 
   const toggleLock = async () => {
     try {
@@ -251,7 +251,7 @@ function Post(props) {
             {currentPath.includes('/c/all') ? (
               <div className="post-submission-info">
                 {' '}
-                {createdAt} by {username} to {SubcrudditName}{' '}
+                {createdAt} by {username} to Cruddit{' '}
               </div>
             ) : (
               <div className="post-submission-info">
@@ -351,7 +351,7 @@ function Post(props) {
             </div>
             {currentPath.includes('/c/all') ? (
               <div className="post-submission-info">
-                {createdAt} by {username} to {SubcrudditName}
+                {createdAt} by {username} to Cruddit
               </div>
             ) : (
               <div className="post-submission-info">
