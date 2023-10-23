@@ -10,11 +10,18 @@ import { useLocation } from 'react-router-dom';
 function CreateComment(props) {
   const { id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, replyToComment } = props
   const currentPath = useLocation().pathname;
+  const [content, setContent] =useState("")
+
+
+
+
   const formInitValues = {
     content: "",
   }
   const [defaultVal, setDefaultVal] = useState("")
+  
   const postForm = (data, { resetForm }) => {
+    console.log(data)
       if (value) {
         // Handle the case when 'value' is truthy (if needed)
       } else {
@@ -78,7 +85,7 @@ function CreateComment(props) {
               as={"textarea"}
               rows={6}
               style={{ lineHeight: 1 }}
-              defaultValue={defaultVal}
+              
             />
             <br />
             <button className='comment-btn m-1' type='submit'>{"submit"}</button>

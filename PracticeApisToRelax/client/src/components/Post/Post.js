@@ -56,6 +56,7 @@ function Post(props) {
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
+    
     setPostContent(content);
 
 
@@ -423,6 +424,7 @@ function Post(props) {
             isLocked={isPostLocked}
             isModerator={isModerator}
             mmoderators={moderators}
+            commentOrder={commentOrder}
           />
         </>
       )}

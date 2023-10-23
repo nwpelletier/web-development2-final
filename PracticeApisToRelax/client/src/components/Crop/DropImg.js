@@ -20,7 +20,6 @@ function DropImg({ open, warning, title, name, formId, formikProps }) {
           fileData: fileData,
           file: file
         };
-        console.log(file)
         formikProps.setFieldValue("content", file);
         setImgValue(file); 
         setBoxContent("Your image was successfully uploaded")
