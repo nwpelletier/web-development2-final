@@ -44,7 +44,8 @@ exports.findAllActivePostsCommentsByUser = async (req, res) => {
       isStickied: post.isStickied,
       createdAt: post.createdAt,
       subcrudditName: post.Subcruddit.subcrudditName,
-      active:post.IsActive,
+      active: post.isActive,
+      lock:post.isLocked,
     }));
     res.status(200).send(returnObj);
 

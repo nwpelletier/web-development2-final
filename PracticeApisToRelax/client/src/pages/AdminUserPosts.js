@@ -3,7 +3,12 @@ import axios from "axios";
 import { BASE_API_URL } from "../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTextWidth,
+  faComments,
+  faImage,
+} from "@fortawesome/free-solid-svg-icons";
 function AdminUserPosts() {
   const { userId } = useParams();
   const [posts, setPosts] = useState([]);
@@ -21,6 +26,7 @@ function AdminUserPosts() {
           setPosts(response.data);
           setUsername(lengthData > 0 ? response.data[0].UserName : "");
           setLoading(false);
+          console.log("POSTS ADMIN", response.data[0]);
         });
       }
     } catch (error) {
@@ -28,10 +34,9 @@ function AdminUserPosts() {
     }
   }, [userId]);
 
-
   const navAdmin = () => {
     navigate("/admin");
-  }
+  };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const userLogout = () => {
@@ -54,8 +59,7 @@ function AdminUserPosts() {
       <div className="alert alert-info">
         <div className="row">
           <div className=" col-md-6 text-center pt-2">
-          All Posts and Comments
-            
+            All Posts and Comments
           </div>
 
           <div className="col-md-4">
@@ -70,55 +74,103 @@ function AdminUserPosts() {
           </div>
         </div>
       </div>
-    <div className="container">
-      {lengthData < 0 ? (
-        <p>Loading...</p>
-      ) : username ? (
-            <>
-              <div className="row">
-                <div className="col-md-12 text-center">
+
+      <div className="container">
+        {lengthData < 0 ? (
+          <p>Loading...</p>
+        ) : username ? (
+          <>
+            <div className="row">
+              <div className="col-md-12 text-center">
                 <h1 className="bg-dark text-light">{username}'s Posts</h1>
-                </div>
               </div>
-          
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Active</th>
-                <th>Locked</th>
-                <th>Stickied</th>
-                <th>Type</th>
-                <th>Content</th>
-              </tr>
-            </thead>
-            <tbody>
-              {posts.map((post, index) => (
-                <tr key={post.id}>
-                  <td>{post.isActive ? "Yes" : "No"}</td>
-                  <td>{post.isLocked ? "Yes" : "No"}</td>
-                  <td>{post.isStickied ? "Yes" : "No"}</td>
-                  <td>{post.postType}</td>
-                  <td>{post.content}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      ) : (
-        <div className="container">
-          <div className="row d-flex align-items-center">
-            <div className="col-md-6 mt-4">
-              <div className="alert alert-danger">NO DATA to display</div>
             </div>
-            <div className="col-md-6">
-              <a role="button" className="alert alert-info" onClick={navAdmin}>back to admin page</a>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Active</th>
+                  <th>Locked</th>
+                  <th>Stickied</th>
+                  <th>Type</th>
+                  <th>Content</th>
+                </tr>
+              </thead>
+              <tbody>
+                {posts.map((post, index) => (
+                  <tr key={post.id}>
+                    <td className="text-center">
+                      <div
+                        type="checkbox"
+                        className={
+                          post.active ? "badge  bg-warning" : "badge  bg-danger"
+                        }
+                      >
+                        {post.active ? "YES" : "NO"}
+                      </div>
+                    </td>
+
+                    <td className="text-center">
+                      <div
+                        type="checkbox"
+                        className={
+                          post.locked ? "badge  bg-warning" : "badge  bg-danger"
+                        }
+                      >
+                        {" "}
+                        {post.locked ? "YES" : "NO"}
+                      </div>
+                    </td>
+                    <td className="text-center">
+                      <div
+                        type="checkbox"
+                        className={
+                          post.isStickied
+                            ? "badge  bg-warning"
+                            : "badge  bg-danger"
+                        }
+                      >
+                        {" "}
+                        {post.isStickied ? "YES" : "NO"}
+                      </div>
+                    </td>
+                    <td>
+                      {post.postType === "text" && (
+                        <FontAwesomeIcon icon={faTextWidth} />
+                      )}
+                      {post.postType === "comment" && (
+                        <FontAwesomeIcon icon={faComments} />
+                      )}
+                      {post.postType === "image" && (
+                        <FontAwesomeIcon icon={faImage} />
+                      )}
+                      {"        "}
+                     
+                    </td>
+                    <td>{post.content}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <div className="container">
+            <div className="row d-flex align-items-center">
+              <div className="col-md-6 mt-4">
+                <div className="alert alert-danger">NO DATA to display</div>
+              </div>
+              <div className="col-md-6">
+                <a
+                  role="button"
+                  className="alert alert-info"
+                  onClick={navAdmin}
+                >
+                  back to admin page
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
-    
-    
+        )}
+      </div>
     </>
   );
 }
