@@ -18,8 +18,6 @@ function EditComment(props) {
     
     const postForm = (data) => {
     console.log(data) 
-   // .put("/comments/:id"
-   data.content = "";
    axios.put(BASE_API_URL + "/api/posts/comments/" + comment.id, data, {
     headers: {
       'x-access-token': localStorage.getItem("token")

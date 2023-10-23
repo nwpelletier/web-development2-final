@@ -56,6 +56,7 @@ function Post(props) {
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
+    setPostContent(content);
 
 
 
@@ -183,8 +184,21 @@ function Post(props) {
   };
 
   const editPost = (data) => {
-    console.log(data)
-    
+    console.log(data.content)
+    axios.put(BASE_API_URL + "/api/posts/post/" + id, data, {
+      headers: {
+        'x-access-token': localStorage.getItem("token")
+      }
+      })
+     .then((response)=> {
+      setPostContent(response.data.comment.content)
+      
+      setSetToEdit(false)
+     })
+     .catch((error)=> {
+      console.log(error)
+     })
+
   }
 
   return (
@@ -249,7 +263,7 @@ function Post(props) {
               </div>
             )}
 
-{content && (
+{content &&  (
   <>
     <hr className={`stickied-${isPostStickied}`} />
     <div className="post-content col-10">
@@ -258,7 +272,12 @@ function Post(props) {
           <img src={content} alt="Image Content" />
         </a>
       ) : setToEdit ? (
-        <p>editing</p>
+        <EditPost 
+        editPost={editPost}
+        value={postContent}
+        setSetToEdit={setSetToEdit}
+        
+        />
       ) : (
         <p>{postContent}</p>
       )}
@@ -267,6 +286,7 @@ function Post(props) {
 )}
 
             <div className="post-links">
+              {currentPath==(`/c/${subName}`) ? (
               <a
                 href={`${currentPath.replace(
                   '/hot',
@@ -279,6 +299,9 @@ function Post(props) {
               >
                 {children_count} comment{children_count === 1 ? '' : 's'}
               </a>
+              ) : (
+                <span>{children_count} comment{children_count === 1 ? '' : 's'}</span>
+              )}
 
               {isModerator && !isPostStickied &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -369,16 +392,10 @@ function Post(props) {
           </div>
         )}
       </div>
-      {content && !isUserPage && <><hr className='mt-2' ></hr>
-      <div className='ms-5 comment-sorter' >
-     
-      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" }`}>hot</span>
-      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
-      
-      </div></>}
 
 
-      {content && !isPostLocked ? (
+
+      {content && !isPostLocked && (userRole === "admin" || userRole === "user") ? (
         <CreateComment
           id={id}
           setReply={setReply}
@@ -389,7 +406,13 @@ function Post(props) {
       {content && isPostLocked && (
         <div className="ms-3">Comments have been locked</div>
       )}
-
+      {content && !isUserPage && <><hr className='mt-2' ></hr>
+      <div className='m-2 comment-sorter' >
+      <span>comments sorted by:</span>
+      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" } ms-1`}>hot</span>
+      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
+      
+      </div></>}
       {newComment && (
         
         <>

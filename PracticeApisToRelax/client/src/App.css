@@ -361,6 +361,11 @@ RIGHTNAV
   filter: invert(35%) sepia(24%) saturate(1117%) hue-rotate(199deg) brightness(103%) contrast(96%);
 }
 
+.post-content {
+  font-size: 19px;
+  font-weight: 400;
+}
+
 .post-content-container {
   /* background-color: rgba(27, 89, 113, 0.443); */
   margin-left: 10px;

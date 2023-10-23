@@ -5,38 +5,17 @@ import Comments from './Comments';
 import PostComments from './PostComments';
 import { BASE_API_URL } from '../../utils/constant';
 import Alert from "react-bootstrap/Alert"; 
+import { useState } from 'react';
 
 
 function EditPost(props) {
-   // const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit, setCommentContent} = props
+    const {editPost, value} = props
+    const [defaultVal, setDefaultVal] = useState(value)
     const formInitValues = {
-      
-        content: "",
+        content: value,
     }
     
-//     const postForm = (data) => {
-//     console.log(data) 
-//    // .put("/comments/:id"
-//    data.content = "";
-//    axios.put(BASE_API_URL + "/api/posts/comments/" + comment.id, data, {
-//     headers: {
-//       'x-access-token': localStorage.getItem("token")
-//     }
-//     })
-//    .then((response)=> {
-   
-//     setCommentContent(response.data.comment.content)
-//     setEdit(false)
-//    })
-//    .catch((error)=> {
-//     console.log(error)
-//    })
 
-//     }
-
-const postForm = () => {
-    console.log("BLAH")
-}
     
     
     const formSchema = Yup.object({
@@ -56,22 +35,22 @@ const postForm = () => {
     
     return (
         <div className='comment-form'>
-        <Formik initialValues={formInitValues} validationSchema={formSchema} onSubmit={postForm}>
+        <Formik initialValues={formInitValues} validationSchema={formSchema} onSubmit={editPost}>
             <Form>
             <ErrorMessage name={"content"} component="div" className="text-danger " />
             <Field
 
-                            className={"custom-form edit-post mt-5"}
+                            className={"custom-form edit-post mt-1"}
                             id={"formId"}
                             name={"content"}
                              as={"textarea"}
                             rows={15}
                             style={{ lineHeight: 1 }}
-                            defaultValue={""}
+                            defaultValue={value}
           
                         />
                         <br></br>
-                        <button className='comment-btn m-1 ' type='submit'>{"submit"}</button>
+                        <button className='comment-btn edit-btn' type='submit'>{"submit"}</button>
                         {/* <button onClick={cancel} className='comment-btn m-1 ' >{"cancel"}</button> */}
             </Form>
         </Formik>
