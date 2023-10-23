@@ -56,6 +56,7 @@ function Post(props) {
   const [isModerator, setIsModerator] = useState();
 
   useEffect(() => {
+    
     setPostContent(content);
 
 

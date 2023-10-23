@@ -28,6 +28,8 @@ function Comments(props){
     const userId = localStorage.getItem("userId");
     const [toBeDeleted, setToBeDeleted] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
+    const user = localStorage.getItem('username');
+
     //const [commentOrder, setCommentOrder] = useState(order)
     
  
@@ -153,7 +155,7 @@ function Comments(props){
                 <span onClick={load} className=" comment-small" ><span className="comment-links">load more comments</span> <span>({commentReplies} replies)</span></span>
                 } 
                 
-                {comment.isActive && !isLocked && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
+                {comment.isActive && !isLocked && user && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
 
 
                 {(comment.isActive && isUser)&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
