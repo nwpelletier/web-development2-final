@@ -44,6 +44,7 @@ function SubcrudditDisplay({ subcrudditName, sortingType, }) {
           addSuffix: true,
         })}
         isMod={isMod}
+        isUserPage={false}
 
 
       />

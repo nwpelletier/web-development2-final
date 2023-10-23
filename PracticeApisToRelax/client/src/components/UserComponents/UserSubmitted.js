@@ -54,6 +54,7 @@ function UserSubmitted(user) {
           addSuffix: true,
         })}
         isMod={isMod}
+        isUserPage={true}
 
 
       />

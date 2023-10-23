@@ -54,6 +54,7 @@ function UserComments(user) {
           addSuffix: true,
         })}
         isMod={isMod}
+        isUserPage={true}
 
 
       />

@@ -26,7 +26,8 @@ function Post(props) {
     isStickied,
     isLocked,
     isModeratorSingle,
-    isMod
+    isMod,
+    isUserPage
   } = props;
   const currentPath = useLocation().pathname;
   const contentType = useContext(ContentTypeContext);
@@ -39,6 +40,7 @@ function Post(props) {
   const user = localStorage.getItem('username');
   const role = localStorage.getItem('userRole');
   const [moderators, setModerators] = useState();
+  
 
   const [postContent, setPostContent] = useState(content);
 
@@ -57,16 +59,18 @@ function Post(props) {
     console.log(handle + " HANDLE")
     console.log(SubcrudditName + " subcrudditname")
     console.log(1 + "SUBNAME: " + sub)
+    console.log(isUserPage)
 
 
     const userId = localStorage.getItem('userId');
     console.log(userId + "userId")
-    if (!userId) {
+    if (!userId || isUserPage ) {
       
       setIsModerator(false);
       return;
     }
-    if (sub) {
+    if (!isUserPage) {
+      
       console.log("WHYYYYY")
       console.log(2)
       if (currentPath !== '/c/all') {
@@ -87,24 +91,24 @@ function Post(props) {
     }
 
     // Skip this if we are on /c/all
-    if (subName) {
-      if (currentPath !== '/c/all' || subName) {
-        axios
-          .get(BASE_API_URL + '/api/moderators/sub/' + subName)
-          .then((response) => {
-            let modObj = response.data;
-            const modArray = [];
-            for (let mod of modObj) {
-              modArray.push(mod.username);
-            }
-            setModerators(modArray);
-            console.log(moderators[0]);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    }
+    // if (isUserPage) {
+    //   if (currentPath !== '/c/all' || subName) {
+    //     axios
+    //       .get(BASE_API_URL + '/api/moderators/sub/' + subName)
+    //       .then((response) => {
+    //         let modObj = response.data;
+    //         const modArray = [];
+    //         for (let mod of modObj) {
+    //           modArray.push(mod.username);
+    //         }
+    //         setModerators(modArray);
+    //         console.log(moderators[0]);
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
+    // }
     //GOT MODERATOR NAMES
 
     let newPath = currentPath;
@@ -147,7 +151,6 @@ function Post(props) {
 
   const toggleSticky = async () => {
     try {
-      console.log('in try');
       const token = localStorage.getItem('token');
       const response = await axios.patch(
         BASE_API_URL + '/api/posts/sticky/' + id,
@@ -271,7 +274,35 @@ function Post(props) {
                 {children_count} comment{children_count === 1 ? '' : 's'}
               </a>
 
-              {/* Rest of the code */}
+              {isModerator && !isPostStickied &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleSticky()} className='stickied-true'>sticky post</span></>}
+
+
+            {isModerator && isPostStickied &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleSticky()} className='stickied-true'>unsticky post</span></>}
+
+
+
+            {isModerator === true && !isPostLocked &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleLock()} className='locked-true'>lock post</span></>}
+
+
+
+            {isModerator === true && isPostLocked &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
+
+            {(isModerator || user === username || role === "admin") &&
+              <> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span onClick={() => { setToBeDeleted(true) }} className="">delete</span></>
+            }
+            { toBeDeleted &&            <>   <span className="text-danger ms-2">Are you sure?</span>
+                <span onClick={destroy} className="fw-bolder ms-1">Yes</span>
+                <span className="text-danger ms-1">/</span>
+                <span onClick={() => setToBeDeleted(false)} className="fw-bolder ms-1">No</span></>}
             </div>
           </div>
         )}
@@ -294,7 +325,7 @@ function Post(props) {
             )}
 
             {content && (
-              <>
+              <> 
                 <hr className={`stickied-${isPostStickied}`} />
                 <div className="post-content col-10">
                   {postType === 'image' ? (
@@ -305,9 +336,15 @@ function Post(props) {
                 </div>
               </>
             )}
+
             <div className="post-links">
-              {children_count} comment{children_count === 1 ? '' : 's'}
-            </div>
+            comment{children_count === 1 ? '' : 's'} 
+           
+
+          
+          
+          
+          </div>
           </div>
         )}
       </div>

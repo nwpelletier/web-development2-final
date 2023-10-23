@@ -11,37 +11,37 @@ function CreateComment(props) {
   const { id, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, replyToComment } = props
   const currentPath = useLocation().pathname;
   const formInitValues = {
-    UserId: 1,
     content: "",
   }
   const [defaultVal, setDefaultVal] = useState("")
   const postForm = (data, { resetForm }) => {
-    if (value) {
-      // Handle the case when 'value' is truthy (if needed)
-    } else {
-      console.log(data);
-      axios
-        .post(BASE_API_URL + `/api/posts/comment/${id}`, data, {
-          headers: {
-            'x-access-token': localStorage.getItem("token")
-          }
-        })
-        .then((response) => {
-          setReply(false);
-          setNewComment(response.data);
-          if (replyToComment) {
-            setNestedReply(true);
-            setCommentReplies(commentReplies + 1);
-          }
+      if (value) {
+        // Handle the case when 'value' is truthy (if needed)
+      } else {
+        console.log(data);
+        axios
+          .post(BASE_API_URL + `/api/posts/comment/${id}`, data, {
+            headers: {
+              'x-access-token': localStorage.getItem("token")
+            }
+          })
+          .then((response) => {
+            setReply(false);
+            setNewComment(response.data);
+            if (replyToComment) {
+              setNestedReply(true);
+              setCommentReplies(commentReplies + 1);
+            }
 
-          // After successful submission, reset the form
-          resetForm({ values: "" });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+            // After successful submission, reset the form
+            resetForm({values: ""});
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    };
+
 
 
 
