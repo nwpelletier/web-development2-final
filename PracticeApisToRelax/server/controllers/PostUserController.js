@@ -27,27 +27,7 @@ exports.findAllActivePostsCommentsByUser = async (req, res) => {
         attributes: ['subcrudditName']
       }]
     })
-    // for (let post of activePosts) {
-    //   console.log("FINDALL", originalPost);
-    //   if (post.postType === "comment") {
-            
-    //     const originalPost = await Posts.findByPk(post.postId, {
-    //       include: [{
-    //         model: Users,
-    //         attributes: ['username']
-    //       }]
-    //     })
-    //     console.log("FINDALL", originalPost);
-    //     const originalObj = {
-    //       id: originalPost.id,
-    //       title: originalPost.title,
-    //       username: originalPost.User.username
-
-    //     }
-    //     post.postId = originalObj
-           
-    //   }
-    // }
+   
     const returnObj = activePosts.map((post) => ({
       id: post.id,
       postId: post.postId,
@@ -64,6 +44,7 @@ exports.findAllActivePostsCommentsByUser = async (req, res) => {
       isStickied: post.isStickied,
       createdAt: post.createdAt,
       subcrudditName: post.Subcruddit.subcrudditName,
+      active:post.IsActive,
     }));
     res.status(200).send(returnObj);
 
