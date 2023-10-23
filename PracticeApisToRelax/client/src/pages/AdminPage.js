@@ -52,10 +52,9 @@ function AdminPage() {
   const [userId, setUserId] = useState(localStorage.getItem("token"));
   const [role, setRole] = useState("user");
   const [username, setUsername] = useState("user");
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     try {
-      const token = localStorage.getItem("token");
       const storedUserId = localStorage.getItem("userId");
       if (token) {
         setUserId(storedUserId);
@@ -128,13 +127,14 @@ function AdminPage() {
       <div className="alert alert-info">
         <div className="row">
           <div className="col-md-6">
-            Admin Page ---{" "}
-            <strong className="fs-4">{username.toUpperCase()}</strong>
+          Admin Page {token ?" ---> ": ""}
+            <strong className="fs-4 fw-bolder">{token? username.toUpperCase(): ""}</strong>
           </div>
+
           <div className="col-md-6">
             <div className="d-flex justify-content-end">
               <button className="fs-6 btn float-end" onClick={userLogout}>
-                log out
+                {token ? "log out" : ""}
               </button>
               <button className="fs-6 btn float-end" onClick={navHome}>
                 HOME
@@ -146,19 +146,13 @@ function AdminPage() {
       <div className="container-fluid">
         {role !== "admin" ? (
           <>
-            <div
-              className="alert alert-warning alert-dismissible fade show"
-              role="alert"
-            >
-              <strong>Access Denied</strong>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="alert"
-                aria-label="Close"
+            <div className="text-center">
+              <div
+                className="alert alert-warning fade show col-md-12"
+                role="alert"
               >
-                <span aria-hidden="true">&times;</span>
-              </button>
+                <strong className="fs-3">Access Denied</strong>
+              </div>
             </div>
           </>
         ) : (
@@ -195,9 +189,7 @@ function AdminPage() {
                       >
                         {user.isActive ? "Active" : "Inactive"}
                       </td>
-                      <td  onClick={
-                        ()=>handleLinks(user.id)
-                        }>{user.role}</td>
+                      <td onClick={() => handleLinks(user.id)}>{user.role}</td>
                       <td>
                         <div className="row">
                           <div className="col-md-6  d-flex justify-content-center">

@@ -32,14 +32,55 @@ function AdminUserPosts() {
   const navAdmin = () => {
     navigate("/admin");
   }
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const userLogout = () => {
+    localStorage.removeItem("username");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate(`/c/all`);
+  };
+
+  const navHome = () => {
+    navigate(`/c/all`);
+  };
+
+  const token = localStorage.getItem("token");
 
   return (
+    <>
+      <div className="alert alert-info">
+        <div className="row">
+          <div className=" col-md-6 text-center pt-2">
+          All Posts and Comments
+            
+          </div>
+
+          <div className="col-md-4">
+            <div className="d-flex justify-content-end">
+              <button className="fs-6 btn float-end" onClick={userLogout}>
+                {token ? "log out" : ""}
+              </button>
+              <button className="fs-6 btn float-end" onClick={navHome}>
+                HOME
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     <div className="container">
       {lengthData < 0 ? (
         <p>Loading...</p>
       ) : username ? (
-        <>
-          <h1>{username}'s Posts</h1>
+            <>
+              <div className="row">
+                <div className="col-md-12 text-center">
+                <h1 className="bg-dark text-light">{username}'s Posts</h1>
+                </div>
+              </div>
+          
           <table className="table table-striped">
             <thead>
               <tr>
@@ -76,6 +117,9 @@ function AdminUserPosts() {
         </div>
       )}
     </div>
+    
+    
+    </>
   );
 }
 
