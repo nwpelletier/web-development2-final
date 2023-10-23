@@ -286,6 +286,7 @@ function Post(props) {
 )}
 
             <div className="post-links">
+              {currentPath==(`/c/${subName}`) ? (
               <a
                 href={`${currentPath.replace(
                   '/hot',
@@ -298,6 +299,9 @@ function Post(props) {
               >
                 {children_count} comment{children_count === 1 ? '' : 's'}
               </a>
+              ) : (
+                <span>{children_count} comment{children_count === 1 ? '' : 's'}</span>
+              )}
 
               {isModerator && !isPostStickied &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
