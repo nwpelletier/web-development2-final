@@ -697,7 +697,7 @@ module.exports = {
     editPost: async (req, res) => {
         try {
             const postId = req.params.id
-            const editedPost = req.body.content
+            const editedPost = req.body
             userId = req.UserId
 
              if (!validator.isLength(editedPost.content, {min: 2, max:50000})){
