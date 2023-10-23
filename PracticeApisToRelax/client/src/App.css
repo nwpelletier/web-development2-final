@@ -276,18 +276,19 @@ RIGHTNAV
 
 .upvote,
 .upvote-color {
-  top: 0;
-  left: 30%;
+  top: -10%;
+  left: 28%;
 }
 
 .downvote,
 .downvote-color {
-  top: 60%;
-  left: 30%;
+  top: 65%;
+  left: 28%;
 }
 
 .post-container {
-  min-height:80px;
+  min-height:100px;
+  padding-top:10px;
   margin-left: 1%;
   margin-bottom: 1%;
   border: 1px solid rgb(183, 195, 209);
@@ -366,7 +367,7 @@ RIGHTNAV
 }
 
 .post-title {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 500;
   color: #0c17b0;
 }
