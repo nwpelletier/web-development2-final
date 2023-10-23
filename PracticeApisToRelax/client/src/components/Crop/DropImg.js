@@ -6,6 +6,7 @@ import cardImage from '../../assets/card-image.svg';
 function DropImg({ open, warning, title, name, formId, formikProps }) {
   const [imageData, setImageData] = useState("");
   const [imgValue, setImgValue] = useState("")
+  const [boxContent, setBoxContent] = useState("Drag and drop image here")
 
 
   const onDrop = (acceptedFiles) => {
@@ -22,6 +23,8 @@ function DropImg({ open, warning, title, name, formId, formikProps }) {
         console.log(file)
         formikProps.setFieldValue("content", file);
         setImgValue(file); 
+        setBoxContent("Your image was successfully uploaded")
+        
       };
   
       reader.readAsArrayBuffer(file);
@@ -56,9 +59,10 @@ function DropImg({ open, warning, title, name, formId, formikProps }) {
         <div className="text-center">
           <div className="dropzone-content">
           <img src={cardImage} alt="Your Icon" width="auto" height="80%" className="m-2 icon-grey" />
-            Drag and drop image here
+            {boxContent}
             
           </div>
+          {imageData && <span>Image has been uploaded</span>}
           <ErrorMessage name={name} component="div" className='text-danger' />
           <Field
             id={formId}
@@ -71,7 +75,7 @@ function DropImg({ open, warning, title, name, formId, formikProps }) {
     
             
           />
-
+        
         </div>
       </div>
     </div>
