@@ -33,6 +33,7 @@ function LowerHalf() {
 
 
   useEffect(() => {
+    getKarma();
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
