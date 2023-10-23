@@ -228,10 +228,10 @@ function Post(props) {
         </div>
 
         {/* Alex: Single post view */}
-        {currentPath !== '/userpage' && (
+        {!isUserPage && (
           <div className={`post-content-container col-md-10 col-sm-5 row `}>
             <div className="post-title">
-              {currentPath==(`/c/${subName}`) ? (
+              {subName ? (
                 <a
                   href={`${currentPath.replace(
                     '/hot',
@@ -245,13 +245,13 @@ function Post(props) {
                   {title}
                 </a>
               ) : (
-                <span>{title}</span>
+                <span >{title}</span>
               )}
             </div>
             {currentPath.includes('/c/all') ? (
               <div className="post-submission-info">
                 {' '}
-                {createdAt} by {username} to Cruddit{' '}
+                {createdAt} by {username} to {subName}{' '}
               </div>
             ) : (
               <div className="post-submission-info">
@@ -392,7 +392,13 @@ function Post(props) {
           </div>
         )}
       </div>
-
+      {content && !isUserPage && <><hr className='mt-2' ></hr>
+      <div className='ms-5 comment-sorter' >
+     
+      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" }`}>hot</span>
+      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
+      
+      </div></>}
 
 
       {content && !isPostLocked && (userRole === "admin" || userRole === "user") ? (
@@ -406,13 +412,7 @@ function Post(props) {
       {content && isPostLocked && (
         <div className="ms-3">Comments have been locked</div>
       )}
-      {content && !isUserPage && <><hr className='mt-2' ></hr>
-      <div className='m-2 comment-sorter' >
-      <span>comments sorted by:</span>
-      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" } ms-1`}>hot</span>
-      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
-      
-      </div></>}
+
       {newComment && (
         
         <>
