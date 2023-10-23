@@ -14,23 +14,25 @@ export const formInitValues = {
     subcrudditName: "",
     wiki: "",
 }
-
+ 
 export const postForm = (data) => {
     console.log(data)
     data.UserId = 1
-    axios
+    return axios
     .post(BASE_API_URL + `/api/subcruddits/` , data, {
     headers: {
       'x-access-token': localStorage.getItem("token")
     }
     })
     .then((response) => {
-      console.log(response)
-      return response
+      response.data.type = "subcruddit";
+      console.log("I AM POSTING")
+      return response.data
+    
     })
     .catch((error) => {
       console.log(error);
-      throw error
+     
     });
 }
 
