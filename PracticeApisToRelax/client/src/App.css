@@ -777,3 +777,7 @@ a {
   border: #115391 1px solid;
   font-weight: 600;
 }
+
+.edit-post {
+  width: 60%;
+}

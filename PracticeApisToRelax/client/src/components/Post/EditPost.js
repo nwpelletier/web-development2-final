@@ -7,7 +7,7 @@ import { BASE_API_URL } from '../../utils/constant';
 import Alert from "react-bootstrap/Alert"; 
 
 
-function CommentPlay(props) {
+function EditPost(props) {
    // const {comment, value, setReply, order, setNewComment, setNestedReply, setCommentReplies, commentReplies, setEdit, setCommentContent} = props
     const formInitValues = {
       
@@ -88,4 +88,4 @@ const postForm = () => {
 
 
 }
-export default CommentPlay;
+export default EditPost;

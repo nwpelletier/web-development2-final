@@ -25,6 +25,7 @@ function Comments(props){
     const [show, setShow] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const role = localStorage.getItem("userRole");
+    const userId = localStorage.getItem("userId");
     const [toBeDeleted, setToBeDeleted] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
     const [commentOrder, setCommentOrder] = useState(order)
@@ -38,16 +39,16 @@ function Comments(props){
   }
  
     useEffect(() => {
-   
-        const userId = parseInt(localStorage.getItem("userId"), 10);
-       if (userId === comment.UserId) {
+        
+        const userIdentity = parseInt(userId);
+       if (userIdentity === comment.UserId) {
         setIsUser(true)
        } else {
         setIsUser(false)
        }
-        if (userId) {
+        if (userIdentity) {
             axios
-            .get(BASE_API_URL + `/api/votes/${comment.id}/${userId}`)
+            .get(BASE_API_URL + `/api/votes/${comment.id}/${userIdentity}`)
             .then((response) => {
               setUserLiked(response.data);
             })
@@ -139,6 +140,7 @@ function Comments(props){
                         <div className="col-12 comment-small">
                         <span onClick={toggleShow} className="comment-info mx-1 " >[-]</span>
                             <span className="comment-info mx-1 comment-links" >{comment.username}</span>
+                            <span className="comment-info mx-1 comment-links" ></span>
                             {moderators && moderators.includes(comment.username, 0) && <span className='mx-1 stickied-true' >* moderator *</span>}
                             <span className="comment-info mx-1" >{commentPoints > 0 ? commentPoints : 0} points</span>
                             <span className="comment-info mx-1" >{format(new Date(comment.createdAt), "MM/dd/yyyy")}</span>
@@ -154,7 +156,7 @@ function Comments(props){
                 {comment.isActive && !isLocked && <span onClick={replyToComment} className="comment-small post-action-hover ms-1 fw-bolder">reply</span>}
 
 
-                {(comment.isActive && isUser )&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
+                {(comment.isActive && isUser)&& <span onClick={editComment} className="comment-small post-action-hover ms-1">edit</span>}
 
 
                 {(comment.isActive && (isUser || isModerator || role==='admin' ) && !isDeleted ) && 

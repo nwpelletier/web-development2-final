@@ -7,6 +7,7 @@ import txtThumb from '../../assets/comment-svgrepo-com.svg';
 import imgThumb from '../../assets/imageclr-svgrepo-com.svg';
 import { BASE_API_URL } from '../../utils/constant';
 import { ModContext } from '../../pages/Subcruddit';
+import EditPost from './EditPost';
 import CreateComment from './CreateComment';
 import Comments from './Comments';
 import PostComments from './PostComments';
@@ -40,6 +41,7 @@ function Post(props) {
   const user = localStorage.getItem('username');
   const role = localStorage.getItem('userRole');
   const [moderators, setModerators] = useState();
+  const [setToEdit, setSetToEdit] = useState(false)
 
 
   const [postContent, setPostContent] = useState(content);
@@ -95,7 +97,6 @@ function Post(props) {
             const modArray = [];
             for (let mod of modObj) {
               modArray.push(mod.username);
-              console.log(mod.username)
             }
             setModerators(modArray);
             
@@ -124,9 +125,8 @@ function Post(props) {
   }, [setPostLiked]);
 
   const toggleLock = async () => {
-    console.log('locking?');
     try {
-      console.log('in try');
+      
       const token = localStorage.getItem('token');
       const response = await axios.patch(
         BASE_API_URL + '/api/posts/lock/' + id,
@@ -137,8 +137,7 @@ function Post(props) {
           }
         }
       );
-      console.log(response);
-      console.log(response.data.isLocked);
+
       setIsPostLocked(response.data.isLocked);
     } catch (error) {
       console.log(error);
@@ -157,8 +156,7 @@ function Post(props) {
           }
         }
       );
-      console.log(response);
-      console.log(response.data.isStickied);
+
       setIsPostStickied(response.data.isStickied);
     } catch (error) {
       console.log(error);
@@ -174,7 +172,6 @@ function Post(props) {
         }
       })
       .then((response) => {
-        console.log(response.data.isActive);
         if (!response.data.isActive) {
           setToBeDeleted(false);
           setPostContent('deleted content');
@@ -184,6 +181,11 @@ function Post(props) {
         console.log(error);
       });
   };
+
+  const editPost = (data) => {
+    console.log(data)
+    
+  }
 
   return (
     <div>
@@ -247,20 +249,23 @@ function Post(props) {
               </div>
             )}
 
-            {content && (
-              <>
-                <hr className={`stickied-${isPostStickied}`} />
-                <div className="post-content col-10">
-                  {postType === 'image' ? (
-                    <a className="main-image-post" href={content}>
-                      <img src={content} alt="Image Content" />
-                    </a>
-                  ) : (
-                    <p>{postContent}</p>
-                  )}
-                </div>
-              </>
-            )}
+{content && (
+  <>
+    <hr className={`stickied-${isPostStickied}`} />
+    <div className="post-content col-10">
+      {postType === 'image' ? (
+        <a className="main-image-post" href={content}>
+          <img src={content} alt="Image Content" />
+        </a>
+      ) : setToEdit ? (
+        <p>editing</p>
+      ) : (
+        <p>{postContent}</p>
+      )}
+    </div>
+  </>
+)}
+
             <div className="post-links">
               <a
                 href={`${currentPath.replace(
@@ -295,6 +300,15 @@ function Post(props) {
               {isModerator === true && isPostLocked &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
                   <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
+
+              {(user === username ) && postType === "text" && !setToEdit && content &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => { setSetToEdit(true) }} className="">edit</span></>
+              }
+               {(user === username ) && postType === "text" && setToEdit && content &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => { setSetToEdit(false) }} className="">cancel edit</span></>
+              }
 
               {(isModerator || user === username || role === "admin") &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
