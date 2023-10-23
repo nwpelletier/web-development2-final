@@ -84,6 +84,18 @@ RIGHTNAV
   padding-top: 10px;
   padding-bottom: 10px;
   width: 100%;
+  height:90px;
+  border-top: 1px solid rgb(92, 106, 122);
+  border-bottom: 1px solid rgb(92, 106, 122);
+}
+
+.lower-half-user {
+  background-color: rgb(199, 223, 244);
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  height:54px;
   border-top: 1px solid rgb(92, 106, 122);
   border-bottom: 1px solid rgb(92, 106, 122);
 }
@@ -96,7 +108,7 @@ RIGHTNAV
   position: absolute;
   bottom: 0px;
   left: 12%;
-  width: 175px;
+  width: 500px;
   height: 29px;
   z-index: 0;
   padding-right: 20px;
@@ -106,6 +118,7 @@ RIGHTNAV
 .tab-option1 {
   padding-top: 3px;
   padding-left: 7px;
+  width:50px;
   margin-top: 0px;
   background-color: rgb(230, 243, 241);
   border-top-right-radius: 2px;
@@ -116,6 +129,8 @@ RIGHTNAV
 .tab-option2 {
   padding-top: 3px;
   padding-left: 5px;
+  margin-left:5px;
+  width:50px;
   margin-top: 0px;
   background-color: rgb(230, 243, 241);
   border-top-right-radius: 2px;

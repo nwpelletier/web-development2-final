@@ -33,7 +33,6 @@ function LowerHalf() {
 
 
   useEffect(() => {
-    getKarma();
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
@@ -76,18 +75,19 @@ function LowerHalf() {
     setModalContent(content);
   };
 
+
   return (
 
     // Temp formatting! Fix after functionality
-    <div className="lower-half row">
-      <div className="current-subcruddit my-3 mx-3 col-3" onClick={navigateSubcrudRoot}>
+    <div className={`${crudditUserPage ? 'lower-half-user' : 'lower-half row'}`}>
+      <div className="current-subcruddit my-3 mx-3 col-6" onClick={navigateSubcrudRoot}>{currentPath}
       </div>
       {crudditUserPage ? null : (
         <div className="hot-new-tab row">
-          <span className="col-4 gx-2 tab-option1" onClick={navigateHot}>
+          <span className="offset-5 col-2 gx-2 tab-option1" onClick={navigateHot}>
             hot
           </span>
-          <span className="col-4 gx-2 offset-1 tab-option2" onClick={navigateNew}>
+          <span className="col-2 tab-option2" onClick={navigateNew}>
             new
           </span>
         </div>
