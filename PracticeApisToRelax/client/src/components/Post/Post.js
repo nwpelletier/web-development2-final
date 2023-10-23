@@ -7,6 +7,7 @@ import txtThumb from '../../assets/comment-svgrepo-com.svg';
 import imgThumb from '../../assets/imageclr-svgrepo-com.svg';
 import { BASE_API_URL } from '../../utils/constant';
 import { ModContext } from '../../pages/Subcruddit';
+import EditPost from './EditPost';
 import CreateComment from './CreateComment';
 import Comments from './Comments';
 import PostComments from './PostComments';
@@ -40,6 +41,7 @@ function Post(props) {
   const user = localStorage.getItem('username');
   const role = localStorage.getItem('userRole');
   const [moderators, setModerators] = useState();
+  const [setToEdit, setSetToEdit] = useState(false)
 
 
   const [postContent, setPostContent] = useState(content);
@@ -61,24 +63,13 @@ function Post(props) {
 
     setSubName(handle ? handle : SubcrudditName)
     const sub = handle ? handle : SubcrudditName;
-    console.log(handle + " HANDLE")
-    console.log(SubcrudditName + " subcrudditname")
-    console.log(1 + "SUBNAME: " + sub)
-    console.log(isUserPage)
-
 
     const userId = localStorage.getItem('userId');
-    console.log(userId + "userId")
-    if (!userId || isUserPage) {
-
+    if (!userId || isUserPage || sub ==="all" ) {
       setIsModerator(false);
-      return;
     }
-    if (!isUserPage) {
-
-      console.log("WHYYYYY")
-      console.log(2)
-      if (currentPath !== '/c/all') {
+    else { 
+    
         axios
           .get(BASE_API_URL + `/api/moderators/ismod/${sub}`, {
             headers: {
@@ -92,29 +83,30 @@ function Post(props) {
           .catch((error) => {
             console.log(error);
           });
-      }
+      
     }
 
     // Skip this if we are on /c/all
-    // if (isUserPage) {
-    //   if (currentPath !== '/c/all' || subName) {
-    //     axios
-    //       .get(BASE_API_URL + '/api/moderators/sub/' + subName)
-    //       .then((response) => {
-    //         let modObj = response.data;
-    //         const modArray = [];
-    //         for (let mod of modObj) {
-    //           modArray.push(mod.username);
-    //         }
-    //         setModerators(modArray);
-    //         console.log(moderators[0]);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    //   }
-    // }
-    //GOT MODERATOR NAMES
+
+
+    if (!isUserPage || sub === "all") {
+        axios
+          .get(BASE_API_URL + '/api/moderators/sub/' + sub)
+          .then((response) => {
+            let modObj = response.data;
+            const modArray = [];
+            for (let mod of modObj) {
+              modArray.push(mod.username);
+            }
+            setModerators(modArray);
+            
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      
+    }
+   // GOT MODERATOR NAMES
 
     let newPath = currentPath;
     if (currentPath.endsWith('/hot')) {
@@ -133,9 +125,8 @@ function Post(props) {
   }, [setPostLiked]);
 
   const toggleLock = async () => {
-    console.log('locking?');
     try {
-      console.log('in try');
+      
       const token = localStorage.getItem('token');
       const response = await axios.patch(
         BASE_API_URL + '/api/posts/lock/' + id,
@@ -146,8 +137,7 @@ function Post(props) {
           }
         }
       );
-      console.log(response);
-      console.log(response.data.isLocked);
+
       setIsPostLocked(response.data.isLocked);
     } catch (error) {
       console.log(error);
@@ -166,8 +156,7 @@ function Post(props) {
           }
         }
       );
-      console.log(response);
-      console.log(response.data.isStickied);
+
       setIsPostStickied(response.data.isStickied);
     } catch (error) {
       console.log(error);
@@ -183,7 +172,6 @@ function Post(props) {
         }
       })
       .then((response) => {
-        console.log(response.data.isActive);
         if (!response.data.isActive) {
           setToBeDeleted(false);
           setPostContent('deleted content');
@@ -193,6 +181,11 @@ function Post(props) {
         console.log(error);
       });
   };
+
+  const editPost = (data) => {
+    console.log(data)
+    
+  }
 
   return (
     <div>
@@ -249,26 +242,30 @@ function Post(props) {
             ) : (
               <div className="post-submission-info">
                 Posted {createdAt} by {username}{' '}
+                {moderators && moderators.includes(username, 0) && <span className='mx-2 stickied-true' >* moderator *</span>}
                 {isPostStickied && (
                   <span className="stickied-true">Stickied Post</span>
                 )}{' '}
               </div>
             )}
 
-            {content && (
-              <>
-                <hr className={`stickied-${isPostStickied}`} />
-                <div className="post-content col-10">
-                  {postType === 'image' ? (
-                    <a className="main-image-post" href={content}>
-                      <img src={content} alt="Image Content" />
-                    </a>
-                  ) : (
-                    <p>{postContent}</p>
-                  )}
-                </div>
-              </>
-            )}
+{content && (
+  <>
+    <hr className={`stickied-${isPostStickied}`} />
+    <div className="post-content col-10">
+      {postType === 'image' ? (
+        <a className="main-image-post" href={content}>
+          <img src={content} alt="Image Content" />
+        </a>
+      ) : setToEdit ? (
+        <p>editing</p>
+      ) : (
+        <p>{postContent}</p>
+      )}
+    </div>
+  </>
+)}
+
             <div className="post-links">
               <a
                 href={`${currentPath.replace(
@@ -303,6 +300,15 @@ function Post(props) {
               {isModerator === true && isPostLocked &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
                   <span onClick={() => toggleLock()} className='locked-true'>unlock post</span></>}
+
+              {(user === username ) && postType === "text" && !setToEdit && content &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => { setSetToEdit(true) }} className="">edit</span></>
+              }
+               {(user === username ) && postType === "text" && setToEdit && content &&
+                <> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <span onClick={() => { setSetToEdit(false) }} className="">cancel edit</span></>
+              }
 
               {(isModerator || user === username || role === "admin") &&
                 <> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -363,6 +369,15 @@ function Post(props) {
           </div>
         )}
       </div>
+      {content && !isUserPage && <><hr className='mt-2' ></hr>
+      <div className='ms-5 comment-sorter' >
+     
+      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" }`}>hot</span>
+      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
+      
+      </div></>}
+
+
       {content && !isPostLocked ? (
         <CreateComment
           id={id}
@@ -376,6 +391,7 @@ function Post(props) {
       )}
 
       {newComment && (
+        
         <>
           <Comments
             comment={newComment}
@@ -383,17 +399,24 @@ function Post(props) {
             points={1}
             isLocked={isPostLocked}
             isModerator={isModerator}
+            mmoderators={moderators}
           />
         </>
       )}
 
-      {content && currentPath !== '/userpage' && (
+      {content && currentPath !== '/userpage' && commentOrder &&  !isUserPage && (
         <>
+
+
+        
           <PostComments
             order={commentOrder}
             postId={id}
             isLocked={isPostLocked}
             isModerator={isModerator}
+            moderators={moderators}
+            setCommmentOrder={setCommmentOrder}
+            commentOrder={commentOrder}
           />
         </>
       )}

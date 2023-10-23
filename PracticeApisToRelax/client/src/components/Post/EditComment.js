@@ -3,6 +3,8 @@ import {Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import Comments from './Comments';
 import PostComments from './PostComments';
+import { BASE_API_URL } from '../../utils/constant';
+import Alert from "react-bootstrap/Alert"; 
 // initialise
 //yup 
 // search default value 
@@ -16,8 +18,22 @@ function EditComment(props) {
     
     const postForm = (data) => {
     console.log(data) 
-        setCommentContent(data.content)
-        setEdit(false)
+   // .put("/comments/:id"
+   data.content = "";
+   axios.put(BASE_API_URL + "/api/posts/comments/" + comment.id, data, {
+    headers: {
+      'x-access-token': localStorage.getItem("token")
+    }
+    })
+   .then((response)=> {
+   
+    setCommentContent(response.data.comment.content)
+    setEdit(false)
+   })
+   .catch((error)=> {
+    console.log(error)
+   })
+
     }
 
     
