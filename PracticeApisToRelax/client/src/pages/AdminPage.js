@@ -47,7 +47,7 @@ function AdminPage() {
       });
   };
 
-// authenticate
+  // authenticate
 
   const [userId, setUserId] = useState(localStorage.getItem("token"));
   const [role, setRole] = useState("user");
@@ -118,7 +118,6 @@ function AdminPage() {
   const [posts, setPosts] = useState([]);
 
   const handleLinks = (userIdLink) => {
-    
     console.log("LINKS ADMIN", userIdLink);
 
     navigate(`/admin/posts/${userIdLink}`);
@@ -180,60 +179,60 @@ function AdminPage() {
                 </thead>
                 <tbody>
                   {users.map((user, index) => (
-                    
-                      <tr
-                      onClick={
-                        ()=>handleLinks(user.id)
+                    <tr className="justify-content-center" key={user.id}>
+                      <td onClick={() => handleLinks(user.id)} scope="row">
+                        {index + 1}
+                      </td>
+                      <td onClick={() => handleLinks(user.id)}>
+                        {user.username}
+                      </td>
+                      <td onClick={() => handleLinks(user.id)}>{user.email}</td>
+                      <td
+                        onClick={() => handleLinks(user.id)}
+                        className={
+                          user.isActive ? "text-success" : "text-danger"
                         }
-                        className="justify-content-center"
-                        key={user.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{user.username}</td>
-                        <td>{user.email}</td>
-                        <td
-                          className={
-                            user.isActive ? "text-success" : "text-danger"
-                          }
-                        >
-                          {user.isActive ? "Active" : "Inactive"}
-                        </td>
-                        <td>{user.role}</td>
-                        <td>
-                          <div className="row">
-                            <div className="col-md-6  d-flex justify-content-center">
-                              <button
-                                className={
-                                  user.isActive
-                                    ? "btn btn-danger"
-                                    : "btn btn-success"
-                                }
-                                onClick={() => handleActive(user.id)}
-                              >
-                                {user.isActive ? "Delete" : "Restore"}
-                              </button>
-                            </div>
+                      >
+                        {user.isActive ? "Active" : "Inactive"}
+                      </td>
+                      <td  onClick={
+                        ()=>handleLinks(user.id)
+                        }>{user.role}</td>
+                      <td>
+                        <div className="row">
+                          <div className="col-md-6  d-flex justify-content-center">
+                            <button
+                              className={
+                                user.isActive
+                                  ? "btn btn-danger"
+                                  : "btn btn-success"
+                              }
+                              onClick={() => handleActive(user.id)}
+                            >
+                              {user.isActive ? "Delete" : "Restore"}
+                            </button>
+                          </div>
 
-                            <div className="col-md-6 col-sm-12 d-flex justify-content-center">
-                              <button
-                                className={
-                                  user.role === "admin"
-                                    ? "btn btn-info"
-                                    : "btn btn-warning"
-                                }
-                                onClick={() => handleRole(user.id)}
-                              >
-                                {" "}
-                                {user.role === "admin" ? "User" : "Admin"}
-                              </button>
-                            </div>
+                          <div className="col-md-6 col-sm-12 d-flex justify-content-center">
+                            <button
+                              className={
+                                user.role === "admin"
+                                  ? "btn btn-info"
+                                  : "btn btn-warning"
+                              }
+                              onClick={() => handleRole(user.id)}
+                            >
+                              {" "}
+                              {user.role === "admin" ? "User" : "Admin"}
+                            </button>
+                          </div>
 
-                            {/* <div className="col-md-4 d-flex justify-content-center">
+                          {/* <div className="col-md-4 d-flex justify-content-center">
                             <button className="btn btn-danger">Delete</button>
                           </div> */}
-                          </div>
-                        </td>
-                      </tr>
-                    
+                        </div>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
