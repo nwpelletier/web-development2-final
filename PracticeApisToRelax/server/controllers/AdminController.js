@@ -26,16 +26,16 @@ exports.findAllUsers = async (req, res) => {
 exports.toggleActive = async (req, res) => {
   //console.log("ADMIN CONTROLLER BODY",req.params)
   try {
+    const user = await Users.findByPk(req.params.id);
 
-  const user = await Users.findByPk(req.params.id);
+    if (!user) return res.status(404).send("User Not Found");
 
-  if (!user) return res.status(404).send("User Not Found");
+    user.isActive = !user.isActive;
 
-  user.isActive = !user.isActive;
-
-  user.save().then(() => {
-    return res.status(200).send({ id: user.id, isActive: user.isActive });
-  })} catch (error) {
+    user.save().then(() => {
+      return res.status(200).send({ id: user.id, isActive: user.isActive });
+    });
+  } catch (error) {
     //console.log("ERROR: ", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -47,26 +47,34 @@ exports.findOneUser = async (req, res) => {
     const user = await Users.findByPk(req.params.id);
 
     if (!user) return res.status(404).send("User Not Found");
-  
+
     res.status(200).send(user);
   } catch (error) {
     //console.log("ERROR: ", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-
-
 };
 
 exports.changeRole = async (req, res) => {
-  const user = await Users.findByPk(req.params.id);
+  try {
+    const user = await Users.findByPk(req.params.id);
 
-  if (!user) return res.status(404).send("User Not Found");
+    if (!user) return res.status(404).send("User Not Found");
 
-  user.role = user.role === "admin" ? "user" : "admin";
+    user.role = user.role === "admin" ? "user" : "admin";
 
-  user.save().then(() => {
-    return res.status(200).send({ id: user.id, role: user.role });
-  });
-
-  res.status(200).send(user);
+    user.save()
+      .then(() => {
+        // Successfully updated user's role
+        res.status(200).send({ id: user.id, role: user.role });
+      })
+      .catch((error) => {
+        // Handle database save error
+        return res.status(500).json({ message: "Internal Server Error" });
+      });
+  } catch (error) {
+    // Handle any other errors, e.g., database query error
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+

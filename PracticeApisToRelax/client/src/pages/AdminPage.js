@@ -4,8 +4,10 @@ import { BASE_API_URL } from "../utils/constant";
 
 function AdminPage() {
   const [users, setUsers] = useState([]);
+  const [userRole, setUserRole] = useState([]);
   const [error, setError] = useState(null);
 
+  // fetch all users
   useEffect(() => {
     axios
       .get(BASE_API_URL + `/api/admin`)
@@ -71,28 +73,30 @@ function AdminPage() {
     }
   }, []);
 
-  const handleRole = (userId) => {
+  const handleRole = async (userId) => {
     axios
-      .patch(BASE_API_URL + `/api/admin/admin/${userId}`)
-      .then((response) => {
-        // Update the active status in the local state
-        const updatedUsers = users.map((user) => {
-          if (user.id === userId) {
-            // Toggle the active status
-            user.role = !user.role;
-          }
-          return user;
-        });
-        setUsers(updatedUsers);
-      })
-      .catch((error) => {
-        if (error.response) {
-          setError(error.response);
-        } else {
-          setError("Unknown error occurred.");
+    .patch(BASE_API_URL + `/api/admin/role/${userId}`)
+    .then((response) => {
+      // Update the active status in the local state
+      const updatedUsers = users.map((user) => {
+        if (user.id === userId) {
+          // Toggle the active status
+          user.role = user.role === "admin" ? "user" : "admin";
         }
+        return user;
       });
+      setUserRole(updatedUsers);
+    })
+    .catch((error) => {
+      if (error.response) {
+        setError(error.response);
+      } else {
+        setError("Unknown error occurred.");
+      }
+    });
   };
+
+
 
   return (
     <>
@@ -118,9 +122,9 @@ function AdminPage() {
         ) : (
           <div className="row justify-content-center">
             <div className="col-md-8">
-              <table className="table table-hover table-light">
+              <table className="table table-responsive table-hover table-light">
                 <thead className="thead-dark">
-                  <tr>
+                  <tr className="col-md-8">
                     <th scope="col">#</th>
                     <th scope="col">USERNAME</th>
                     <th scope="col">EMAIL</th>
@@ -147,16 +151,16 @@ function AdminPage() {
                       <td>{user.role}</td>
                       <td>
                         <div className="row">
-                          <div className="col-md-3 d-flex justify-content-center">
+                          <div className="col-md-6  d-flex justify-content-center">
                             <button
-                              className="btn btn-success"
+                              className={user.isActive ? "btn btn-success": "btn btn-danger"}
                               onClick={() => handleActive(user.id)}
                             >
-                              {user.isActive ? "Inactive" : "Active"}
+                              {user.isActive ? "Delete" : "Restore"}
                             </button>
                           </div>
 
-                          <div className="col-md-5 d-flex justify-content-center">
+                          <div className="col-md-6 col-sm-12 d-flex justify-content-center">
                             <button
                               className={
                                 user.role === "admin"
@@ -165,14 +169,14 @@ function AdminPage() {
                               }
                               onClick={() => handleRole(user.id)}
                             >
-                              Switch to{" "}
+                              {" "}
                               {user.role === "admin" ? "User" : "Admin"}
                             </button>
                           </div>
 
-                          <div className="col-md-4 d-flex justify-content-center">
+                          {/* <div className="col-md-4 d-flex justify-content-center">
                             <button className="btn btn-danger">Delete</button>
-                          </div>
+                          </div> */}
                         </div>
                       </td>
                     </tr>
