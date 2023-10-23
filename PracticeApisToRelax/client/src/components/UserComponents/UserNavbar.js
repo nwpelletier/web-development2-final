@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserCommentsTab from "./UserCommentsTab";
 import UserOverview from "./UserOverview";
 import UserSubmitted from "./UserSubmitted";
-import Logo from "../../assets/reddit-logo.svg";
+import Logo from "../../assets/cruddit-side.png";
 
 function UserNav() {
   const [showComments, setShowComments] = useState(false);
@@ -32,7 +32,7 @@ function UserNav() {
       <div className="row">
         <div className="col-md-8">
           <ul className="nav nav-tabs">
-            {isAuthenticated && (
+            {/* {isAuthenticated && (
               <li className="nav-item d-flex align-items-center">
                 <a className="nav-link" href="/c/all">
                   <img
@@ -46,7 +46,7 @@ function UserNav() {
                   <strong className="text-dark me-3 fs-3">{username}</strong>
                 </div>
               </li>
-            )}
+            )} */}
             <li className="nav-item">
               <a
                 className={`nav-link ${showOverview ? "active" : ""}`}
