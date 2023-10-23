@@ -52,10 +52,10 @@ const navigate = useNavigate();
   const submit = async (data) => {
     try {
       const postedItem = await postForm(data);
-      if (!subcruddit) {
+      if (postedItem.type === "subcruddit") {
         navigate("/c/" + postedItem.subcruddit.subcrudditName) 
       } else {
-        console.log(postedItem)
+        
         const url = `/c/${data.subcrudditName}/${postedItem.id}/${postedItem.title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`
         navigate(url);
       }

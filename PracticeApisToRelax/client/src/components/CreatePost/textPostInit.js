@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
        content: "",
 
    }
-   
+    
    export const  postForm = (data) => {
     console.log(data)
     return axios
@@ -31,6 +31,7 @@ import { useNavigate } from 'react-router-dom';
       // const navigate = useNavigate();
       // const url = `/c/${data.subcrudditName}/${response.data.id}/${response.data.title.replace(/[\s-]+/g, '_').replace(/["']/g, '').substring(0, 50).toLowerCase()}`
       // navigate(url)
+      response.data.type = "post";
       return response.data
     })
     .catch((error) => {

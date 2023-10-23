@@ -62,6 +62,7 @@ export const postForm = (data) => {
       .post(`${BASE_API_URL}/api/posts/image`, formData, {headers:headers})
       .then((response) => {
         console.log(response.data);
+        response.data.type = "post";
         return response.data
       })
       .catch((error) => {
