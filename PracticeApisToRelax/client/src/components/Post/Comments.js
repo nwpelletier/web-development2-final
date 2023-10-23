@@ -11,7 +11,7 @@ import { BASE_API_URL } from "../../utils/constant";
 
 
 function Comments(props){
-    const {comment, order, points, isLocked, isModerator, moderators } = props;
+    const {comment, order, points, isLocked, isModerator, moderators, commentOrder } = props;
     const [loadMore, setLoadMore] = useState(false);
     const [reply, setReply] = useState(false)
     const [nestedReply, setNestedReply] = useState(false)
@@ -28,7 +28,7 @@ function Comments(props){
     const userId = localStorage.getItem("userId");
     const [toBeDeleted, setToBeDeleted] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
-    const [commentOrder, setCommentOrder] = useState(order)
+    //const [commentOrder, setCommentOrder] = useState(order)
     
  
 
@@ -232,6 +232,7 @@ function Comments(props){
                 isLocked={isLocked}
                 isModerator={isModerator}
                 moderators={moderators}
+                commentOrder={commentOrder}
                 
                 />
                 </div>
@@ -245,3 +246,4 @@ function Comments(props){
 export default Comments;
 
 
+ 

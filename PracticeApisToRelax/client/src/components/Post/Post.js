@@ -401,7 +401,7 @@ function Post(props) {
       </div></>}
 
 
-      {content && !isPostLocked ? (
+      {content && !isPostLocked && (userRole === "admin" || userRole === "user") ? (
         <CreateComment
           id={id}
           setReply={setReply}
