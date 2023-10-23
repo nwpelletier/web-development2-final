@@ -10,6 +10,7 @@ import Modal from "../Modal/Modal";
 
 function RNNotLoggedInPages(margin) {
   const [isMod, setIsMod] = useContext(ModContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [usernames, setUsernames] = useState([]);
   const [subcrudWiki, setSubcrudWiki] = useState("");
   const [subcrudName, setSubcrudName] = useContext(SubCrudditContext);
@@ -77,17 +78,42 @@ function RNNotLoggedInPages(margin) {
           <strong className="right-nav-subcruddit-name"> /c/{currentPath} </strong>
         </p>
         <div className="text-center right-nav-create-submit mt-3">
-          <p className="mt-3 " onClick={() => navigate(`/post/text/${subcrudName}`)}>
+          <p
+            className="mt-3"
+            onClick={(e) => {
+              if (isLoggedIn) {
+                navigate(`/post/text/${subcrudName}`);
+                e.stopPropagation(); // Stop the propagation of the click event
+              } else {
+                openModal('login');
+              }
+            }}
+            data-bs-toggle={isLoggedIn ? "" : "modal"}
+            data-bs-target="#defaultModal"
+          >
             Submit a post
           </p>
         </div>
         {(location.pathname.includes('/c/all') || location.pathname.includes('/userpage')) && (
           <div className="text-center right-nav-create-submit mt-3">
-            <p className="mt-3 " onClick={() => navigate(`/c/new`)}>
+            <p
+              className="mt-3"
+              onClick={(e) => {
+                if (isLoggedIn) {
+                  navigate('/c/new');
+                  e.stopPropagation(); // Stop the propagation of the click event
+                } else {
+                  openModal('login');
+                }
+              }}
+              data-bs-toggle={isLoggedIn ? "" : "modal"}
+              data-bs-target="#defaultModal"
+            >
               Create a subcruddit
             </p>
           </div>
         )}
+
 
 
         <div className="right-nav-big-container">

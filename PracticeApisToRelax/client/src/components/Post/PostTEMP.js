@@ -53,25 +53,17 @@ function Post(props) {
 
   useEffect(() => {
     setSubName(handle ? handle : SubcrudditName)
-    const sub = handle ? handle : SubcrudditName;
-    console.log(handle + " HANDLE")
-    console.log(SubcrudditName + " subcrudditname")
-    console.log(1 + "SUBNAME: " + sub)
 
 
     const userId = localStorage.getItem('userId');
-    console.log(userId + "userId")
     if (!userId) {
-      
       setIsModerator(false);
       return;
     }
-    if (sub) {
-      console.log("WHYYYYY")
-      console.log(2)
+    if (subName) {
       if (currentPath !== '/c/all') {
         axios
-          .get(BASE_API_URL + `/api/moderators/ismod/${sub}`, {
+          .get(BASE_API_URL + `/api/moderators/ismod/${subName}`, {
             headers: {
               'x-access-token': localStorage.getItem('token')
             }
