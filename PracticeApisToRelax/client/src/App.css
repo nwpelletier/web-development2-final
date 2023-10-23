@@ -9,6 +9,17 @@ RIGHTNAV
 ====================================
 */
 
+.karma-container {
+  padding:5px;
+  background-color:rgb(216, 231, 255);
+  border-radius: 6px;
+}
+
+.navCrudditLogo {
+  justify-content:center;
+  align-items:center;
+}
+
 .userSubmitted {
   min-height:1000px;;
 }
@@ -491,7 +502,7 @@ a {
       #fcf3f3 2px,
       #f2f2f2 4px);
   overflow-y:auto;
-  max-height:35vh;
+  max-height:28vh;
 }
 
 .rules-container,
