@@ -340,6 +340,15 @@ function Post(props) {
           </div>
         )}
       </div>
+      {content && !isUserPage && <><hr className='mt-2' ></hr>
+      <div className='ms-5 comment-sorter' >
+     
+      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" }`}>hot</span>
+      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
+      
+      </div></>}
+
+
       {content && !isPostLocked ? (
         <CreateComment
           id={id}
@@ -353,6 +362,7 @@ function Post(props) {
       )}
 
       {newComment && (
+        
         <>
           <Comments
             comment={newComment}
@@ -360,17 +370,24 @@ function Post(props) {
             points={1}
             isLocked={isPostLocked}
             isModerator={isModerator}
+            mmoderators={moderators}
           />
         </>
       )}
 
-      {content && currentPath !== '/userpage' && (
+      {content && currentPath !== '/userpage' && commentOrder &&  !isUserPage && (
         <>
+
+
+        
           <PostComments
             order={commentOrder}
             postId={id}
             isLocked={isPostLocked}
             isModerator={isModerator}
+            moderators={moderators}
+            setCommmentOrder={setCommmentOrder}
+            commentOrder={commentOrder}
           />
         </>
       )}
