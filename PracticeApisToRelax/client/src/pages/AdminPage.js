@@ -96,11 +96,9 @@ function AdminPage() {
     });
   };
 
-
-
   return (
     <>
-      <div className="alert alert-info">Admin Page</div>
+      <div className="alert alert-info">Admin Page --- <strong className="fs-4">{ username }</strong></div>
       <div className="container-fluid">
         {role !== "admin" ? (
           <>
