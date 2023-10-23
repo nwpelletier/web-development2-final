@@ -392,13 +392,7 @@ function Post(props) {
           </div>
         )}
       </div>
-      {content && !isUserPage && <><hr className='mt-2' ></hr>
-      <div className='ms-5 comment-sorter' >
-     
-      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" }`}>hot</span>
-      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
-      
-      </div></>}
+
 
 
       {content && !isPostLocked && (userRole === "admin" || userRole === "user") ? (
@@ -412,7 +406,13 @@ function Post(props) {
       {content && isPostLocked && (
         <div className="ms-3">Comments have been locked</div>
       )}
-
+      {content && !isUserPage && <><hr className='mt-2' ></hr>
+      <div className='m-2 comment-sorter' >
+      <span>comments sorted by:</span>
+      <span onClick={()=> setCommmentOrder("hot")} className={`comment-order-${commentOrder === "hot" } ms-1`}>hot</span>
+      <span onClick={()=> setCommmentOrder("new")} className={`comment-order-${commentOrder === "new" } ms-1`}>new</span>      
+      
+      </div></>}
       {newComment && (
         
         <>
